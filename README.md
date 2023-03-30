@@ -121,6 +121,39 @@ In a terminal, use the following command:
 
 > docker run --rm antongol/example:latest 42
 
+## Tools
+
+### **Code Analysis**
+
+
+
+- <details>
+  <summary>Clang-tidy</summary>
+  Clang-tidy is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and performance issues. It is built on top of the Clang compiler and uses LLVM for analyzing the code's abstract syntax tree. Clang-tidy can generate reports with detailed information on the issues found, including severity, location, and suggestions for remediation. It supports a range of coding standards, including Google C++ Style Guide and LLVM Coding Standards, and can also be customized with user-defined checks. Clang-tidy can be used in the command line or integrated with other tools such as CMake and Visual Studio.
+</details>
+
+- <details>
+  <summary>Cppcheck</summary>
+  Cppcheck is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and security issues. It analyzes the code for various types of errors, including buffer overflows, null pointer dereferences, and memory leaks, and can generate reports with detailed information on the issues found. Cppcheck can be used in the command line or integrated with other tools such as Jenkins, Visual Studio, and Eclipse. It can also be customized with user-defined checks and can support a range of coding standards, including MISRA C++ and CERT C++.
+</details>
+
+- <details>
+  <summary>OCLint</summary>
+  OCLint is a static code analysis tool that can detect potential bugs, coding violations, and design issues in C++, C, and Objective-C codebases. It works by analyzing the code's abstract syntax tree and generating reports with detailed information on the issues found. OCLint supports a range of coding standards, can be customized, and can be used in the command line or integrated with other tools such as Jenkins, SonarQube, and Visual Studio.
+</details>
+
+- <details>
+  <summary>Pmccabe</summary>
+  PCCabe is a software complexity analysis tool that can be used to measure the complexity of C++ code. It analyzes the code's control flow graph and generates reports that provide information on various complexity metrics, including cyclomatic complexity, essential complexity, and design complexity. The reports can be used to identify code that is difficult to maintain, understand, or test, and to make informed decisions about code refactoring and optimization.
+</details>
+
+- <details>
+  <summary>lCov</summary>
+  coverage analysis tool for C++ code that can be used to measure the effectiveness of test suites in exercising the codebase. It works by instrumenting the code to generate coverage data, and then generating reports that provide information on the percentage of code executed by the tests.
+</details>
+
+
+
 ## Authors and acknowledgment
 Below is the list of developers who are actively working on this project.
 - Aditya: @adityaa 
