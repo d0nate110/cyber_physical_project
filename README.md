@@ -125,7 +125,10 @@ In a terminal, use the following command:
 
 ### **Code Analysis**
 
+These are the tools that we intend to use in order analyze and improve te quality of the C++ code developed. 
 
+Each tool has its own **strengths** and **weaknesses**
+ and can be used to improve different aspects of code quality. Using a combination of these tools can help ensure that **C++ code is of high quality, maintainable, and secure**.
 
 - <details>
   <summary>Clang-tidy</summary>
