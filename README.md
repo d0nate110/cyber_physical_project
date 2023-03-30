@@ -130,32 +130,47 @@ These are the tools that we intend to use in order analyze and improve te qualit
 Each tool has its own **strengths** and **weaknesses**
  and can be used to improve different aspects of code quality. Using a combination of these tools can help ensure that **C++ code is of high quality, maintainable, and secure**.
 
-<details>
+- <details>
   <summary>Clang-tidy</summary>
   Clang-tidy is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and performance issues. It is built on top of the Clang compiler and uses LLVM for analyzing the code's abstract syntax tree. Clang-tidy can generate reports with detailed information on the issues found, including severity, location, and suggestions for remediation. It supports a range of coding standards, including Google C++ Style Guide and LLVM Coding Standards, and can also be customized with user-defined checks
 </details>
 
-<details>
+- <details>
   <summary>Cppcheck</summary>
   Cppcheck is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and security issues. It analyzes the code for various types of errors, including buffer overflows, null pointer dereferences, and memory leaks, and can generate reports with detailed information on the issues found.
 </details>
 
-<details>
+- <details>
   <summary>OCLint</summary>
   OCLint is a static code analysis tool that can detect potential bugs, coding violations, and design issues in C++, C, and Objective-C codebases. It works by analyzing the code's abstract syntax tree and generating reports with detailed information on the issues found. OCLint supports a range of coding standards, can be customized, and can be used in the command line or integrated with other tools such as Jenkins, SonarQube, and Visual Studio.
 </details>
 
-<details>
+- <details>
   <summary>Pmccabe</summary>
   PCCabe is a software complexity analysis tool that can be used to measure the complexity of C++ code. It analyzes the code's control flow graph and generates reports that provide information on various complexity metrics, including cyclomatic complexity, essential complexity, and design complexity. The reports can be used to identify code that is difficult to maintain, understand, or test, and to make informed decisions about code refactoring and optimization.
 </details>
 
-<details>
+- <details>
   <summary>lCov</summary>
   lCov is a code coverage analysis tool for C++ code that can be used to measure the effectiveness of test suites in exercising the codebase. It works by instrumenting the code to generate coverage data, and then generating reports that provide information on the percentage of code executed by the tests.
 </details>
 
+## Commit  & Pull Request Conventions
 
+All commits and pull requests follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). 
+The conventions dictates that the messages will start with a keyword which specifies the type of change. It is then followed by a description of the change.
+
+Few common keywords:
+- feat = adds a new feature
+- fix = fixes a bug
+- docs = works on readme type documents
+- ci = related to CI/CD
+- test = related to tests
+- ! = used in addition to other keywords to represent importance or impact of change
+
+*feat!: added markdown to textboxes*
+
+*docs: added the commit & merge request conventions section to readme*
 
 ## Authors and acknowledgment
 Below is the list of developers who are actively working on this project.
