@@ -1,92 +1,187 @@
 # 2023-group-11
 
 
+# Autonomous Obstacle Avoidance Steering :racing_car:
+Do you have a small scale vehichle that you which had a simple obstacle avoidence system? Do you have bunch of sensors lying around and space on your raspberry pi? 
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://git.chalmers.se/courses/dit638/students/2023-group-11.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://git.chalmers.se/courses/dit638/students/2023-group-11/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+These are exactly the problems this project solves! The goal of this project is to create a data-driven algorithm that will take in data from multiple sources and sensors to output a steering value to avoid obstacles. The project is made to run in a docker which can be used by devices such as a raspberry pi. 
 
 ## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+![coverage](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/coverage.svg?job=coverage)
+![pipeline](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/pipeline.svg)
 
 ## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+The goal looks like the following:
+
+TODO: Add video from OpenDLV with the given recording. 
+
+## Pre-Requirements
+
+The following instructions require a Linux distribution installed on your machine. Ubuntu 22.04 is recommended.
+
+To make use of the system following sensors are required on the model vehichle:
+
+*The list is not yet complete. Please check again later!*
+- Sensor 1
+- Sensor 2
+- Sensor 3
+
+TODO: Add information on how sensors can pass data to our application.
 
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+
+### Make sure that your system is up to date. Run the following in a terminal:
+>sudo apt-get update
+> 
+>sudo apt-get upgrade
+> 
+
+### Install software development tools. Run the following in a terminal:
+> sudo apt-get update
+>
+> sudo apt-get install build-essential cmake git
+> 
+
+### Install docker
+
+#### 1. For non-Gnome Desktop environments, gnome-terminal must be installed:
+
+> sudo apt install gnome-terminal
+> 
+#### 2. Uninstall the tech preview or beta version of Docker Desktop for Linux. Run:
+
+
+> sudo apt remove docker-desktop
+> 
+For a complete cleanup, remove configuration and data files at $HOME/.docker/desktop, the symlink at /usr/local/bin/com.docker.cli, and purge the remaining systemd service files.
+
+
+> rm -r $HOME/.docker/desktop
+> 
+> sudo rm /usr/local/bin/com.docker.cli
+> 
+> sudo apt purge docker-desktop
+
+#### 3. Set up the repository
+
+Update the apt package index and install packages to allow apt to use a repository over HTTPS:
+
+
+> sudo apt-get update
+> 
+> sudo apt-get install \
+> 
+> ca-certificates \
+> 
+> curl \
+> 
+> gnupg
+>
+Add Docker’s official GPG key:
+
+
+>sudo mkdir -m 0755 -p /etc/apt/keyrings
+> 
+> curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+>
+Use the following command to set up the repository:
+
+
+> echo \
+"deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+"$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+> sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+#### 4. [Download latest DEB package.](https://desktop.docker.com/linux/main/amd64/docker-desktop-4.17.0-amd64.deb?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-linux-amd64)
+
+#### 5. Install the package with apt as follows:
+
+>sudo apt-get update
+> 
+>sudo apt-get install ./docker-desktop-<version>-<arch>.deb
+> 
+#### 6. Give admin privileges to docker for easier use. (optional)
+
+> sudo adduser ubuntu docker
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### 1. Clone the repository
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+In a terminal, use the following command:
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+> git clone https://git.chalmers.se/courses/dit638/students/2023-group-11.git
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+### 2. Build the docker image
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+> docker build -t antongol/example:latest -f Dockerfile .
+>
+
+### 3. Run the docker image
+
+> docker run --rm antongol/example:latest 42
+
+## Tools
+
+### **Code Analysis**
+
+These are the tools that we intend to use in order analyze and improve te quality of the C++ code developed. 
+
+Each tool has its own **strengths** and **weaknesses**
+ and can be used to improve different aspects of code quality. Using a combination of these tools can help ensure that **C++ code is of high quality, maintainable, and secure**.
+
+- <details>
+  <summary>Clang-tidy</summary>
+  Clang-tidy is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and performance issues. It is built on top of the Clang compiler and uses LLVM for analyzing the code's abstract syntax tree. Clang-tidy can generate reports with detailed information on the issues found, including severity, location, and suggestions for remediation. It supports a range of coding standards, including Google C++ Style Guide and LLVM Coding Standards, and can also be customized with user-defined checks
+</details>
+
+- <details>
+  <summary>Cppcheck</summary>
+  Cppcheck is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and security issues. It analyzes the code for various types of errors, including buffer overflows, null pointer dereferences, and memory leaks, and can generate reports with detailed information on the issues found.
+</details>
+
+- <details>
+  <summary>OCLint</summary>
+  OCLint is a static code analysis tool that can detect potential bugs, coding violations, and design issues in C++, C, and Objective-C codebases. It works by analyzing the code's abstract syntax tree and generating reports with detailed information on the issues found. OCLint supports a range of coding standards, can be customized, and can be used in the command line or integrated with other tools such as Jenkins, SonarQube, and Visual Studio.
+</details>
+
+- <details>
+  <summary>Pmccabe</summary>
+  PCCabe is a software complexity analysis tool that can be used to measure the complexity of C++ code. It analyzes the code's control flow graph and generates reports that provide information on various complexity metrics, including cyclomatic complexity, essential complexity, and design complexity. The reports can be used to identify code that is difficult to maintain, understand, or test, and to make informed decisions about code refactoring and optimization.
+</details>
+
+- <details>
+  <summary>lCov</summary>
+  lCov is a code coverage analysis tool for C++ code that can be used to measure the effectiveness of test suites in exercising the codebase. It works by instrumenting the code to generate coverage data, and then generating reports that provide information on the percentage of code executed by the tests.
+</details>
+
+## Commit  & Pull Request Conventions
+
+All commits and pull requests follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). 
+The conventions dictates that the messages will start with a keyword which specifies the type of change. It is then followed by a description of the change.
+
+Few common keywords:
+- feat = adds a new feature
+- fix = fixes a bug
+- docs = works on readme type documents
+- ci = related to CI/CD
+- test = related to tests
+- ! = used in addition to other keywords to represent importance or impact of change
+
+*feat!: added markdown to textboxes*
+
+*docs: added the commit & merge request conventions section to readme*
 
 ## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Below is the list of developers who are actively working on this project.
+- Aditya: @adityaa 
+- Anton: @antongol
+- Askan: @askan
+- Dragos: @florinel
+- Oscar Reina: @scarr
 
 ## License
-For open source projects, say how it is licensed.
+This project makes use of the MIT license. No contributions can be done to this project by non-maintainers.
 
 ## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Project is on-going. 
