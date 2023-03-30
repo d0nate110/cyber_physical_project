@@ -155,12 +155,6 @@ Each tool has its own **strengths** and **weaknesses**
   lCov is a code coverage analysis tool for C++ code that can be used to measure the effectiveness of test suites in exercising the codebase. It works by instrumenting the code to generate coverage data, and then generating reports that provide information on the percentage of code executed by the tests.
 </details>
 
-- <details>
-  <summary>doctest</summary>
-  [doctest](https://github.com/doctest/doctest) is a high-performance testing framework for C++ that is built on Catch testing framework. However, compared to Catch, doctest has a significantly lower compile runtime while executing test cases. We will use doctest framework in order to implement and enhance test-driven development testing before creating new features. 
-</details>
-
-
 ## Commit  & Pull Request Conventions
 
 All commits and pull requests follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). 
