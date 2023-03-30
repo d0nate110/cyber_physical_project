@@ -54,6 +54,7 @@ release:
   tags:
     - docker-build
   needs: ["build"]
+  allow_failure: true
   stage: deploy
   before_script:
     - CI_COMMIT_TAG=$CI_COMMIT_TAG ./regex-check.sh
