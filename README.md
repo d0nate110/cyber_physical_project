@@ -129,12 +129,12 @@ In a terminal, use the following command:
 
 - <details>
   <summary>Clang-tidy</summary>
-  Clang-tidy is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and performance issues. It is built on top of the Clang compiler and uses LLVM for analyzing the code's abstract syntax tree. Clang-tidy can generate reports with detailed information on the issues found, including severity, location, and suggestions for remediation. It supports a range of coding standards, including Google C++ Style Guide and LLVM Coding Standards, and can also be customized with user-defined checks. Clang-tidy can be used in the command line or integrated with other tools such as CMake and Visual Studio.
+  Clang-tidy is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and performance issues. It is built on top of the Clang compiler and uses LLVM for analyzing the code's abstract syntax tree. Clang-tidy can generate reports with detailed information on the issues found, including severity, location, and suggestions for remediation. It supports a range of coding standards, including Google C++ Style Guide and LLVM Coding Standards, and can also be customized with user-defined checks
 </details>
 
 - <details>
   <summary>Cppcheck</summary>
-  Cppcheck is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and security issues. It analyzes the code for various types of errors, including buffer overflows, null pointer dereferences, and memory leaks, and can generate reports with detailed information on the issues found. Cppcheck can be used in the command line or integrated with other tools such as Jenkins, Visual Studio, and Eclipse. It can also be customized with user-defined checks and can support a range of coding standards, including MISRA C++ and CERT C++.
+  Cppcheck is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and security issues. It analyzes the code for various types of errors, including buffer overflows, null pointer dereferences, and memory leaks, and can generate reports with detailed information on the issues found.
 </details>
 
 - <details>
@@ -149,7 +149,7 @@ In a terminal, use the following command:
 
 - <details>
   <summary>lCov</summary>
-  coverage analysis tool for C++ code that can be used to measure the effectiveness of test suites in exercising the codebase. It works by instrumenting the code to generate coverage data, and then generating reports that provide information on the percentage of code executed by the tests.
+  lCov is a code coverage analysis tool for C++ code that can be used to measure the effectiveness of test suites in exercising the codebase. It works by instrumenting the code to generate coverage data, and then generating reports that provide information on the percentage of code executed by the tests.
 </details>
 
 
