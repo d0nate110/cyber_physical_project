@@ -2,13 +2,13 @@
 
 
 # Autonomous Obstacle Avoidance Steering :racing_car:
-Do you have a small scale vehichle that you which had a simple obstacle avoidence system? Do you have bunch of sensors lying around and space on your raspberry pi? 
+Do you have a small scale vehicle that you wish had a simple obstacle avoidence system? Do you have bunch of sensors lying around and space on your raspberry pi? 
 
 These are exactly the problems this project solves! The goal of this project is to create a data-driven algorithm that will take in data from multiple sources and sensors to output a steering value to avoid obstacles. The project is made to run in a docker which can be used by devices such as a raspberry pi. 
 
 ## Badges
-![coverage](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/coverage.svg?job=coverage)
 ![pipeline](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/pipeline.svg)
+![coverage](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/coverage.svg?job=coverage)
 
 ## Visuals
 The goal looks like the following:
@@ -164,7 +164,7 @@ Each tool has its own **strengths** and **weaknesses**
 ## Commit  & Pull Request Conventions
 
 All commits and pull requests follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). 
-The conventions dictates that the messages will start with a keyword which specifies the type of change. It is then followed by a description of the change.
+The convention dictates that the messages will start with a keyword which specifies the type of change. It is then followed by a description of the change.
 
 Few common keywords:
 - feat = adds a new feature
@@ -178,13 +178,23 @@ Few common keywords:
 
 *docs: added the commit & merge request conventions section to readme*
 
+## CI/CD Pipelines
+
+The project contains two pipeline stages; one is the "build", that **builds and checks the test status of the code**, and is executed upon every commit in every branch (incl. the default branch). Secondly, the "deploy" job is run when a **tag** is made (eg. a **release**), **with build** and contains the following conditions:
+
+- **Build** must pass as a pre-requisite.
+- The name of the tag should be a correctly formatted version ID of the form **vX.X.X**.
+- A new docker image tag is newly created under the group's container registry (can be found in Packages and Registries > Container Registry).   
+
+The stage routines can be found in the repository's root folder, in the file <br>`.gitlab-ci.yaml`.
+
 ## Authors and acknowledgment
 Below is the list of developers who are actively working on this project.
-- Aditya: @adityaa 
-- Anton: @antongol
-- Askan: @askan
-- Dragos: @florinel
-- Oscar Reina: @scarr
+- Aditya Khadkikar: @adityaa 
+- Anton Golubenko: @antongol
+- Burak Askan: @askan
+- Dragos Florinel Isar: @florinel
+- Oscar Reina Gustafsson: @scarr
 
 ## License
 This project makes use of the MIT license. No contributions can be done to this project by non-maintainers.
