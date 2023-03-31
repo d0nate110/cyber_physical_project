@@ -116,6 +116,34 @@ In a terminal, use the following command:
 
 > docker run --rm antongol/example:latest 42
 
+## Workflow
+
+Our group will follow a modified version of the git flow. This means that we will **create new branches** from the main branch, on which we will work. However, we will also have a branch called **develop**. The main branch will have only production code, and every modification (merge request from develop branch) on it will be a new release. The **develop** branch will have **pre-production code** and when features are finished they will be merged from the aforementioned individual feature branches into this branch, and progress ahead later to main once it has been thoroughly verified. 
+
+### Bug Fixing
+
+Bugs and unexpected behaviors are handled by the team via making a new bug fix issue, if the main feature issue is closed. The same workflow is applied by starting with making a new branch and ending with merging into develop/main.
+
+### Protocol for new additions / features
+
+The team collectively agreed upon a procedure for new feature additions, which goes as follows:
+
+- Pull the latest version of the project
+- Checkout to a new branch
+- Make changes / modifications, then commit & push
+- Open a Pull Request (PR) to the **develop** branch
+  - **Approval**: The program should be built successfully, passed tests, and upon so, is to be reviewed by a **maintainer**
+
+We will also follow **test-driven development** principles, in order to accurately determine that our implementation fulfills the requirements, as well as to improve code quality. This means that we will *create unit tests* based on the requirements and will then develop our software so that it passes all of them. 
+ 
+- If **approved**: Changes are pushed to the **develop** branch
+
+Code reviews will be an important part of the workflow as well. Each merge request to develop will be carefully reviewed by at least one other team member, and meaningful feedback will be given. If the PR is not approved, changes will need to be done. Each merge request to main will close issues related to the commits added.
+
+- A second PR is initiated, for adding approved features as an eventual **official patch/release**.
+  - Same aforementioned approval process needs to be conducted with a fellow **maintainer**.
+- If **approved**: Pushed to the **main** branch, and a new tag, in the form of a release is created. It must follow correct versioning more than the current state, in the form vX.X.X.  
+
 ## Tools
 
 ### **Code Analysis**
