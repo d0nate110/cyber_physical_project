@@ -10,11 +10,6 @@ These are exactly the problems this project solves! The goal of this project is 
 ![pipeline](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/pipeline.svg)
 ![coverage](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/coverage.svg?job=coverage)
 
-## Visuals
-The goal looks like the following:
-
-TODO: Add video from OpenDLV with the given recording. 
-
 ## Pre-Requirements
 
 The following instructions require a Linux distribution installed on your machine. Ubuntu 22.04 is recommended.
@@ -121,30 +116,6 @@ In a terminal, use the following command:
 
 > docker run --rm antongol/example:latest 42
 
-## Workflow
-
-Our group will follow a modified version of the git flow. This means that we will **create new branches** from the main branch, on which we will work. However, we will also have a branch called **develop**. The main branch will have only production code, and every modification (merge request from develop branch) on it will be a new release. The **develop** branch will have **pre-production code** and when features are finished they will be merged from the aforementioned individual feature branches into this branch, and progress ahead later to main once it has been thoroughly verified. 
-
-### Protocol for new additions / features
-
-The team collectively agreed upon a procedure for new feature additions, which goes as follows:
-
-- Pull the latest version of the project
-- Checkout to a new branch
-- Make changes / modifications, then commit & push
-- Open a Pull Request (PR) to the **develop** branch
-  - **Approval**: The program should be built successfully, passed tests, and upon so, is to be reviewed by a **maintainer**
-
-We will also follow **test-driven development** principles, in order to accurately determine that our implementation fulfills the requirements, as well as to improve code quality. This means that we will *create unit tests* based on the requirements and will then develop our software so that it passes all of them. 
- 
-- If **approved**: Changes are pushed to the **develop** branch
-
-Code reviews will be an important part of the workflow as well. Each merge request to develop will be carefully reviewed by at least one other team member, and meaningful feedback will be given. If the PR is not approved, changes will need to be done. Each merge request to main will close issues related to the commits added.
-
-- A second PR is initiated, for adding approved features as an eventual **official patch/release**.
-  - Same aforementioned approval process needs to be conducted with a fellow **maintainer**.
-- If **approved**: Pushed to the **main** branch, and a new tag, in the form of a release is created. It must follow correct versioning more than the current state, in the form vX.X.X.  
-
 ## Tools
 
 ### **Code Analysis**
@@ -154,34 +125,34 @@ These are the tools that we intend to use in order analyze and improve te qualit
 Each tool has its own **strengths** and **weaknesses**
  and can be used to improve different aspects of code quality. Using a combination of these tools can help ensure that **C++ code is of high quality, maintainable, and secure**.
 
-- <details>
+<details>
   <summary>Clang-tidy</summary>
-  Clang-tidy is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and performance issues. It is built on top of the Clang compiler and uses LLVM for analyzing the code's abstract syntax tree. Clang-tidy can generate reports with detailed information on the issues found, including severity, location, and suggestions for remediation. It supports a range of coding standards, including Google C++ Style Guide and LLVM Coding Standards, and can also be customized with user-defined checks
+[Clang-tidy](https://clang.llvm.org/extra/clang-tidy/) is a static analysis tool built on top of the Clang compiler for C++ code that can detect fixes for bugs, coding violations, and performance issues. Clang-tidy can generate reports with detailed information on issues, including their severity, location, and suggestions for remediation. It supports manny coding standards, including Google C++ Style Guide and LLVM Coding Standards, and can also be customized with user-defined checks
 </details>
 
-- <details>
+<details>
   <summary>Cppcheck</summary>
-  Cppcheck is a static analysis tool for C++ code that can detect and suggest fixes for potential bugs, coding violations, and security issues. It analyzes the code for various types of errors, including buffer overflows, null pointer dereferences, and memory leaks, and can generate reports with detailed information on the issues found.
+[Cppcheck](https://cppcheck.sourceforge.io/) is a static analysis tool for C++ code that can detect fixes for bugs, coding violations, and security issues. It analyzes the code for various types of errors: buffer overflows, null pointer dereferences, and memory leaks. Moreover, it can generate reports with detailed information on the issues found.
 </details>
 
-- <details>
+<details>
   <summary>OCLint</summary>
-  OCLint is a static code analysis tool that can detect potential bugs, coding violations, and design issues in C++, C, and Objective-C codebases. It works by analyzing the code's abstract syntax tree and generating reports with detailed information on the issues found. OCLint supports a range of coding standards, can be customized, and can be used in the command line or integrated with other tools such as Jenkins, SonarQube, and Visual Studio.
+[OCLint](https://oclint.org/) is a static code analysis tool that can detect bugs, coding violations, and design issues in C++, C, and Objective-C codebases. It works by analyzing the code's abstract syntax tree and generating reports on the issues found. OCLint supports a range of coding standards, can be customized.
 </details>
 
-- <details>
+<details>
   <summary>Pmccabe</summary>
-  PCCabe is a software complexity analysis tool that can be used to measure the complexity of C++ code. It analyzes the code's control flow graph and generates reports that provide information on various complexity metrics, including cyclomatic complexity, essential complexity, and design complexity. The reports can be used to identify code that is difficult to maintain, understand, or test, and to make informed decisions about code refactoring and optimization.
+[PMCCabe](https://manpages.ubuntu.com/manpages/focal/man1/pmccabe.1.html) is a software complexity analysis tool that is used to measure the complexity of C++ code. It analyzes the code's control flow graph and generates reports providing information on various complexity metrics, such as: cyclomatic complexity, essential complexity, and design complexity. The reports can be used to identify code that is difficult to maintain, understand, or test, and to make decisions about code refactoring and optimization.
 </details>
 
-- <details>
+<details>
   <summary>lCov</summary>
-  lCov is a code coverage analysis tool for C++ code that can be used to measure the effectiveness of test suites in exercising the codebase. It works by instrumenting the code to generate coverage data, and then generating reports that provide information on the percentage of code executed by the tests.
+[lCov](https://wiki.documentfoundation.org/Development/Lcov) is a code coverage analysis tool for C++ code that can be used to measure the effectiveness of test suites when exercising the codebase. It works by generating reports that provide information on the percentage of code executed by the tests.
 </details>
 
-- <details>
+<details>
   <summary>doctest</summary>
-  [doctest](https://github.com/doctest/doctest) is a high-performance testing framework for C++ that is built on Catch testing framework. However, compared to Catch, doctest has a significantly lower compile runtime while executing test cases. We will use doctest framework in order to implement and enhance test-driven development testing before creating new features. 
+[doctest](https://github.com/doctest/doctest) is a high-performance testing framework for C++ that is built on Catch testing framework. However, doctest has a significantly lower compile runtime while executing test cases. We will use doctest framework in order to implement and enhance test-driven development testing before creating new features. 
 </details>
 
 
@@ -201,6 +172,14 @@ Few common keywords:
 *feat!: added markdown to textboxes*
 
 *docs: added the commit & merge request conventions section to readme*
+
+## Workflow
+
+Our group will follow a modified version of the git flow. This means that we will create new branches from the main branch, on which we will work. However, we will also have a branch called develop. The main branch will have only production code, and every modification (merge request from develop branch) on it will be a new release. The develop branch will have pre-production code and when features are finished they will be merged from the aforementioned individual feature branches into this branch. 
+
+Code reviews will be an important part of the workflow as well. Each merge request to develop will be carefully reviewed by at least one other team member, and meaningful feedback will be given. If the merge request passes the code review, it will be approved and merged. Otherwise, changes will need to be done. Each merge request to main will close issues related to the commits added.
+
+We will also follow test-driven development principles, in order to accurately determine that our implementation fulfills the requirements, as well as to improve code quality. This means that we will create unit tests based on the requirements and will then develop our software so that it passes all of them. 
 
 ## CI/CD Pipelines
 
