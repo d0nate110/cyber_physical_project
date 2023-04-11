@@ -38,10 +38,15 @@ If one is having trouble with meeting a deadline, they should inform the group i
 
 **Team decisions & Conflicts e.g. How will these be made? Majority? Consensus?**
 
-Consensus: We will weigh the pros and cons of the specific team decision and try to come to a fair and rational decision. 
-If consensus cannot be reached, we will go with a majority vote, and attempt to evaluate further.
+In order to prevent and solve conflicts from happening it requires the team to follow a **proactive approach** to address the causes of the conflicts. This involves certain activities:
 
-If the team cannot solve the conflict, then TAs and the Lecturer will be asked to get involved.
+1. Firstly, within the group we will **encourage communication between every indidivudal** who are at risk of conflict. By doing this, we can **identify and fix potential conflicts** and therefore avoiding them from scaling to bigger ones. This would **encourage collaboration and cooperation between the team members** who have conflicting interests or goals and therefore build understanding between them.
+2. Secondly, in case of any scaling conflict, as a team we will **establish a procedure of impartial and formal mediation** in order to reach consensus. We will weigh the pros and cons of the specific team decision and try to come to a fair and rational decision. 
+If consensus cannot be reached, we will go with a majority vote, and attempt to evaluate further
+3. Finally, if the team cannot manage to solve the conflict, then **TAs and the lecturer will be asked to get involved** and offer a potential solution
+
+By implementing these measures, an environment of understanding and respect can be created, which will help to identify conflicts in their early stages, avoid them or fix them if necessary
+
 
 **Handling of documents and files e.g. How, who? Versions (how will you keep track of these?) Other tools to use?**
 
