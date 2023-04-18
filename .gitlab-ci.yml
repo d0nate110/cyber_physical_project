@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Which Docker image shall be used on the GitLab runner?
-image: docker:19.03.3
+image: ubuntu:latest
 
 # Details about how to connect to the Docker service to run this build.
 variables:
@@ -40,9 +40,47 @@ build:
     - exists:
         - Dockerfile
     - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
+  before_script:
+  - apt-get update
+  - apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  - echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+  - apt-get update
+  - apt-get install -y docker-ce docker-ce-cli containerd.io
+
   script:
     - cd src
     - docker build -f Dockerfile .
+
+# this part uses lcov to generate coverage report of executed unit tests. 
+coverage:
+  tags:
+    - docker-build
+  stage: build
+  needs: ["build"]
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - export TZ=Europe/London
+    - apt-get -qq update && apt-get -qq install -y lcov g++
+    - apt-get install -y python3-pip 
+    - pip3 install gcovr==6.0 
+    
+  script:
+    - cd src
+    - g++ -fprofile-arcs -ftest-coverage -o helloworld helloworld.cpp PrimeChecker.cpp PrimeChecker.hpp  --coverage
+    - ./helloworld
+    - g++ -fprofile-arcs -ftest-coverage -o PrimeCheckerTest TestPrimeChecker.cpp PrimeChecker.cpp  --coverage
+    - ./PrimeCheckerTest
+    - gcov *.cpp 
+    - lcov --capture --directory . --output-file coverage.info
+    - lcov --remove coverage.info '/usr/*' --output-file coverage.info
+    - gcovr --html-details --html-syntax-highlighting -o coverage.html
+    - lcov --list coverage.info
+
+  artifacts:
+    paths:
+    - src/coverage.html
+
 
 # This section describes what shall be done to deploy artefacts from the project.
 release:

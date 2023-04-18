@@ -9,7 +9,8 @@ RUN apt-get update -y && \
 
 RUN apt-get install -y --no-install-recommends \
         cmake \
-        build-essential
+        build-essential \
+        lcov
 
 ADD . /opt/sources
 WORKDIR /opt/sources
