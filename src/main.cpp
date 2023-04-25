@@ -80,13 +80,57 @@ int32_t main(int32_t argc, char **argv) {
                 // Lock the shared memory.
                 sharedMemory->lock();
                 {
-                    // Copy the pixels from the shared memory into our own data structure.
+                     // Copy the pixels from the shared memory into our own data structure.
+                                        // Copy the pixels from the shared memory into our own data structure.
                     cv::Mat wrapped(HEIGHT, WIDTH, CV_8UC4, sharedMemory->data());
                     img = wrapped.clone();
-        
+                    
+ // this resource was used partially to draw the contours for cones: https://learnopencv.com/contour-detection-using-opencv-python-c/
+
+                    cv::Mat hsvImg;
+                    cv::cvtColor(img, hsvImg, cv::COLOR_BGR2HSV);
+                    
+                    // Defining HSV color ranges for blue and yellow cones
+                     cv::Scalar blueMin(102, 96, 40);
+                     cv::Scalar blueMax(135, 255, 134);
+                     cv::Scalar yellowMin(9, 0, 147);
+                     cv::Scalar yellowMax(76, 255, 255);
+                     
+                    // Apply color thresholding to extract only blue and yellow cones
+                    cv::Mat blueMask, yellowMask;
+                    cv::inRange(hsvImg, blueMin, blueMax, blueMask);
+                    cv::inRange(hsvImg, yellowMin, yellowMax, yellowMask);
+                    // Include either blue mask or yellow mask.
+                    cv::Mat coneMask = blueMask | yellowMask;
+
+                    // find contours, using vector classes for them. 
+                    std::vector<std::vector<cv::Point>> contours;
+                    std::vector<cv::Vec4i> hierarchy;
+                    cv::findContours(coneMask, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
+
+                    // Clone image to contoursImg
+                    cv::Mat contoursImg = img.clone();
+                    
+                    for (size_t i = 0; i < contours.size(); i++)
+                    {
+                        // Compute the bounding box for the contour, which will put the cone contours in a reactangle.
+                        cv::Rect bRect = cv::boundingRect(contours[i]);
+
+                        // Filter out small boxes that might be noise
+                        if (bRect.width < 20 || bRect.height < 20)
+                            continue;
+
+                        // Draw the bounding box on the image and around cones
+                        cv::rectangle(contoursImg, bRect, cv::Scalar(0, 255, 0), 2);
+                    }
+
+                    // Show image
+                    cv::imshow("Cones detection", contoursImg);
+
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
                 
+
                 //Method obtained from link provided 
                 std::string frameTimeStamp = std::to_string(static_cast<__int64_t>(sharedMemory->getTimeStamp().second.seconds()) * static_cast<__int64_t>(1000*1000) + static_cast<__int64_t>(sharedMemory->getTimeStamp().second.microseconds()));
 
