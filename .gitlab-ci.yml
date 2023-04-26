@@ -49,7 +49,7 @@ build:
   - apt-get install -y docker-ce docker-ce-cli containerd.io
 
   script:
-    - cd src
+  #  - cd src
     - docker build -f Dockerfile .
 
 # this part uses lcov to generate coverage report of executed unit tests. 
@@ -97,7 +97,7 @@ release:
   before_script:
     - CI_COMMIT_TAG=$CI_COMMIT_TAG ./regex-check.sh
   script:
-    - cd src
+  #  - cd src
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -f Dockerfile -t "$CI_REGISTRY_IMAGE":"$CI_COMMIT_TAG" .
