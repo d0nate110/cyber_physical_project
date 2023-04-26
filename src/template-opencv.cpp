@@ -84,11 +84,20 @@ int32_t main(int32_t argc, char **argv) {
                                         // Copy the pixels from the shared memory into our own data structure.
                     cv::Mat wrapped(HEIGHT, WIDTH, CV_8UC4, sharedMemory->data());
                     img = wrapped.clone();
+
+                    // Create a rectangle representing the region of interest.
+                    cv::Rect roi(180, 200, 285, 160);
+
+                    // Create a copy of the region of interest.
+                    cv::Mat roiImg = img(roi).clone();
+
+                    // Draw the region of interest on top of the original frame.
+                    cv::rectangle(img, roi, cv::Scalar(0, 0, 255), 2);
                     
  // this resource was used partially to draw the contours for cones: https://learnopencv.com/contour-detection-using-opencv-python-c/
 
                     cv::Mat hsvImg;
-                    cv::cvtColor(img, hsvImg, cv::COLOR_BGR2HSV);
+                    cv::cvtColor(roiImg, hsvImg, cv::COLOR_BGR2HSV);
                     
                     // Defining HSV color ranges for blue and yellow cones
                      cv::Scalar blueMin(102, 96, 40);
@@ -109,7 +118,7 @@ int32_t main(int32_t argc, char **argv) {
                     cv::findContours(coneMask, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
 
                     // Clone image to contoursImg
-                    cv::Mat contoursImg = img.clone();
+                    //cv::Mat contoursImg = roiImg.clone();
                     
                     for (size_t i = 0; i < contours.size(); i++)
                     {
@@ -121,11 +130,11 @@ int32_t main(int32_t argc, char **argv) {
                             continue;
 
                         // Draw the bounding box on the image and around cones
-                        cv::rectangle(contoursImg, bRect, cv::Scalar(0, 255, 0), 2);
+                        cv::rectangle(roiImg, bRect, cv::Scalar(0, 255, 0), 2);
                     }
 
                     // Show image
-                    cv::imshow("Cones detection", contoursImg);
+                    cv::imshow("Cones detection", roiImg);
 
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
@@ -159,29 +168,29 @@ int32_t main(int32_t argc, char **argv) {
                 auto value = now_seconds.time_since_epoch().count();
 
                 //Convert the number of seconds to a UTC structure using gmtime_r()
-                std::tm utc_time;
-                gmtime_r(&value, &utc_time);
-
-                std::ostringstream oss;
-                oss << std::put_time(&utc_time, "%Y-%m-%dT%H:%M:%SZ");
-                std::string currentUtcTime = oss.str();
-
-                std::string finalString = "Now " + currentUtcTime + "; ts: " + frameTimeStamp + "; Reina, Oscar";
+//                std::tm utc_time;
+//                gmtime_r(&value, &utc_time);
+//
+//                std::ostringstream oss;
+//                oss << std::put_time(&utc_time, "%Y-%m-%dT%H:%M:%SZ");
+//                std::string currentUtcTime = oss.str();
+//
+//                std::string finalString = "Now " + currentUtcTime + "; ts: " + frameTimeStamp + "; Reina, Oscar";
 
 
                 // TODO: Do something with the frame.
                 // Example: Draw a red rectangle and display image.
-                cv::rectangle(img, cv::Point(100, 50), cv::Point(50, 100), cv::Scalar(50,0,255));
-
-                cv::Point position;
-                position.x = img.rows / 16;
-                position.y = img.cols / 20;
-
-                cv::Scalar color(255, 255, 255);
-
-                cv::Scalar font = cv::Scalar(255, 255, 255);
-
-                cv::putText(img, finalString, position, cv::QT_FONT_NORMAL, 0.5, color, 1.5);
+//                cv::rectangle(img, cv::Point(100, 50), cv::Point(50, 100), cv::Scalar(50,0,255));
+//
+//                cv::Point position;
+//                position.x = img.rows / 16;
+//                position.y = img.cols / 20;
+//
+//                cv::Scalar color(255, 255, 255);
+//
+//                cv::Scalar font = cv::Scalar(255, 255, 255);
+//
+//                cv::putText(img, finalString, position, cv::QT_FONT_NORMAL, 0.5, color, 1.5);
 
 
                 // If you want to access the latest received ground steering, don't forget to lock the mutex:
