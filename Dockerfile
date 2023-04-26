@@ -29,7 +29,8 @@ RUN apt-get install -y --no-install-recommends \
         ca-certificates \
         cmake \
         build-essential \
-        libopencv-dev
+        libopencv-dev \
+        lcov
 
 # Include this source tree and compile the sources
 ADD . /opt/sources
