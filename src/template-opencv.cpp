@@ -130,8 +130,7 @@ int32_t main(int32_t argc, char **argv) {
                             continue;
 
                         // Draw the bounding box on the image and around cones
-<<<<<<< src/template-opencv.cpp
-=======
+
                         cv::rectangle(roiImg, bRect, cv::Scalar(0, 255, 0), 2);
 
                         // Calculating the center point of the rectangle
@@ -140,7 +139,6 @@ int32_t main(int32_t argc, char **argv) {
 
                         // Create a dot in the middle of rectangle
                         cv::circle(roiImg, cv::Point(centerX, centerY), 2, cv::Scalar(0, 255, 0), -1);
->>>>>>> src/template-opencv.cpp
                     }
 
                     // Show image
