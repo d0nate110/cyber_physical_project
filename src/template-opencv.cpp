@@ -86,7 +86,7 @@ int32_t main(int32_t argc, char **argv) {
                     img = wrapped.clone();
 
                     // Create a rectangle representing the region of interest.
-                    cv::Rect roi(180, 200, 285, 160);
+                    cv::Rect roi(60, 200, 485, 160);
 
                     // Create a copy of the region of interest.
                     cv::Mat roiImg = img(roi).clone();
