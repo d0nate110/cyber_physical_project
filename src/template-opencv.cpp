@@ -100,7 +100,7 @@ int32_t main(int32_t argc, char **argv) {
                     cv::cvtColor(roiImg, hsvImg, cv::COLOR_BGR2HSV);
                     
                     // Defining HSV color ranges for blue and yellow cones
-                     cv::Scalar blueMin(102, 96, 40);
+                     cv::Scalar blueMin(102, 65, 40);
                      cv::Scalar blueMax(135, 255, 134);
                      cv::Scalar yellowMin(9, 0, 147);
                      cv::Scalar yellowMax(76, 255, 255);
@@ -126,11 +126,21 @@ int32_t main(int32_t argc, char **argv) {
                         cv::Rect bRect = cv::boundingRect(contours[i]);
 
                         // Filter out small boxes that might be noise
-                        if (bRect.width < 20 || bRect.height < 20)
+                        if (bRect.width < 17 || bRect.height < 17)
                             continue;
 
                         // Draw the bounding box on the image and around cones
+<<<<<<< src/template-opencv.cpp
+=======
                         cv::rectangle(roiImg, bRect, cv::Scalar(0, 255, 0), 2);
+
+                        // Calculating the center point of the rectangle
+                        int centerX = bRect.x + bRect.width/2;
+                        int centerY = bRect.y + bRect.height/2;
+
+                        // Create a dot in the middle of rectangle
+                        cv::circle(roiImg, cv::Point(centerX, centerY), 2, cv::Scalar(0, 255, 0), -1);
+>>>>>>> src/template-opencv.cpp
                     }
 
                     // Show image
