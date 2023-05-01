@@ -25,11 +25,12 @@ RUN apt-get update -y && \
     apt-get dist-upgrade -y
 
 # Install the development libraries for OpenCV
-RUN apt-get install -y --no-install-recommends \
-        ca-certificates \
-        cmake \
-        build-essential \
-        libopencv-dev
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    cmake \
+    build-essential \
+    libopencv-dev
 
 # Include this source tree and compile the sources
 ADD . /opt/sources
