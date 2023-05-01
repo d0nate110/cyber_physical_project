@@ -1,5 +1,5 @@
 # Copyright (C) 2023  Christian Berger
-#
+
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -22,7 +22,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
 
 services:
-  - name: docker:19.03.3-dind
+  - docker:19.03.3-dind
 
 stages:
   - build       # stage is executed for each push (irrespective of branch), not release
@@ -89,6 +89,9 @@ release:
     - if: $CI_PIPELINE_SOURCE == 'schedule'
       when: always
     - if: $CI_COMMIT_TAG
+  image: docker:latest
+  services:
+    - docker:stable-dind
   tags:
     - docker-build
   needs: ["build"]
@@ -100,5 +103,6 @@ release:
     - cd src
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -f Dockerfile -t "$CI_REGISTRY_IMAGE":"$CI_COMMIT_TAG" .
-    - docker push "$CI_REGISTRY_IMAGE":"$CI_COMMIT_TAG"
+    - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx create --name platformbuilder --use
+    - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx inspect --bootstrap
+    - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --platform "linux/amd64,linux/arm/v7" -t "$CI_REGISTRY_IMAGE":"$CI_COMMIT_TAG" --push --provenance=false .
