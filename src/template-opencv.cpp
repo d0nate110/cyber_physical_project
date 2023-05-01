@@ -41,13 +41,43 @@
 
 // #include "cone_detector/cone_detector.hpp"
 
+void detectYellowConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>& contours) {
+    cv::Point carPoint(roiImg.cols/2, static_cast<int>(roiImg.rows));
+    cv::circle(roiImg, carPoint,  2, cv::Scalar(0, 255, 0), -1);
+    cv::Point conePoint;
+
+    //Find the largest contour (the contour with the largest area)
+    double maxArea = 0.0;
+    std::vector<cv::Point> largestContour;
+
+    for (const auto& contour : contours)
+    {
+        double area = cv::contourArea(contour);
+        if (area > maxArea)
+        {
+            maxArea = area;
+            largestContour = contour;
+        }
+    }
+
+    if (!largestContour.empty())
+    {
+        cv::Moments m = cv::moments(largestContour);
+        conePoint = cv::Point(m.m10/m.m00, m.m01/m.m00);
+        cv::circle(roiImg, conePoint, 2, cv::Scalar(0, 255, 0), -1);
+
+        // Draw a line from the carPoint to the conePoint
+        cv::line(roiImg, carPoint, conePoint, cv::Scalar(0, 0, 255), 2);
+    }
+    cv::line(roiImg, carPoint, conePoint, cv::Scalar(0, 0, 255), 2);
+}
+
 void detectYellowCones(cv::Mat& img) {
-    cv::Rect roi(60, 200, 485, 160);
+    cv::Rect roi(60, 200, 485, 200);
 
     cv::Mat roiImg = img(roi).clone();
 
-
-    cv::rectangle(img, roi, cv::Scalar(0, 0, 255), 2);
+    //cv::rectangle(img, roi, cv::Scalar(0, 0, 255), 2);
     
     cv::Mat hsvImg;
     cv::cvtColor(roiImg, hsvImg, cv::COLOR_BGR2HSV);
@@ -63,6 +93,8 @@ void detectYellowCones(cv::Mat& img) {
     
     cv::findContours(yellowMask, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
     
+    cv::Point coneCenter;
+    
     for (size_t i = 0; i < contours.size(); i++)
     {
         // Compute the bounding box for the contour, which will put the cone contours in a reactangle.
@@ -73,16 +105,19 @@ void detectYellowCones(cv::Mat& img) {
             continue;
 
         // Draw the bounding box on the image and around cones
-
         cv::rectangle(roiImg, bRect, cv::Scalar(0, 255, 0), 2);
 
         // Calculating the center point of the rectangle
         int centerX = bRect.x + bRect.width/2;
         int centerY = bRect.y + bRect.height/2;
 
+        cv::Point coneCenter(centerX, centerY);
+
         // Create a dot in the middle of rectangle
-        cv::circle(roiImg, cv::Point(centerX, centerY), 2, cv::Scalar(0, 255, 0), -1);
+        cv::circle(roiImg, coneCenter, 2, cv::Scalar(0, 0, 255), -1);
     }
+
+    detectYellowConeAngle(roiImg, contours);
 
     cv::imshow("Yellow cones detection", roiImg);
 }
