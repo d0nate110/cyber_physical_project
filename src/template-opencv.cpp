@@ -39,11 +39,12 @@
 #define YELLOW_SATURATION_MAX 255
 #define YELLOW_VALUE_MAX 255
 
-// #include "cone_detector/cone_detector.hpp"
+//#include "cone_detector/cone_detector.hpp"
 
 void detectYellowConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>& contours) {
-    cv::Point carPoint(roiImg.cols/2, static_cast<int>(roiImg.rows));
-    cv::circle(roiImg, carPoint,  2, cv::Scalar(0, 255, 0), -1);
+    cv::Point carPoint(roiImg.cols/2, static_cast<int>(roiImg.rows/1.2));
+    cv::Point midScreenPoint(roiImg.cols/2, roiImg.rows/2);
+
     cv::Point conePoint;
 
     //Find the largest contour (the contour with the largest area)
@@ -62,18 +63,23 @@ void detectYellowConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>&
 
     if (!largestContour.empty())
     {
+        cv::circle(roiImg, carPoint,  2, cv::Scalar(0, 255, 0), -1);
+        cv::circle(roiImg, midScreenPoint,  2, cv::Scalar(0, 255, 0), -1);
+        
         cv::Moments m = cv::moments(largestContour);
         conePoint = cv::Point(m.m10/m.m00, m.m01/m.m00);
         cv::circle(roiImg, conePoint, 2, cv::Scalar(0, 255, 0), -1);
 
         // Draw a line from the carPoint to the conePoint
         cv::line(roiImg, carPoint, conePoint, cv::Scalar(0, 0, 255), 2);
+        cv::line(roiImg, carPoint, midScreenPoint, cv::Scalar(0, 0, 255), 2);
     }
-    cv::line(roiImg, carPoint, conePoint, cv::Scalar(0, 0, 255), 2);
+
+
 }
 
 void detectYellowCones(cv::Mat& img) {
-    cv::Rect roi(60, 200, 485, 200);
+    cv::Rect roi(60, 250, 485, 140);
 
     cv::Mat roiImg = img(roi).clone();
 
@@ -119,7 +125,7 @@ void detectYellowCones(cv::Mat& img) {
 
     detectYellowConeAngle(roiImg, contours);
 
-    cv::imshow("Yellow cones detection", roiImg);
+    cv::imshow("Cone detection", roiImg);
 }
 
 void detectBlueCones(cv::Mat& img) {
@@ -127,7 +133,7 @@ void detectBlueCones(cv::Mat& img) {
 
     cv::Mat roiImg = img(roi).clone();
 
-    cv::rectangle(img, roi, cv::Scalar(0, 0, 255), 2);
+    cv::rectangle(img, roi, cv::Scalar(0, 0, 210), 2);
 
     cv::Mat hsvImg;
     cv::cvtColor(roiImg, hsvImg, cv::COLOR_BGR2HSV);
@@ -166,6 +172,7 @@ void detectBlueCones(cv::Mat& img) {
 
     cv::imshow("Blue cones detection", roiImg);
 }
+
 
 int32_t main(int32_t argc, char **argv) {
     
@@ -292,8 +299,10 @@ int32_t main(int32_t argc, char **argv) {
                     */
     
 
-                   detectBlueCones(img);
-                   detectYellowCones(img);
+                   //coneDetector.detectBlueCones(img);
+                   //coneDetector.detectYellowCones(img);
+
+                    detectYellowCones(img);
 
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.

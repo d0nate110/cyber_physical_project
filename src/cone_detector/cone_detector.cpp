@@ -17,11 +17,11 @@
 
 
 void detectYellowCones(cv::Mat& img) {
-    cv::Rect roi(60, 200, 485, 160);
+    cv::Rect roi(60, 200, 485, 200);
 
     cv::Mat roiImg = img(roi).clone();
 
-    cv::rectangle(img, roi, cv::Scalar(0, 0, 255), 2);
+    //cv::rectangle(img, roi, cv::Scalar(0, 0, 255), 2);
     
     cv::Mat hsvImg;
     cv::cvtColor(roiImg, hsvImg, cv::COLOR_BGR2HSV);
@@ -37,6 +37,8 @@ void detectYellowCones(cv::Mat& img) {
     
     cv::findContours(yellowMask, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
     
+    cv::Point coneCenter;
+    
     for (size_t i = 0; i < contours.size(); i++)
     {
         // Compute the bounding box for the contour, which will put the cone contours in a reactangle.
@@ -47,21 +49,24 @@ void detectYellowCones(cv::Mat& img) {
             continue;
 
         // Draw the bounding box on the image and around cones
-
         cv::rectangle(roiImg, bRect, cv::Scalar(0, 255, 0), 2);
 
         // Calculating the center point of the rectangle
         int centerX = bRect.x + bRect.width/2;
         int centerY = bRect.y + bRect.height/2;
 
+        cv::Point coneCenter(centerX, centerY);
+
         // Create a dot in the middle of rectangle
-        cv::circle(roiImg, cv::Point(centerX, centerY), 2, cv::Scalar(0, 255, 0), -1);
+        cv::circle(roiImg, coneCenter, 2, cv::Scalar(0, 0, 255), -1);
     }
+
+    detectYellowConeAngle(roiImg, contours);
 
     cv::imshow("Yellow cones detection", roiImg);
 }
 
-void detectBlueCones(cv::Mat& img) {
+/*void detectBlueCones(cv::Mat& img) {
     cv::Rect roi(60, 200, 485, 160);
 
     cv::Mat roiImg = img(roi).clone();
@@ -105,3 +110,4 @@ void detectBlueCones(cv::Mat& img) {
 
     cv::imshow("Blue cones detection", roiImg);
 }
+*/
