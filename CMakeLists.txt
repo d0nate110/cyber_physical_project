@@ -74,7 +74,12 @@ add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/opendlv-standard-message-set.hpp
 include_directories(SYSTEM ${CMAKE_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 # Add directory to compile
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/test
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/data_handler
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/data
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithm_output
+        )
 
 ################################################################################
 # Gather all object code first to avoid double compilation.
@@ -95,7 +100,12 @@ set(LIBRARIES ${LIBRARIES} ${OpenCV_LIBS})
 
 ################################################################################
 # Create executable. / Adding the rest of the .cpp files
-add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector/cone_detector.cpp)
+add_executable(${PROJECT_NAME}
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector/cone_detector.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/data_handler/data_handler.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/test/performance_tests.cpp)
+
 target_link_libraries(${PROJECT_NAME} ${LIBRARIES})
 
 # Add dependency to OpenDLV Standard Message Set.
