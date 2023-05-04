@@ -3,15 +3,8 @@
 
 #include <opencv2/opencv.hpp>
 
-class ConeDetector {
-
-public:
-    ConeDetector() = default;  // Constructor
-    ~ConeDetector() = default; // Destructor
-
-    // Method declarations
-    void detectYellowCones(cv::Mat& img);
-    void detectBlueCones(cv::Mat& img);
-};
+void detectYellowCones(cv::Mat& img);
+void detectBlueCones(cv::Mat& img);
+void detectYellowConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>& contours);
 
 #endif
