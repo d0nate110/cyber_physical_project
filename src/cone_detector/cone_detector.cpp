@@ -46,11 +46,19 @@ void detectConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>& conto
         cv::circle(roiImg, conePoint, 2, cv::Scalar(0, 255, 0), -1);
 
         // Draw a line from the carPoint to the conePoint
-        cv::line(roiImg, carPoint, conePoint, cv::Scalar(0, 0, 255), 2);
+        cv::line(roiImg, carPoint, conePoint, cv::Scalar(255, 255, 0), 2);
         cv::line(roiImg, carPoint, midScreenPoint, cv::Scalar(0, 0, 255), 2);
+
+        double dx = conePoint.x - carPoint.x;
+        double dy = conePoint.y - carPoint.y;
+        double coneAngle = atan2(dy, dx) * 180.0 / CV_PI;
+
+        double dx2 = midScreenPoint.x - carPoint.x;
+        double dy2 = midScreenPoint.y - carPoint.y;
+        double horizontalAngle = atan2(dy2, dx2) * 180.0 / CV_PI;
+
+        double angle = coneAngle - horizontalAngle;
     }
-
-
 }
 
 void detectCones(cv::Mat& img) {
