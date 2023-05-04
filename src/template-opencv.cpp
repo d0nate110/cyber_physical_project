@@ -98,11 +98,10 @@ int32_t main(int32_t argc, char **argv) {
                 sharedMemory->lock();
                 {
                     // Copy the pixels from the shared memory into our own data structure.
-                    // Copy the pixels from the shared memory into our own data structure.
                     cv::Mat wrapped(HEIGHT, WIDTH, CV_8UC4, sharedMemory->data());
                     img = wrapped.clone();
 
-                    detectYellowCones(img);
+                    detectCones(img);
 
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.

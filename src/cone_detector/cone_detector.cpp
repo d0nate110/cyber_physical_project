@@ -16,7 +16,7 @@
 #define YELLOW_VALUE_MAX 255
 
 
-void detectYellowConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>& contours) {
+void detectConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>& contours) {
     cv::Point carPoint(roiImg.cols/2, static_cast<int>(roiImg.rows/1.2));
     cv::Point midScreenPoint(roiImg.cols/2, roiImg.rows/2);
 
@@ -53,7 +53,7 @@ void detectYellowConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>&
 
 }
 
-void detectYellowCones(cv::Mat& img) {
+void detectCones(cv::Mat& img) {
     cv::Rect roi(60, 250, 485, 140);
 
     cv::Mat roiImg = img(roi).clone();
@@ -63,16 +63,22 @@ void detectYellowCones(cv::Mat& img) {
     cv::Mat hsvImg;
     cv::cvtColor(roiImg, hsvImg, cv::COLOR_BGR2HSV);
 
-    cv::Mat yellowMask;
-
+    cv::Scalar blueMin(BLUE_HUE_MIN, BLUE_SATURATION_MIN, BLUE_VALUE_MIN);
+    cv::Scalar blueMax(BLUE_HUE_MAX, BLUE_SATURATION_MAX, BLUE_VALUE_MAX);
     cv::Scalar yellowMin(YELLOW_HUE_MIN, YELLOW_SATURATION_MIN, YELLOW_VALUE_MIN);
     cv::Scalar yellowMax(YELLOW_HUE_MAX, YELLOW_SATURATION_MAX, YELLOW_VALUE_MAX);
     
-    cv::inRange(hsvImg, yellowMin, yellowMax, yellowMask);
+    cv::Mat blueMask, yellowMask;
+    
+    cv::inRange(hsvImg, yellowMin, yellowMax, blueMask);
+    cv::inRange(hsvImg, blueMin, blueMax, yellowMask);
+
+    cv::Mat coneMask = blueMask | yellowMask;
+
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
     
-    cv::findContours(yellowMask, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
+    cv::findContours(coneMask, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
     
     cv::Point coneCenter;
     
@@ -98,7 +104,7 @@ void detectYellowCones(cv::Mat& img) {
         cv::circle(roiImg, coneCenter, 2, cv::Scalar(0, 0, 255), -1);
     }
 
-    detectYellowConeAngle(roiImg, contours);
+    detectConeAngle(roiImg, contours);
 
     cv::imshow("Cone detection", roiImg);
 }
