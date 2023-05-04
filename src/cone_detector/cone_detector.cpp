@@ -15,6 +15,9 @@
 #define YELLOW_SATURATION_MAX 255
 #define YELLOW_VALUE_MAX 255
 
+bool isBlueCone = false;
+bool clockwise_direction = true;
+bool isYellowCone = false;
 
 void detectYellowCones(cv::Mat& img) {
     cv::Rect roi(60, 200, 485, 160);
@@ -34,6 +37,8 @@ void detectYellowCones(cv::Mat& img) {
     cv::inRange(hsvImg, yellowMin, yellowMax, yellowMask);
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
+
+    int relative_to_img = 0.0;
     
     cv::findContours(yellowMask, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
     
@@ -54,9 +59,26 @@ void detectYellowCones(cv::Mat& img) {
         int centerX = bRect.x + bRect.width/2;
         int centerY = bRect.y + bRect.height/2;
 
+        // calculate position of cone rectangle relative to the frame
+        relative_to_img = bRect.x + roi.x + bRect.width/2;
+
         // Create a dot in the middle of rectangle
         cv::circle(roiImg, cv::Point(centerX, centerY), 2, cv::Scalar(0, 255, 0), -1);
     }
+
+
+    // x value of the center of a frame
+    double x_center = roiImg.cols / 2;
+
+    if(x_center < relative_to_img && relative_to_img != 0) {
+        cv::putText(roiImg, "direction: clockwise", cv::Point(200, 80), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 0, 0), 1);
+        clockwise_direction = true;
+    }
+    if(x_center > relative_to_img && relative_to_img != 0) {
+        cv::putText(roiImg, "direction: counter-clockwise", cv::Point(200, 80), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 255, 0), 1);
+        clockwise_direction = false;
+    }
+
 
     cv::imshow("Yellow cones detection", roiImg);
 }
@@ -105,3 +127,12 @@ void detectBlueCones(cv::Mat& img) {
 
     cv::imshow("Blue cones detection", roiImg);
 }
+/*
+if(clockwise_direction) {
+    cv::putText(img, "direction: clockwise", cv::Point(200, 80), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 255, 0), 1);
+
+} else {
+    cv::putText(img, "direction: counter-clockwise", cv::Point(200, 80), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 255, 0), 1);
+
+}
+*/
