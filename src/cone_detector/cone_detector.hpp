@@ -3,8 +3,8 @@
 
 #include <opencv2/opencv.hpp>
 
-std::vector<double> detectCones(cv::Mat& img);
-double detectConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>& contours, cv::Point conePoint, cv::Point carPoint);
+void detectCones(cv::Mat& img);
+double detectConeAngle(cv::Mat& roiImg, cv::Point conePoint, cv::Point carPoint);
 double detectConeDistance(cv::Point conePoint, cv::Point carPoint);
 
 #endif
