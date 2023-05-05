@@ -19,11 +19,17 @@ bool isBlueCone = false;
 bool clockwise_direction = true;
 bool isYellowCone = false;
 
-void detectConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>& contours) {
-    cv::Point carPoint(roiImg.cols/2, static_cast<int>(roiImg.rows/1.2));
+double detectConeDistance(cv::Point conePoint, cv::Point carPoint) {
+    double distance = cv::norm(carPoint - conePoint);
+    std::cout << "Distance: " << distance << std::endl;
+    return distance;
+}
+
+double detectConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>& contours, cv::Point conePoint, cv::Point carPoint) {
+    
     cv::Point midScreenPoint(roiImg.cols/2, roiImg.rows/2);
 
-    cv::Point conePoint;
+    double angle = 0.0;
 
     //Find the largest contour (the contour with the largest area)
     double maxArea = 0.0;
@@ -60,11 +66,18 @@ void detectConeAngle(cv::Mat& roiImg, std::vector<std::vector<cv::Point>>& conto
         double dy2 = midScreenPoint.y - carPoint.y;
         double horizontalAngle = atan2(dy2, dx2) * 180.0 / CV_PI;
 
-        double angle = coneAngle - horizontalAngle;
+        angle = coneAngle - horizontalAngle;
     }
+
+    std::cout << "Angle: " << angle << std::endl;
+
+    return angle;
 }
 
-void detectCones(cv::Mat& img) {
+std::vector<double> detectCones(cv::Mat& img) {
+    
+    std::vector<cv::Point> coneData;
+    
     cv::Rect roi(60, 250, 485, 140);
 
     cv::Mat roiImg = img(roi).clone();
@@ -81,8 +94,8 @@ void detectCones(cv::Mat& img) {
     
     cv::Mat blueMask, yellowMask;
     
-    cv::inRange(hsvImg, yellowMin, yellowMax, blueMask);
-    cv::inRange(hsvImg, blueMin, blueMax, yellowMask);
+    cv::inRange(hsvImg, yellowMin, yellowMax, yellowMask);
+    cv::inRange(hsvImg, blueMin, blueMax, blueMask);
 
     cv::Mat coneMask = blueMask | yellowMask;
 
@@ -91,7 +104,9 @@ void detectCones(cv::Mat& img) {
     
     cv::findContours(coneMask, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
     
-    cv::Point coneCenter;
+    cv::Point conePoint;
+    cv::Point carPoint(roiImg.cols/2, static_cast<int>(roiImg.rows/1.2));
+    
     
     for (size_t i = 0; i < contours.size(); i++)
     {
@@ -109,13 +124,14 @@ void detectCones(cv::Mat& img) {
         int centerX = bRect.x + bRect.width/2;
         int centerY = bRect.y + bRect.height/2;
 
-        cv::Point coneCenter(centerX, centerY);
+        cv::Point conePoint(centerX, centerY);
 
         // Create a dot in the middle of rectangle
-        cv::circle(roiImg, coneCenter, 2, cv::Scalar(0, 0, 255), -1);
+        cv::circle(roiImg, conePoint, 2, cv::Scalar(0, 0, 255), -1);
     }
 
-    detectConeAngle(roiImg, contours);
+    double coneAngle = detectConeAngle(roiImg, contours, conePoint, carPoint);
+    double coneDistance = detectConeDistance(conePoint, carPoint);
 
     cv::imshow("Cone detection", roiImg);
 }
