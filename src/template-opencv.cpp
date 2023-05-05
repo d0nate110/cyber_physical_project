@@ -25,11 +25,23 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+#define BLUE_HUE_MIN 102
+#define BLUE_SATURATION_MIN 65
+#define BLUE_VALUE_MIN 40
+#define BLUE_HUE_MAX 135
+#define BLUE_SATURATION_MAX 255
+#define BLUE_VALUE_MAX 134
+
+#define YELLOW_HUE_MIN 9
+#define YELLOW_SATURATION_MIN 0
+#define YELLOW_VALUE_MIN 147
+#define YELLOW_HUE_MAX 76
+#define YELLOW_SATURATION_MAX 255
+#define YELLOW_VALUE_MAX 255
+
 #include "cone_detector/cone_detector.hpp"
 
 int32_t main(int32_t argc, char **argv) {
-    
-    //ConeDetector coneDetector;
     
     int32_t retCode{1};
     // Parse the command line parameters as we require the user to specify some mandatory information on startup.
@@ -89,15 +101,10 @@ int32_t main(int32_t argc, char **argv) {
                     cv::Mat wrapped(HEIGHT, WIDTH, CV_8UC4, sharedMemory->data());
                     img = wrapped.clone();
 
-                   detectBlueCones(img);
-                   detectYellowCones(img);
+                    detectCones(img);
 
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
-
-
-                //Method obtained from link provided 
-                //std::string frameTimeStamp = std::to_string(static_cast<__int64_t>(sharedMemory->getTimeStamp().second.seconds()) * static_cast<__int64_t>(1000*1000) + static_cast<__int64_t>(sharedMemory->getTimeStamp().second.microseconds()));
 
                 sharedMemory->unlock();
 
