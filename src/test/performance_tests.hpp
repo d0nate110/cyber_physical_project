@@ -2,8 +2,16 @@
 #define PERFORMANCE_TESTS_HPP
 
 
+#include <iostream>
+#include <fstream>
+#include <string>
 #include <vector>
+#include <sstream>
+#include <cstdint>
+#include <stdexcept>
+#include <cstring>
 #include <utility>
+#include <iomanip>
 
 class performance_tests {
 public:
