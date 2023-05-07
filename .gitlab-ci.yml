@@ -69,7 +69,7 @@ coverage:
     - cd src
     - g++ -fprofile-arcs -ftest-coverage -o test_algorithm test_algorithm.cpp data_handler/data_handler.cpp test/performance_tests.cpp  --coverage
     - ls
-    - cd ..
+    - cd ....
     - ls
     - ./test_algorithm
     - gcov *.cpp 
