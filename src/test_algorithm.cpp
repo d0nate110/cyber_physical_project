@@ -7,10 +7,10 @@ using namespace std;
 
 //THESE TESTS SHOW THE ACCURACY OF THE ALGO
 TEST_CASE("Test Algorithm Accuracy - File 1") {
-    string filePath = "data/Data1_SteeringAngle.csv";
+    string filePath = "/data/Data1_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
 
-    string newPath = "algorithm_output/Output1_SteeringAngle.csv";
+    string newPath = "/algorithm_output/Output1_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     double accuracy = performance_tests::algorithm_accuracy(dataValue, outputContent);
