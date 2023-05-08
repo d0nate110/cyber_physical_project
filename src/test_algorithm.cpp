@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
+#include <unistd.h>
 #include "data_handler/data_handler.hpp"
 #include "test/performance_tests.hpp"
 using namespace std;
@@ -8,6 +9,10 @@ using namespace std;
 //THESE TESTS SHOW THE ACCURACY OF THE ALGO
 TEST_CASE("Test Algorithm Accuracy - File 1") {
     string filePath = "./data/Data1_SteeringAngle.csv";
+    char cwd[50];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printf("Current Dir: %s\n", cwd);
+    }
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
 
     string newPath = "./algorithm_output/Output1_SteeringAngle.csv";
