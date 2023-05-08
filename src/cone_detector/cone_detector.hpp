@@ -3,7 +3,8 @@
 
 #include <opencv2/opencv.hpp>
 
-void detectYellowCones(cv::Mat& img);
-void detectBlueCones(cv::Mat& img);
+void detectCones(cv::Mat& img);
+double detectConeAngle(cv::Mat& roiImg, cv::Point conePoint, cv::Point carPoint);
+double detectConeDistance(cv::Point conePoint, cv::Point carPoint);
 
 #endif
