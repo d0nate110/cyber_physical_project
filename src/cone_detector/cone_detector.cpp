@@ -37,9 +37,9 @@ double detectConeAngle(cv::Mat& roiImg, cv::Point conePoint, cv::Point carPoint,
     return angle;
 }
 
-void detectCones(cv::Mat& img) {
+std::vector<double> detectCones(cv::Mat& img) {
     
-    std::vector<cv::Point> coneData;
+    std::vector<double> coneData;
     
     cv::Rect roi(60, 250, 485, 140);
 
@@ -117,10 +117,13 @@ void detectCones(cv::Mat& img) {
     cv::circle(roiImg, midScreenPoint,  2, cv::Scalar(0, 255, 0), -1);
 
     double coneAngle = detectConeAngle(roiImg, conePoint, carPoint, midScreenPoint);
-    std::cout << "Angle: " << coneAngle << std::endl;
 
     double coneDistance = detectConeDistance(conePoint, carPoint);
-    std::cout << "Distance: " << coneDistance << std::endl;
+
+    coneData[0] = coneAngle;
+    coneData[1] = coneDistance;
 
     cv::imshow("Cone detection", roiImg);
+
+    return coneData;
 }

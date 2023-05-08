@@ -40,6 +40,7 @@
 #define YELLOW_VALUE_MAX 255
 
 #include "cone_detector/cone_detector.hpp"
+#include "algorithm/algorithm.hpp"
 
 int32_t main(int32_t argc, char **argv) {
     
@@ -101,8 +102,14 @@ int32_t main(int32_t argc, char **argv) {
                     cv::Mat wrapped(HEIGHT, WIDTH, CV_8UC4, sharedMemory->data());
                     img = wrapped.clone();
 
-                    detectCones(img);
+                    std::vector<double> coneData = detectCones(img);
+                    
+                    coneAngle = coneData[0];
+                    coneDistance = coneData[1];
 
+                    float steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
+
+                    std::cout << steeringAngle << std::endl;
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
 
