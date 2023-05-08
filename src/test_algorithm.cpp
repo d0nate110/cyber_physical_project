@@ -11,11 +11,11 @@ const string CWD = "/builds/courses/dit638/students/2023-group-11/src";
 TEST_CASE("Test Algorithm Accuracy - File 1") {
 
     string filePath = "/data/Data1_SteeringAngle.csv";
-    cout << filesystem::current_path() + filePath << endl;
-    vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filesystem::current_path() + filePath);
+    cout << filesystem::current_path().string() + filePath << endl;
+    vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filesystem::current_path().string() + filePath);
 
     string newPath = "/algorithm_output/Output1_SteeringAngle.csv";
-    vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(filesystem::current_path() + filePath);
+    vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(filesystem::current_path().string() + filePath);
 
 
 
