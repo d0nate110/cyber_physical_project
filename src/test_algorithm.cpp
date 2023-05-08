@@ -15,6 +15,8 @@ TEST_CASE("Test Algorithm Accuracy - File 1") {
     string newPath = "/algorithm_output/Output1_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(CWD + newPath);
 
+    cout << CWD + filePath << endl;
+
     double accuracy = performance_tests::algorithm_accuracy(dataValue, outputContent);
     REQUIRE(accuracy >= 40);
 }
