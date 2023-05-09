@@ -40,6 +40,8 @@ double detectConeAngle(cv::Mat& roiImg, cv::Point conePoint, cv::Point carPoint,
 std::vector<double> detectCones(cv::Mat& img) {
     
     std::vector<double> coneData;
+
+    coneData.resize(2);
     
     cv::Rect roi(60, 250, 485, 140);
 

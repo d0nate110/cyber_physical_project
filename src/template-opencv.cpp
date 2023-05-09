@@ -44,6 +44,9 @@
 
 int32_t main(int32_t argc, char **argv) {
     
+    std::vector<double> coneData;
+    coneData.resize(2);
+    
     int32_t retCode{1};
     // Parse the command line parameters as we require the user to specify some mandatory information on startup.
     auto commandlineArguments = cluon::getCommandlineArguments(argc, argv);
@@ -82,7 +85,7 @@ int32_t main(int32_t argc, char **argv) {
                 // https://github.com/chrberger/libcluon/blob/master/libcluon/testsuites/TestEnvelopeConverter.cpp#L31-L40
                 std::lock_guard<std::mutex> lck(gsrMutex);
                 gsr = cluon::extractMessage<opendlv::proxy::GroundSteeringRequest>(std::move(env));
-                //std::cout << "lambda: groundSteering = " << gsr.groundSteering() << std::endl;
+                std::cout << "lambda: groundSteering = " << gsr.groundSteering() << std::endl;
             };
 
             od4.dataTrigger(opendlv::proxy::GroundSteeringRequest::ID(), onGroundSteeringRequest);
@@ -102,14 +105,15 @@ int32_t main(int32_t argc, char **argv) {
                     cv::Mat wrapped(HEIGHT, WIDTH, CV_8UC4, sharedMemory->data());
                     img = wrapped.clone();
 
-                    std::vector<double> coneData = detectCones(img);
-                    
-                    coneAngle = coneData[0];
-                    coneDistance = coneData[1];
+                    coneData = detectCones(img);
+            
+                    float coneAngle = coneData[0];
+                    float coneDistance = coneData[1];
 
                     float steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
 
-                    std::cout << steeringAngle << std::endl;
+                    //std::cout << "Angle: " << coneAngle << std::endl;
+                    std::cout << "Distance: " << coneDistance << std::endl;
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
 
@@ -118,7 +122,7 @@ int32_t main(int32_t argc, char **argv) {
                 // If you want to access the latest received ground steering, don't forget to lock the mutex:
                 {
                     std::lock_guard<std::mutex> lck(gsrMutex);
-                    //std::cout << "main: groundSteering = " << gsr.groundSteering() << std::endl;
+                    std::cout << "main: groundSteering = " << gsr.groundSteering() << std::endl;
                 }
 
                 // Display image on your screen.
