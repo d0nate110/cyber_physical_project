@@ -26,13 +26,11 @@ TEST_CASE("Test Algorithm Accuracy - File 1") {
     /** ------------------------------------------------- **/
 
     if(filesystem::exists(data_path) && filesystem::exists(algo_path)) {
-        /*
         vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(video_data);
         //string newPath = "/algorithm_output/Output1_SteeringAngle.csv";
 
         vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(algo_data);
         accuracy = performance_tests::algorithm_accuracy(dataValue, outputContent);
-        */
     }    
     REQUIRE(accuracy >= 40);
 }

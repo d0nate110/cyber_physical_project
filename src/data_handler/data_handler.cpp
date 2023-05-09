@@ -16,19 +16,24 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
     string line, word;
     int dataIndex = 0;
 
+    cout << "<< " << __LINE__ << " <<" << endl;
     fstream file;
     file.open(path, fstream::in);
-
+    cout << "<< " << __LINE__ << " <<" << endl;
+    
     try {
         if(file.is_open()) {
-            while(getline(file, line)) {
+                cout << "<< " << __LINE__ << " <<" << endl;
+                while(getline(file, line)) {
                 row.clear();
                 stringstream str(line);
-
+                cout << "<< " << __LINE__ << " <<" << endl;
+    
                 while(getline(str, word, ';'))
+                    cout << "<< " << __LINE__ << " << Dataindex: " << dataIndex << endl;
                     row.push_back(word);
-                content.push_back(row);
-                dataIndex++;
+                    content.push_back(row);
+                    dataIndex++;
             }
         } else
             throw runtime_error("Could not open the .csv file" );
