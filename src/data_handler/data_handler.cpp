@@ -27,7 +27,6 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
                 while(getline(file, line)) {
                 row.clear();
                 stringstream str(line);
-                cout << "<< " << __LINE__ << " <<" << endl;
     
                 while(getline(str, word, ';'))
                     cout << "<< " << __LINE__ << " << Dataindex: " << dataIndex << endl;
@@ -39,6 +38,7 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
             throw runtime_error("Could not open the .csv file" );
 
         string isData = path.substr(3, 4);
+        cout << "<< " << __LINE__ << " <<" << endl;
         unsigned long long int first;
         double second = 0;
 
