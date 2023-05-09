@@ -38,7 +38,7 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
             throw runtime_error("Could not open the .csv file" );
 
         string isData = path.substr(3, 4);
-        cout << "<< " << __LINE__ << " <<" << isData << endl;
+        cout << "<< " << __LINE__ << " << " << isData << endl;
         unsigned long long int timestamp;
         double gsr = 0;
 
@@ -48,6 +48,7 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
                     cout << "<< " << __LINE__ << " <<" << endl;
                     // if((stod(content[i][CSV_VALUE_COLUMN]) < (second + 0.5) && stod(content[i][CSV_VALUE_COLUMN]) > (second - 0.5)) || i == 0) {
                         timestamp = stoll(content[i][CSV_TIMESTAMP_SEC_COLUMN])*1000000 + (stoll(content[i][CSV_TIMESTAMP_MILISEC_COLUMN]));
+                        cout << "<< " << __LINE__ << " << Frame read..." << endl;
                         gsr =  stod(content[i][CSV_VALUE_COLUMN]);
                     //}
                 } else {
@@ -55,7 +56,6 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
                     gsr =  stod(content[i][CSV_VALUE_OUTPUT_COLUMN]);
                 }
                 
-                cout << "<< " << __LINE__ << " <<" << endl;
                 cout << timestamp << ";" << gsr << endl; 
                 time_angleList.emplace_back(timestamp, gsr);
 
