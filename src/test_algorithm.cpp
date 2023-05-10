@@ -1,6 +1,5 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "filesystem"
 #include "data_handler/data_handler.hpp"
 #include "test/performance_tests.hpp"
 using namespace std;
