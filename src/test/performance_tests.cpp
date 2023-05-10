@@ -60,10 +60,10 @@ double performance_tests::algorithm_performance_frame(const vector<pair<unsigned
     int framesCounter = 0;
     double secondsWithFrames = 0;
     double secondsTot = 0;
-    int secondData = dataSteering[0].first/1000000;
 
     for(int i = 0; i < outputContent.size(); i ++) {
         long double secondOutput = ((long double)outputContent[i].first)/1000000;
+        int secondData = dataSteering[i].first/1000000;
 
         printf("starting second: %Lf, %d, %d\n", secondOutput, secondData, framesCounter);
         if(secondOutput < (secondData + 1) && secondOutput >= secondData) {
@@ -79,7 +79,6 @@ double performance_tests::algorithm_performance_frame(const vector<pair<unsigned
         }else {
             framesCounter = 0;
             secondsTot++;
-            secondData++;
             printf("seconds with frame: %f\n", secondsWithFrames);
         }
     }
