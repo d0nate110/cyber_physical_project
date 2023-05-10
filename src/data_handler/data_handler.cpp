@@ -50,7 +50,9 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
 
 
                         first = stoll(content[i][CSV_TIMESTAMP_SEC_COLUMN])*1000000 + (stoll(content[i][CSV_TIMESTAMP_MILISEC_COLUMN]));
+                        cout << __LINE__ << endl;
                         second =  stod(content[i][CSV_VALUE_COLUMN]);
+
 
                     }else {
                         cout << __LINE__ << endl;
@@ -59,7 +61,7 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
                         first = stoll(content[i][CSV_TIMESTAMP_OUTPUT_COLUMN]);
                         second =  stod(content[i][CSV_VALUE_OUTPUT_COLUMN]);
                     }
-
+                    cout << __LINE__ << endl;
                     time_angleList.emplace_back(first, second);
 
                 }catch(exception& e) {
@@ -77,6 +79,7 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
         time_angleList[0].second = -1;
         return time_angleList;
     }
+    cout << __LINE__ << endl;
     return time_angleList;
 }
 
