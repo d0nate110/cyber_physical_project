@@ -85,7 +85,7 @@ int32_t main(int32_t argc, char **argv) {
                 // https://github.com/chrberger/libcluon/blob/master/libcluon/testsuites/TestEnvelopeConverter.cpp#L31-L40
                 std::lock_guard<std::mutex> lck(gsrMutex);
                 gsr = cluon::extractMessage<opendlv::proxy::GroundSteeringRequest>(std::move(env));
-                std::cout << "lambda: groundSteering = " << gsr.groundSteering() << std::endl;
+                //std::cout << "lambda: groundSteering = " << gsr.groundSteering() << std::endl;
             };
 
             od4.dataTrigger(opendlv::proxy::GroundSteeringRequest::ID(), onGroundSteeringRequest);
@@ -112,8 +112,7 @@ int32_t main(int32_t argc, char **argv) {
 
                     float steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
 
-                    //std::cout << "Angle: " << coneAngle << std::endl;
-                    std::cout << "Distance: " << coneDistance << std::endl;
+                    std::cout << "second: groundSteering = "<< steeringAngle << std::endl;
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
 
