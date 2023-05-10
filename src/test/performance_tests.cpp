@@ -65,24 +65,24 @@ double performance_tests::algorithm_performance_frame(const vector<pair<unsigned
     for(int i = 0; i < outputContent.size(); i ++) {
         long double secondOutput = ((long double)outputContent[i].first)/1000000;
 
-        printf("This is  the seconds with frame: %d \n", secondsWithFrames);
-
-        if(secondOutput <= (secondData + 1) && secondOutput > secondData) {
+        printf("starting second: %Lf, %d, %d\n", secondOutput, secondData, framesCounter);
+        if(secondOutput < (secondData + 1) && secondOutput >= secondData) {
             framesCounter++;
-            printf("This is the within the if condition, %d\n", framesCounter);
+            printf("within the if condition, %d\n", framesCounter);
             if(framesCounter == 10) {
                 framesCounter = 0;
                 secondsWithFrames++;
+                printf("BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT\n");
             }
 
-            printf("This is the starting second: %Lf, %d, %d\n", secondOutput, secondData, framesCounter);
 
         }else {
             framesCounter = 0;
             secondsTot++;
             secondData++;
+            printf("seconds with frame: %f\n", secondsWithFrames);
         }
     }
-
+    printf("%f, %f\n", secondsWithFrames, secondsTot);
     return (secondsWithFrames/secondsTot)*100;
 }
