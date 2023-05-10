@@ -49,8 +49,10 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
                         cout << __LINE__ << " :: data" << content[i].size() << endl;
 
 
+                        cout << __LINE__ << " :: data " << content[i][CSV_TIMESTAMP_SEC_COLUMN] << " :: data " << content[i][CSV_TIMESTAMP_MILISEC_COLUMN] << endl;
+
                         first = stoll(content[i][CSV_TIMESTAMP_SEC_COLUMN])*1000000 + (stoll(content[i][CSV_TIMESTAMP_MILISEC_COLUMN]));
-                        cout << __LINE__ << endl;
+                        cout << __LINE__ << " :: " << content[i][CSV_VALUE_COLUMN] << endl;
                         second =  stod(content[i][CSV_VALUE_COLUMN]);
 
 
