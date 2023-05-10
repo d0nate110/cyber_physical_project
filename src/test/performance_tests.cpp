@@ -78,7 +78,6 @@ double performance_tests::algorithm_performance_frame(const vector<pair<unsigned
             //printf("This is the starting second: %Lf, %d, %d\n", secondOutput, secondData, framesCounter);
 
         }else {
-            printf("This is the else\n");
             framesCounter = 0;
             secondsTot++;
             secondData++;
