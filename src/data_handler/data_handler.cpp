@@ -49,6 +49,7 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
                     for(int j = 0; j < 7; j++) {
                         cout << "<< " << row[j] << " <<" << endl;
                     }
+                    cout << "<< " << content[i].size() << " <<" << endl;
                     cout << "<< " << __LINE__ << " <<" << endl;
                     cout << "<< " << CSV_TIMESTAMP_SEC_COLUMN << " <<" << CSV_TIMESTAMP_MILISEC_COLUMN << " <<" << CSV_VALUE_COLUMN << " <<" << endl;
                     // if((stod(content[i][CSV_VALUE_COLUMN]) < (second + 0.5) && stod(content[i][CSV_VALUE_COLUMN]) > (second - 0.5)) || i == 0) {
