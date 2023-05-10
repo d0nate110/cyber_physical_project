@@ -17,10 +17,11 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
     int dataIndex = 0;
 
     fstream file (path, ios::in);
+    cout << __LINE__ << endl;
 
     try {
         if(file.is_open()) {
-
+            cout << __LINE__ << endl;
             while(getline(file, line)) {
                 row.clear();
                 stringstream str(line);
@@ -33,6 +34,8 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
         }else
             throw runtime_error("Could not open the .csv file" );
 
+        cout << __LINE__ << endl;
+
         string isData = path.substr(2, 4);
         unsigned long long int first;
         double second = 0;
@@ -42,11 +45,17 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
 
                 try {
                     if(isData == "data") {
-                       // if((stod(content[i][CSV_VALUE_COLUMN]) < (second + 0.5) && stod(content[i][CSV_VALUE_COLUMN]) > (second - 0.5)) || i == 0) {
-                            first = stoll(content[i][CSV_TIMESTAMP_SEC_COLUMN])*1000000 + (stoll(content[i][CSV_TIMESTAMP_MILISEC_COLUMN]));
-                            second =  stod(content[i][CSV_VALUE_COLUMN]);
-                        //}
+                        cout << __LINE__ << endl;
+                        cout << __LINE__ << " :: data" << content[i].size() << endl;
+
+
+                        first = stoll(content[i][CSV_TIMESTAMP_SEC_COLUMN])*1000000 + (stoll(content[i][CSV_TIMESTAMP_MILISEC_COLUMN]));
+                        second =  stod(content[i][CSV_VALUE_COLUMN]);
+
                     }else {
+                        cout << __LINE__ << endl;
+                        cout << __LINE__ << " :: out" << content[i].size() << endl;
+
                         first = stoll(content[i][CSV_TIMESTAMP_OUTPUT_COLUMN]);
                         second =  stod(content[i][CSV_VALUE_OUTPUT_COLUMN]);
                     }
@@ -61,6 +70,8 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
 
 
     }catch(exception& e) {
+        cout << __LINE__ << endl;
+
         cout << e.what() << endl;
         time_angleList[0].first = -1;
         time_angleList[0].second = -1;
