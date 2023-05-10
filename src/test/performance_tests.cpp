@@ -18,7 +18,7 @@ double performance_tests::algorithm_accuracy(const vector<pair<unsigned long lon
                 throw runtime_error("The performance of the two did not match.");
             }
 
-            printf("%f, %f, %d \n", dataSteering[i].second, outputContent[timestampCheckOutputIndex].second, timestampCheckOutputIndex);
+            //printf("%f, %f, %d \n", dataSteering[i].second, outputContent[timestampCheckOutputIndex].second, timestampCheckOutputIndex);
             if((dataSteering[i].second + ERROR_MARGINE) >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - ERROR_MARGINE) < outputContent[timestampCheckOutputIndex].second) {
                 totalCorrect++;
             }
@@ -32,7 +32,7 @@ double performance_tests::algorithm_accuracy(const vector<pair<unsigned long lon
         return -1;
     }
 
-    printf("This is total correct: %f, This is total: %f\n", totalCorrect, total);
+    //printf("This is total correct: %f, This is total: %f\n", totalCorrect, total);
     percentageAccuracy = (totalCorrect/total) * 100;
 
     return percentageAccuracy;
@@ -69,13 +69,13 @@ double performance_tests::algorithm_performance_frame(const vector<pair<unsigned
 
         if(secondOutput <= (secondData + 1) && secondOutput > secondData) {
             framesCounter++;
-            printf("This is the within the if condition, %d\n", framesCounter);
+            //printf("This is the within the if condition, %d\n", framesCounter);
             if(framesCounter == 10) {
                 framesCounter = 0;
                 secondsWithFrames++;
             }
 
-            printf("This is the starting second: %Lf, %d, %d\n", secondOutput, secondData, framesCounter);
+            //printf("This is the starting second: %Lf, %d, %d\n", secondOutput, secondData, framesCounter);
 
         }else {
             printf("This is the else\n");
