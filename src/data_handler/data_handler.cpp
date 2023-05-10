@@ -29,7 +29,7 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
                 stringstream str(line);
 
                 while(getline(str, word, ';'))
-                    cout << "<< " << __LINE__ << " << Dataindex: " << dataIndex << endl;
+                    cout << "<< " << __LINE__ << " << Dataindex: " << word << endl;
                     row.push_back(word);
                     content.push_back(row);
                     dataIndex++;
@@ -46,7 +46,7 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
             try {
                 if(isData == "data") {
                     for(int j = 0; j < 7; j++) {
-                        cout << "<< " << row[j] << " <<" << endl;
+                        cout << "<< " << row[i][j] << " <<" << endl;
                     }
                     cout << "<< " << __LINE__ << " <<" << endl;
                     cout << "<< " << CSV_TIMESTAMP_SEC_COLUMN << " <<" << CSV_TIMESTAMP_MILISEC_COLUMN << " <<" << CSV_VALUE_COLUMN << " <<" << endl;
