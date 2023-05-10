@@ -37,7 +37,7 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
         } else
             throw runtime_error("Could not open the .csv file" );
 
-        string isData = path.substr(3, 4);
+        string isData = path.substr(2, 4);
         cout << "<< " << __LINE__ << " << " << isData << endl;
         unsigned long long int timestamp;
         double gsr = 0;

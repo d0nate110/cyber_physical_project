@@ -41,10 +41,12 @@
 
 #include "cone_detector/cone_detector.hpp"
 #include "algorithm/algorithm.hpp"
+#include "utility"
 
 int32_t main(int32_t argc, char **argv) {
     
     std::vector<double> coneData;
+    std::vector<std::pair<unsigned long long int, double>> angel_data;
     coneData.resize(2);
     
     int32_t retCode{1};
@@ -101,6 +103,7 @@ int32_t main(int32_t argc, char **argv) {
                 // Lock the shared memory.
                 sharedMemory->lock();
                 {
+                    std::pair<unsigned long long int, double> tempOut;
                     // Copy the pixels from the shared memory into our own data structure.
                     cv::Mat wrapped(HEIGHT, WIDTH, CV_8UC4, sharedMemory->data());
                     img = wrapped.clone();
@@ -110,10 +113,11 @@ int32_t main(int32_t argc, char **argv) {
                     float coneAngle = coneData[0];
                     float coneDistance = coneData[1];
 
-                    float steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
-
+                    double steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
+                    unsigned long long int frameTimeStamp = static_cast<unsigned long long int>(cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second));
                     //std::cout << "Angle: " << coneAngle << std::endl;
                     std::cout << "Distance: " << coneDistance << std::endl;
+                    angel_data.emplace_back(frameTimeStamp, steeringAngle);
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
 
