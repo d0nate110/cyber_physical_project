@@ -65,7 +65,7 @@ double performance_tests::algorithm_performance_frame(const vector<pair<unsigned
     for(int i = 0; i < outputContent.size(); i ++) {
         long double secondOutput = ((long double)outputContent[i].first)/1000000;
 
-
+        printf("This is  the seconds with frame: %d \n", secondsWithFrames);
 
         if(secondOutput <= (secondData + 1) && secondOutput > secondData) {
             framesCounter++;
