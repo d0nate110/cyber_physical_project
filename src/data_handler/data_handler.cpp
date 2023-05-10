@@ -16,60 +16,51 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
     string line, word;
     int dataIndex = 0;
 
-    cout << "<< " << __LINE__ << " <<" << endl;
-    fstream file;
-    file.open(path, fstream::in);
-    cout << "<< " << __LINE__ << " <<" << endl;
-    
+    fstream file (path, ios::in);
+
     try {
         if(file.is_open()) {
-                cout << "<< " << __LINE__ << " <<" << endl;
-                while(getline(file, line)) {
+
+            while(getline(file, line)) {
                 row.clear();
                 stringstream str(line);
 
-                while(getline(str, word, ';')) {
-                    cout << "<< " << __LINE__ << " << Dataindex: " << word << endl;
+                while(getline(str, word, ';'))
                     row.push_back(word);
-                    content.push_back(row);
-                    dataIndex++;
-                }
+                content.push_back(row);
+                dataIndex++;
             }
-        } else
+        }else
             throw runtime_error("Could not open the .csv file" );
 
         string isData = path.substr(2, 4);
-        cout << "<< " << __LINE__ << " << " << isData << endl;
-        unsigned long long int timestamp;
-        double gsr = 0;
+        unsigned long long int first;
+        double second = 0;
 
-        for(int i = 0; i < content.size(); i++) {
-            try {
-                if(isData == "data") {
-                    for(int j = 0; j < 7; j++) {
-                        cout << "<< " << row[j] << " <<" << endl;
+
+            for(int i = 0; i < content.size(); i++) {
+
+                try {
+                    if(isData == "data") {
+                       // if((stod(content[i][CSV_VALUE_COLUMN]) < (second + 0.5) && stod(content[i][CSV_VALUE_COLUMN]) > (second - 0.5)) || i == 0) {
+                            first = stoll(content[i][CSV_TIMESTAMP_SEC_COLUMN])*1000000 + (stoll(content[i][CSV_TIMESTAMP_MILISEC_COLUMN]));
+                            second =  stod(content[i][CSV_VALUE_COLUMN]);
+                        //}
+                    }else {
+                        first = stoll(content[i][CSV_TIMESTAMP_OUTPUT_COLUMN]);
+                        second =  stod(content[i][CSV_VALUE_OUTPUT_COLUMN]);
                     }
-                    cout << "<< " << content[i].size() << " <<" << endl;
-                    cout << "<< " << __LINE__ << " <<" << endl;
-                    cout << "<< " << CSV_TIMESTAMP_SEC_COLUMN << " <<" << CSV_TIMESTAMP_MILISEC_COLUMN << " <<" << CSV_VALUE_COLUMN << " <<" << endl;
-                    // if((stod(content[i][CSV_VALUE_COLUMN]) < (second + 0.5) && stod(content[i][CSV_VALUE_COLUMN]) > (second - 0.5)) || i == 0) {
-                        timestamp = stoll(content[i][CSV_TIMESTAMP_SEC_COLUMN])*1000000 + (stoll(content[i][CSV_TIMESTAMP_MILISEC_COLUMN]));
-                        gsr =  stod(content[i][CSV_VALUE_COLUMN]);
-                    //}
-                } else {
-                    timestamp = stoll(content[i][CSV_TIMESTAMP_OUTPUT_COLUMN]);
-                    cout << "<< " << __LINE__ << " << Frame read..." << endl;
-                    gsr =  stod(content[i][CSV_VALUE_OUTPUT_COLUMN]);
-                    cout << timestamp << ";" << gsr << endl;
+
+                    time_angleList.emplace_back(first, second);
+
+                }catch(exception& e) {
+                    throw runtime_error(strcat((char*)"Could not convert read values to decimals: ", e.what()));
                 }
 
-                time_angleList.emplace_back(timestamp, gsr);
-
-            }catch(exception& e) {
-                throw runtime_error(strcat((char*)"Could not convert read values to decimals: ", e.what()));
             }
-        }
-    } catch(exception& e) {
+
+
+    }catch(exception& e) {
         cout << e.what() << endl;
         time_angleList[0].first = -1;
         time_angleList[0].second = -1;
