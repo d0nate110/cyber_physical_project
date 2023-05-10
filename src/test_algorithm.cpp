@@ -31,7 +31,7 @@ TEST_CASE("Test Algorithm Accuracy - File 2") {
 }
 
 TEST_CASE("Test Algorithm Accuracy - File 3") {
-    string filePath = "./data/Data1_SteeringAngle.csv";
+    string filePath = "./data/Data3_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
 
     string newPath = "./algorithm_output/Output3_SteeringAngle.csv";
@@ -43,7 +43,7 @@ TEST_CASE("Test Algorithm Accuracy - File 3") {
 
 
 TEST_CASE("Test Algorithm Accuracy - File 4") {
-    string filePath = "./data/Data1_SteeringAngle.csv";
+    string filePath = "./data/Data4_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
 
     string newPath = "./algorithm_output/Output4_SteeringAngle.csv";
@@ -54,7 +54,7 @@ TEST_CASE("Test Algorithm Accuracy - File 4") {
 }
 
 TEST_CASE("Test Algorithm Accuracy - File 5") {
-    string filePath = "./data/Data1_SteeringAngle.csv";
+    string filePath = "./data/Data5_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
 
     string newPath = "./algorithm_output/Output5_SteeringAngle.csv";
@@ -89,7 +89,7 @@ TEST_CASE("Test Algorithm Time - File 2") {
 }
 
 TEST_CASE("Test Algorithm Time - File 3") {
-    string filePath = "./data/Data1_SteeringAngle.csv";
+    string filePath = "./data/Data3_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
 
     string newPath = "./algorithm_output/Output3_SteeringAngle.csv";
@@ -100,7 +100,7 @@ TEST_CASE("Test Algorithm Time - File 3") {
 }
 
 TEST_CASE("Test Algorithm Time - File 4") {
-    string filePath = "./data/Data1_SteeringAngle.csv";
+    string filePath = "./data/Data4_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
 
     string newPath = "./algorithm_output/Output4_SteeringAngle.csv";
@@ -111,7 +111,7 @@ TEST_CASE("Test Algorithm Time - File 4") {
 }
 
 TEST_CASE("Test Algorithm Time - File 5") {
-    string filePath = "./data/Data1_SteeringAngle.csv";
+    string filePath = "./data/Data5_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
 
     string newPath = "./algorithm_output/Output5_SteeringAngle.csv";
