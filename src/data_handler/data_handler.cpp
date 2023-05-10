@@ -28,11 +28,12 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
                 row.clear();
                 stringstream str(line);
 
-                while(getline(str, word, ';'))
+                while(getline(str, word, ';')) {
                     cout << "<< " << __LINE__ << " << Dataindex: " << word << endl;
                     row.push_back(word);
                     content.push_back(row);
                     dataIndex++;
+                }
             }
         } else
             throw runtime_error("Could not open the .csv file" );
