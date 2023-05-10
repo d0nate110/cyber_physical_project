@@ -69,13 +69,13 @@ double performance_tests::algorithm_performance_frame(const vector<pair<unsigned
 
         if(secondOutput <= (secondData + 1) && secondOutput > secondData) {
             framesCounter++;
-            //printf("This is the within the if condition, %d\n", framesCounter);
+            printf("This is the within the if condition, %d\n", framesCounter);
             if(framesCounter == 10) {
                 framesCounter = 0;
                 secondsWithFrames++;
             }
 
-            //printf("This is the starting second: %Lf, %d, %d\n", secondOutput, secondData, framesCounter);
+            printf("This is the starting second: %Lf, %d, %d\n", secondOutput, secondData, framesCounter);
 
         }else {
             framesCounter = 0;
