@@ -130,15 +130,20 @@ bool data_handler::write_csv_file(const string& path, const vector<pair<unsigned
         fstream fout;
 
         fout.open(path, ios::out | ios::trunc);
-        if (fout.fail()) {
-            throw runtime_error("Could not create file");
-        }
+
+
 
         for (int i = 0; i < dataOut.size(); i++) {
             fout << "group_11;"
                  << (dataOut[i].first) << ";"
                  << dataOut[i].second
                  << "\n";
+        }
+        if(fout.is_open()) {
+            cout << "It is open" << endl;
+        }
+        if (fout.fail()) {
+            throw runtime_error("Could not create file");
         }
 
     } catch (exception& e) {

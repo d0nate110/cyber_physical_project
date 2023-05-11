@@ -15,20 +15,16 @@ double performance_tests::algorithm_accuracy(const vector<pair<unsigned long lon
     try {
         for(int i = 0; i < outputContent.size(); i++) {
 
-            if(dataSteering.size() > outputContent.size()) {
-                throw runtime_error("The performance of the two did not match.");
-            }
-
             double errorMarg = dataSteering[i].second * ERROR_THIRTY_PERCENT;
 
             if(dataSteering[i].second == 0) {
-                if(ERROR_MARGINE >= outputContent[timestampCheckOutputIndex].second && ERROR_MARGINE <= outputContent[timestampCheckOutputIndex].second) {
+                if((dataSteering[i].second + ERROR_MARGINE)  >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - ERROR_MARGINE)  <= outputContent[timestampCheckOutputIndex].second) {
                     totalCorrect++;
                 }
             }else if((dataSteering[i].second + errorMarg) >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - errorMarg) <= outputContent[timestampCheckOutputIndex].second) {
                 totalCorrect++;
             }
-            while(((outputContent[timestampCheckOutputIndex].first) <= dataSteering[i].first) && ((outputContent[timestampCheckOutputIndex + 1].first) > dataSteering[i].first))
+            while(((outputContent[timestampCheckOutputIndex].first) <= dataSteering[i].first) && ((outputContent[timestampCheckOutputIndex + 1].first) >=dataSteering[i].first))
                 timestampCheckOutputIndex++;
             total = i + 1;
         }
@@ -65,10 +61,16 @@ double performance_tests::algorithm_performance_frame(const vector<pair<unsigned
     int framesCounter = 0;
     double secondsWithFrames = 0;
     double secondsTot = 0;
+    int secondData = dataSteering[0].first/1000000;
 
     for(int i = 0; i < outputContent.size(); i ++) {
         long double secondOutput = ((long double)outputContent[i].first)/1000000;
-        int secondData = dataSteering[i].first/1000000;
+
+        if(!(secondOutput < (secondData + 1) && secondOutput >= secondData)) {
+            framesCounter = 0;
+            secondsTot++;
+            secondData++;
+        }
 
         if(secondOutput < (secondData + 1) && secondOutput >= secondData) {
             framesCounter++;
@@ -77,10 +79,6 @@ double performance_tests::algorithm_performance_frame(const vector<pair<unsigned
                 secondsWithFrames++;
             }
 
-
-        }else {
-            framesCounter = 0;
-            secondsTot++;
         }
     }
     return (secondsWithFrames/secondsTot)*100;
