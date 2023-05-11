@@ -19,34 +19,13 @@
 
 double calculateSteeringWheelAngle(double coneAngle, double coneDistance) {
 
-    /*float angleWeight = MIDDLE_PRIORITY;
-    float distanceWeight = MIDDLE_PRIORITY;
-    
-    float normalizedDistance = coneDistance / MAX_OPENCV_DISTANCE;
-    float normalizedAngle = coneAngle / MAX_CONE_ANGLE;
-
-    //FORMULA1
-    //float steeringAngle = (normalizedDistance * distanceWeight + normalizedAngle * angleWeight) * MAX_STEERING_WHEEL_ANGLE;
-
-    //FORMULA2
-    float steeringAngle = (normalizedDistance * 0.1 +  normalizedAngle * 0.1 + 0.173450638 * 0.8) * MAX_STEERING_WHEEL_ANGLE;
-
-    //FORMULA3
-    float steeringAngle = 0;
-    if(coneAngle < 0){
-        steeringAngle = (normalizedDistance * 0.1 +  normalizedAngle * 0.1 + -0.052035191 * 0.8) * MAX_STEERING_WHEEL_ANGLE;
-    }
-    else {
-        steeringAngle = (normalizedDistance * 0.1 +  normalizedAngle * 0.1 + 0.052035191 * 0.8) * MAX_STEERING_WHEEL_ANGLE;
-    }
-    */
-    
-
     float angleWeight = MIDDLE_PRIORITY;
     float distanceWeight = MIDDLE_PRIORITY;
-
+    
     float normalizedDistance = coneDistance / MAX_OPENCV_DISTANCE;
     float normalizedAngle = coneAngle / MAX_CONE_ANGLE;
 
+    float steeringAngle = (normalizedDistance * distanceWeight + normalizedAngle * angleWeight) * MAX_STEERING_WHEEL_ANGLE;
+    
     return steeringAngle;
 }
