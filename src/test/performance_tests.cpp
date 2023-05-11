@@ -2,6 +2,7 @@
 
 #define ERROR_MARGINE 0.05
 #define MAX_CSV_SIZE 1000
+#define ERROR_THIRTY_PERCENT 0.3
 
 using namespace std;
 
@@ -17,12 +18,14 @@ double performance_tests::algorithm_accuracy(const vector<pair<unsigned long lon
             if(dataSteering.size() > outputContent.size()) {
                 throw runtime_error("The performance of the two did not match.");
             }
-            double errorMarg = dataSteering[i].second * 0.3;
+
+            double errorMarg = dataSteering[i].second * ERROR_THIRTY_PERCENT;
+
             if(dataSteering[i].second == 0) {
-                if((dataSteering[i].second + ERROR_MARGINE) >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - ERROR_MARGINE) < outputContent[timestampCheckOutputIndex].second) {
+                if(ERROR_MARGINE >= outputContent[timestampCheckOutputIndex].second && ERROR_MARGINE <= outputContent[timestampCheckOutputIndex].second) {
                     totalCorrect++;
                 }
-            }else if((dataSteering[i].second + errorMarg) >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - errorMarg) < outputContent[timestampCheckOutputIndex].second) {
+            }else if((dataSteering[i].second + errorMarg) >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - errorMarg) <= outputContent[timestampCheckOutputIndex].second) {
                 totalCorrect++;
             }
             while(((outputContent[timestampCheckOutputIndex].first) <= dataSteering[i].first) && ((outputContent[timestampCheckOutputIndex + 1].first) > dataSteering[i].first))
