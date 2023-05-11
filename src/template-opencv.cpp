@@ -40,8 +40,12 @@
 #define YELLOW_VALUE_MAX 255
 
 #include "cone_detector/cone_detector.hpp"
+#include "algorithm/algorithm.hpp"
 
 int32_t main(int32_t argc, char **argv) {
+    
+    std::vector<double> coneData;
+    coneData.resize(2);
     
     int32_t retCode{1};
     // Parse the command line parameters as we require the user to specify some mandatory information on startup.
@@ -101,8 +105,14 @@ int32_t main(int32_t argc, char **argv) {
                     cv::Mat wrapped(HEIGHT, WIDTH, CV_8UC4, sharedMemory->data());
                     img = wrapped.clone();
 
-                    detectCones(img);
+                    coneData = detectCones(img);
+            
+                    float coneAngle = coneData[0];
+                    float coneDistance = coneData[1];
 
+                    float steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
+
+                    std::cout << "second: groundSteering = "<< steeringAngle << std::endl;
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
 
@@ -111,7 +121,7 @@ int32_t main(int32_t argc, char **argv) {
                 // If you want to access the latest received ground steering, don't forget to lock the mutex:
                 {
                     std::lock_guard<std::mutex> lck(gsrMutex);
-                    //std::cout << "main: groundSteering = " << gsr.groundSteering() << std::endl;
+                    std::cout << "main: groundSteering = " << gsr.groundSteering() << std::endl;
                 }
 
                 // Display image on your screen.
