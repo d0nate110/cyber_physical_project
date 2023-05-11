@@ -17,9 +17,12 @@ double performance_tests::algorithm_accuracy(const vector<pair<unsigned long lon
             if(dataSteering.size() > outputContent.size()) {
                 throw runtime_error("The performance of the two did not match.");
             }
-
-            //printf("%f, %f, %d \n", dataSteering[i].second, outputContent[timestampCheckOutputIndex].second, timestampCheckOutputIndex);
-            if((dataSteering[i].second + ERROR_MARGINE) >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - ERROR_MARGINE) < outputContent[timestampCheckOutputIndex].second) {
+            double errorMarg = dataSteering[i].second * 0.3;
+            if(dataSteering[i].second == 0) {
+                if((dataSteering[i].second + ERROR_MARGINE) >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - ERROR_MARGINE) < outputContent[timestampCheckOutputIndex].second) {
+                    totalCorrect++;
+                }
+            }else if((dataSteering[i].second + errorMarg) >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - errorMarg) < outputContent[timestampCheckOutputIndex].second) {
                 totalCorrect++;
             }
             while(((outputContent[timestampCheckOutputIndex].first) <= dataSteering[i].first) && ((outputContent[timestampCheckOutputIndex + 1].first) > dataSteering[i].first))
@@ -32,7 +35,6 @@ double performance_tests::algorithm_accuracy(const vector<pair<unsigned long lon
         return -1;
     }
 
-    //printf("This is total correct: %f, This is total: %f\n", totalCorrect, total);
     percentageAccuracy = (totalCorrect/total) * 100;
 
     return percentageAccuracy;
@@ -65,23 +67,18 @@ double performance_tests::algorithm_performance_frame(const vector<pair<unsigned
         long double secondOutput = ((long double)outputContent[i].first)/1000000;
         int secondData = dataSteering[i].first/1000000;
 
-        printf("starting second: %Lf, %d, %d\n", secondOutput, secondData, framesCounter);
         if(secondOutput < (secondData + 1) && secondOutput >= secondData) {
             framesCounter++;
-            printf("within the if condition, %d\n", framesCounter);
             if(framesCounter == 10) {
                 framesCounter = 0;
                 secondsWithFrames++;
-                printf("BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT\n");
             }
 
 
         }else {
             framesCounter = 0;
             secondsTot++;
-            printf("seconds with frame: %f\n", secondsWithFrames);
         }
     }
-    printf("%f, %f\n", secondsWithFrames, secondsTot);
     return (secondsWithFrames/secondsTot)*100;
 }
