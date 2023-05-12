@@ -1,5 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include "algorithm.hpp"
+#include <cmath>
 
 #define MAX_STEERING_WHEEL_ANGLE 0.3
 #define MIN_STEERING_WHEEL_ANGLE -0.3
@@ -19,13 +20,36 @@
 
 double calculateSteeringWheelAngle(double coneAngle, double coneDistance) {
 
-    float angleWeight = MIDDLE_PRIORITY;
-    float distanceWeight = MIDDLE_PRIORITY;
+    float steeringAngle = 0.0;
+    float angleWeight = LOW_PRIORITY;
+    float distanceWeight = HIGH_PRIORITY;
     
-    float normalizedDistance = coneDistance / MAX_OPENCV_DISTANCE;
-    float normalizedAngle = coneAngle / MAX_CONE_ANGLE;
+    float normalizedDistance = 1 - (coneDistance / MAX_OPENCV_DISTANCE);
+    float normalizedAngle = 0;
 
-    float steeringAngle = (normalizedDistance * distanceWeight + normalizedAngle * angleWeight) * MAX_STEERING_WHEEL_ANGLE;
-    
+    if(coneAngle > 90.0) {
+        coneAngle = 90.0;
+    }
+    else if(coneAngle < -90.0) {
+        coneAngle = -90.0;
+    }
+
+    if (coneAngle < 0)
+    {
+        normalizedAngle = 1 - (-coneAngle / MAX_CONE_ANGLE);
+        steeringAngle = (normalizedDistance * distanceWeight + normalizedAngle * angleWeight) * MIN_STEERING_WHEEL_ANGLE;
+    }
+
+    else{
+        normalizedAngle = 1 - (coneAngle / MAX_CONE_ANGLE);
+        if (normalizedAngle > 1)
+        {
+            normalizedAngle = 1;
+        }
+        steeringAngle = (normalizedDistance * distanceWeight + normalizedAngle * angleWeight) * MAX_STEERING_WHEEL_ANGLE;
+    }
     return steeringAngle;
+
+    //1.- Inverse proportionalities
+    //2.- Make negative the same
 }
