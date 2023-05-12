@@ -41,6 +41,7 @@
 
 #include "cone_detector/cone_detector.hpp"
 #include "algorithm/algorithm.hpp"
+#include "utility"
 
 int32_t main(int32_t argc, char **argv) {
     
@@ -85,7 +86,6 @@ int32_t main(int32_t argc, char **argv) {
                 // https://github.com/chrberger/libcluon/blob/master/libcluon/testsuites/TestEnvelopeConverter.cpp#L31-L40
                 std::lock_guard<std::mutex> lck(gsrMutex);
                 gsr = cluon::extractMessage<opendlv::proxy::GroundSteeringRequest>(std::move(env));
-                //std::cout << "lambda: groundSteering = " << gsr.groundSteering() << std::endl;
             };
 
             od4.dataTrigger(opendlv::proxy::GroundSteeringRequest::ID(), onGroundSteeringRequest);
@@ -101,6 +101,7 @@ int32_t main(int32_t argc, char **argv) {
                 // Lock the shared memory.
                 sharedMemory->lock();
                 {
+                    std::pair<unsigned long long int, double> tempOut;
                     // Copy the pixels from the shared memory into our own data structure.
                     cv::Mat wrapped(HEIGHT, WIDTH, CV_8UC4, sharedMemory->data());
                     img = wrapped.clone();
@@ -111,8 +112,9 @@ int32_t main(int32_t argc, char **argv) {
                     float coneDistance = coneData[1];
 
                     float steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
+                    unsigned long long int frameTimeStamp = static_cast<unsigned long long int>(cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second));
+                    std::cout << "group_11;" << cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second) << ";" << steeringAngle << std::endl;
 
-                    std::cout << "second: groundSteering = "<< steeringAngle << std::endl;
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
 
@@ -121,7 +123,6 @@ int32_t main(int32_t argc, char **argv) {
                 // If you want to access the latest received ground steering, don't forget to lock the mutex:
                 {
                     std::lock_guard<std::mutex> lck(gsrMutex);
-                    std::cout << "main: groundSteering = " << gsr.groundSteering() << std::endl;
                 }
 
                 // Display image on your screen.

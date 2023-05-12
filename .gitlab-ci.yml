@@ -26,6 +26,7 @@ services:
 
 stages:
   - build       # stage is executed for each push (irrespective of branch), not release
+  - test
   - deploy      # stage is executed -
                   # if new release,
                   # if previous process (build) succeeded,
@@ -56,7 +57,7 @@ build:
 coverage:
   tags:
     - docker-build
-  stage: build
+  stage: test
   needs: ["build"]
   before_script:
     - export DEBIAN_FRONTEND=noninteractive
@@ -67,10 +68,8 @@ coverage:
     
   script:
     - cd src
-    - g++ -fprofile-arcs -ftest-coverage -o helloworld helloworld.cpp PrimeChecker.cpp PrimeChecker.hpp  --coverage
-    - ./helloworld
-    - g++ -fprofile-arcs -ftest-coverage -o PrimeCheckerTest TestPrimeChecker.cpp PrimeChecker.cpp  --coverage
-    - ./PrimeCheckerTest
+    - g++ -fprofile-arcs -ftest-coverage -o test_algorithm test_algorithm.cpp data_handler/data_handler.cpp test/performance_tests.cpp  --coverage
+    - ./test_algorithm
     - gcov *.cpp 
     - lcov --capture --directory . --output-file coverage.info
     - lcov --remove coverage.info '/usr/*' --output-file coverage.info

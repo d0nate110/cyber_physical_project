@@ -30,7 +30,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" ${CMAKE_MODULE_PATH})
 
 ################################################################################
 # This project requires C++14 or newer.
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 # Build a static binary.
@@ -74,9 +74,13 @@ add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/opendlv-standard-message-set.hpp
 include_directories(SYSTEM ${CMAKE_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 # Add directory to compile
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/test
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/data_handler
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/data
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithm_output
+        )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/algorithm)
-
 ################################################################################
 # Gather all object code first to avoid double compilation.
 set(LIBRARIES Threads::Threads)
@@ -96,7 +100,13 @@ set(LIBRARIES ${LIBRARIES} ${OpenCV_LIBS})
 
 ################################################################################
 # Create executable. / Adding the rest of the .cpp files
-add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector/cone_detector.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithm/algorithm.cpp)
+add_executable(${PROJECT_NAME}
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector/cone_detector.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/data_handler/data_handler.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/test/performance_tests.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithm/algorithm.cpp)
+
 target_link_libraries(${PROJECT_NAME} ${LIBRARIES})
 
 # Add dependency to OpenDLV Standard Message Set.
