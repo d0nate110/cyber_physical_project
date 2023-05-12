@@ -31,18 +31,20 @@ double performance_tests::algorithm_accuracy(const string& errorPath, const vect
                 totalCorrect++;
             }else {
                 cout << "data: " << dataSteering[i].second << " zero: " << (dataSteering[i].second + ERROR_MARGINE  >= outputContent[timestampCheckOutputIndex].second) << " " << ((dataSteering[i].second - ERROR_MARGINE) <= outputContent[timestampCheckOutputIndex].second) << " " << (dataSteering[i].second + ERROR_MARGINE) << " " << dataSteering[i].second - ERROR_MARGINE;
-                cout << " upper margin: " << dataSteering[i].second + errorMarg << " lower margin: " << dataSteering[i].second - errorMarg << " checked value: " << outputContent[timestampCheckOutputIndex].second;
+                cout << " upper: " << dataSteering[i].second + errorMarg << " lower: " << dataSteering[i].second - errorMarg << " out: " << outputContent[timestampCheckOutputIndex].second;
                 cout << " bools: " << ((dataSteering[i].second + errorMarg) > 0) << " !! " << ((dataSteering[i].second + errorMarg) >= outputContent[timestampCheckOutputIndex].second) << " :: " << ((dataSteering[i].second - errorMarg) <= outputContent[timestampCheckOutputIndex].second);
-                cout << " :: "  << ((dataSteering[i].second + errorMarg) > 0) << " !! "  << ((dataSteering[i].second + errorMarg) <= outputContent[timestampCheckOutputIndex].second) << " :: " << ((dataSteering[i].second - errorMarg) >= outputContent[timestampCheckOutputIndex].second) << endl;
+                cout << " :: "  << ((dataSteering[i].second + errorMarg) > 0) << " !! "  << ((dataSteering[i].second + errorMarg) <= outputContent[timestampCheckOutputIndex].second) << " :: " << ((dataSteering[i].second - errorMarg) >= outputContent[timestampCheckOutputIndex].second);
                 outIndex.push_back(timestampCheckOutputIndex);
                 dataIndex.push_back(i);
                 dataErrors.emplace_back(dataSteering[i].first, dataSteering[i].second);
                 outErrors.emplace_back(outputContent[timestampCheckOutputIndex].first, outputContent[timestampCheckOutputIndex].second);
             }
+
+            cout << " while: " << ((outputContent[timestampCheckOutputIndex].first) < dataSteering[i].first) << " :: " << ((outputContent[timestampCheckOutputIndex + 1].first) >= dataSteering[i].first);
+            cout << " val: " << (outputContent[timestampCheckOutputIndex].first) << " :: " << dataSteering[i].first << " :: " << (outputContent[timestampCheckOutputIndex + 1].first) << endl;
+
             while(((outputContent[timestampCheckOutputIndex].first) < dataSteering[i].first) && ((outputContent[timestampCheckOutputIndex + 1].first) >=dataSteering[i].first)) {
                 timestampCheckOutputIndex++;
-
-                cout << "output timestamp: " << outputContent[timestampCheckOutputIndex].first << " data timestamp " << dataSteering[i].first << endl;
             }
         }
 
