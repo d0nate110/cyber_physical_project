@@ -46,7 +46,6 @@
 int32_t main(int32_t argc, char **argv) {
     
     std::vector<double> coneData;
-    std::vector<std::pair<unsigned long long int, double>> angel_data;
     coneData.resize(2);
     
     int32_t retCode{1};
