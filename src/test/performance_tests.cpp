@@ -8,12 +8,8 @@
 using namespace std;
 
 double performance_tests::algorithm_accuracy(const string& errorPath, const vector<pair<unsigned long long int, double>>& dataSteering, const std::vector<std::pair<unsigned long long int, double>>& outputContent) {
-    //This is the percentage of accuracy that is returned
     double percentageAccuracy;
-    //This is the total count of frames that contain steering angle within the given margin
     double totalCorrect = 0;
-    //This is the total count of frames
-    double total;
     int timestampCheckOutputIndex = 0;
 
     vector<std::pair<unsigned long long int, double>> dataErrors;
@@ -26,20 +22,28 @@ double performance_tests::algorithm_accuracy(const string& errorPath, const vect
 
             double errorMarg = dataSteering[i].second * ERROR_THIRTY_PERCENT;
 
-            if(dataSteering[i].second == 0 && ((dataSteering[i].second + ERROR_MARGINE)  >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - ERROR_MARGINE)  <= outputContent[timestampCheckOutputIndex].second)) {
+            if((dataSteering[i].second == 0) && ((dataSteering[i].second + ERROR_MARGINE  >= outputContent[timestampCheckOutputIndex].second) && ((dataSteering[i].second - ERROR_MARGINE) <= outputContent[timestampCheckOutputIndex].second))) {
                 totalCorrect++;
 
-            }else if((dataSteering[i].second + errorMarg) >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - errorMarg) <= outputContent[timestampCheckOutputIndex].second) {
+            }else if(((dataSteering[i].second + errorMarg) > 0) && ((dataSteering[i].second + errorMarg) >= outputContent[timestampCheckOutputIndex].second) && ((dataSteering[i].second - errorMarg) <= outputContent[timestampCheckOutputIndex].second)) {
+                totalCorrect++;
+            }else if(((dataSteering[i].second + errorMarg) < 0) && ((dataSteering[i].second + errorMarg) <= outputContent[timestampCheckOutputIndex].second) && ((dataSteering[i].second - errorMarg) >= outputContent[timestampCheckOutputIndex].second)) {
                 totalCorrect++;
             }else {
+                cout << "data: " << dataSteering[i].second << " zero: " << (dataSteering[i].second + ERROR_MARGINE  >= outputContent[timestampCheckOutputIndex].second) << " " << ((dataSteering[i].second - ERROR_MARGINE) <= outputContent[timestampCheckOutputIndex].second) << " " << (dataSteering[i].second + ERROR_MARGINE) << " " << dataSteering[i].second - ERROR_MARGINE;
+                cout << " upper margin: " << dataSteering[i].second + errorMarg << " lower margin: " << dataSteering[i].second - errorMarg << " checked value: " << outputContent[timestampCheckOutputIndex].second;
+                cout << " bools: " << ((dataSteering[i].second + errorMarg) > 0) << " !! " << ((dataSteering[i].second + errorMarg) >= outputContent[timestampCheckOutputIndex].second) << " :: " << ((dataSteering[i].second - errorMarg) <= outputContent[timestampCheckOutputIndex].second);
+                cout << " :: "  << ((dataSteering[i].second + errorMarg) > 0) << " !! "  << ((dataSteering[i].second + errorMarg) <= outputContent[timestampCheckOutputIndex].second) << " :: " << ((dataSteering[i].second - errorMarg) >= outputContent[timestampCheckOutputIndex].second) << endl;
                 outIndex.push_back(timestampCheckOutputIndex);
                 dataIndex.push_back(i);
                 dataErrors.emplace_back(dataSteering[i].first, dataSteering[i].second);
                 outErrors.emplace_back(outputContent[timestampCheckOutputIndex].first, outputContent[timestampCheckOutputIndex].second);
             }
-            while(((outputContent[timestampCheckOutputIndex].first) <= dataSteering[i].first) && ((outputContent[timestampCheckOutputIndex + 1].first) >=dataSteering[i].first))
+            while(((outputContent[timestampCheckOutputIndex].first) < dataSteering[i].first) && ((outputContent[timestampCheckOutputIndex + 1].first) >=dataSteering[i].first)) {
                 timestampCheckOutputIndex++;
-            total = i + 1;
+
+                cout << "output timestamp: " << outputContent[timestampCheckOutputIndex].first << " data timestamp " << dataSteering[i].first << endl;
+            }
         }
 
 
@@ -50,7 +54,7 @@ double performance_tests::algorithm_accuracy(const string& errorPath, const vect
         return -1;
     }
 
-    percentageAccuracy = (totalCorrect/total) * 100;
+    percentageAccuracy = (totalCorrect/dataSteering.size()) * 100;
 
     return percentageAccuracy;
 }
