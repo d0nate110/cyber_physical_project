@@ -15,6 +15,7 @@
 #define LOW_PRIORITY 0.25
 
 //Average of turn before another one as the difference
+
 #define AVERAGE_DIFFERENCE 0.00283774
 
 double calculateSteeringWheelAngle(double coneAngle, double coneDistance) {
