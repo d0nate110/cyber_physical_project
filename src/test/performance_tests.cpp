@@ -20,6 +20,10 @@ double performance_tests::algorithm_accuracy(const string& errorPath, const vect
     try {
         for(int i = 0; i < outputContent.size(); i++) {
 
+            while(outputContent[timestampCheckOutputIndex].first < dataSteering[i].first) {
+                timestampCheckOutputIndex++;
+            }
+
             double errorMarg = dataSteering[i].second * ERROR_THIRTY_PERCENT;
 
             if((dataSteering[i].second == 0) && ((dataSteering[i].second + ERROR_MARGINE  >= outputContent[timestampCheckOutputIndex].second) && ((dataSteering[i].second - ERROR_MARGINE) <= outputContent[timestampCheckOutputIndex].second))) {
@@ -42,10 +46,6 @@ double performance_tests::algorithm_accuracy(const string& errorPath, const vect
 
             cout << " while: " << ((outputContent[timestampCheckOutputIndex].first) < dataSteering[i].first) << " :: " << ((outputContent[timestampCheckOutputIndex + 1].first) >= dataSteering[i].first);
             cout << " val: " << (outputContent[timestampCheckOutputIndex].first) << " :: " << dataSteering[i].first << " :: " << (outputContent[timestampCheckOutputIndex + 1].first) << endl;
-
-            while(((outputContent[timestampCheckOutputIndex].first) < dataSteering[i].first) && ((outputContent[timestampCheckOutputIndex + 1].first) >=dataSteering[i].first)) {
-                timestampCheckOutputIndex++;
-            }
         }
 
 
