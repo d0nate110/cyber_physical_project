@@ -48,8 +48,11 @@ double calculateSteeringWheelAngle(double coneAngle, double coneDistance) {
         }
         steeringAngle = (normalizedDistance * distanceWeight + normalizedAngle * angleWeight) * MAX_STEERING_WHEEL_ANGLE;
     }
-    return steeringAngle;
 
-    //1.- Inverse proportionalities
-    //2.- Make negative the same
+    if (steeringAngle > -0.03 && steeringAngle < 0.03)
+    {
+        steeringAngle = 0;
+    }
+
+    return steeringAngle;
 }
