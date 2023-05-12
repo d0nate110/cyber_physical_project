@@ -111,9 +111,10 @@ int32_t main(int32_t argc, char **argv) {
                     float coneAngle = coneData[0];
                     float coneDistance = coneData[1];
 
-                    double steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
+                    float steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
                     unsigned long long int frameTimeStamp = static_cast<unsigned long long int>(cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second));
                     std::cout << "group_11;" << cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second) << ";" << steeringAngle << std::endl;
+
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
 
