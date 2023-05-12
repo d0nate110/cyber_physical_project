@@ -153,3 +153,36 @@ bool data_handler::write_csv_file(const string& path, const vector<pair<unsigned
 
     return true;
 }
+
+bool data_handler::write_csv_file(const string& path, const vector<int>& indexData, const vector<int>& indexOut, const vector<pair<unsigned long long int, double>>& dataOut, const vector<pair<unsigned long long int, double>>& algoOut) {
+
+    try {
+        fstream fout;
+
+        fout.open(path, ios::out | ios::trunc);
+
+
+        for (int i = 0; i < dataOut.size(); i++) {
+            fout << dataOut[i].first << "::"
+                 << algoOut[i].first << "!!"
+                 << dataOut[i].second << "::"
+                 << algoOut[i].second << "!!"
+                 << indexData[i] << "::"
+                 << indexOut[i]
+                 << "\n";
+        }
+
+        if(fout.is_open()) {
+            cout << "It is open" << endl;
+        }
+        if (fout.fail()) {
+            throw runtime_error("Could not create file");
+        }
+
+    } catch (exception& e) {
+        cout << "Error writing file: " << e.what() << endl;
+        return false;
+    }
+
+    return true;
+}

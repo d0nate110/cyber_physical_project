@@ -1,4 +1,5 @@
 #include "performance_tests.hpp"
+#include "../data_handler/data_handler.hpp"
 
 #define ERROR_MARGINE 0.05
 #define MAX_CSV_SIZE 1000
@@ -6,28 +7,43 @@
 
 using namespace std;
 
-double performance_tests::algorithm_accuracy(const vector<pair<unsigned long long int, double>>& dataSteering, const std::vector<std::pair<unsigned long long int, double>>& outputContent) {
+double performance_tests::algorithm_accuracy(const string& errorPath, const vector<pair<unsigned long long int, double>>& dataSteering, const std::vector<std::pair<unsigned long long int, double>>& outputContent) {
+    //This is the percentage of accuracy that is returned
     double percentageAccuracy;
+    //This is the total count of frames that contain steering angle within the given margin
     double totalCorrect = 0;
+    //This is the total count of frames
     double total;
     int timestampCheckOutputIndex = 0;
+
+    vector<std::pair<unsigned long long int, double>> dataErrors;
+    vector<std::pair<unsigned long long int, double>> outErrors;
+    vector<int> outIndex;
+    vector<int> dataIndex;
 
     try {
         for(int i = 0; i < outputContent.size(); i++) {
 
             double errorMarg = dataSteering[i].second * ERROR_THIRTY_PERCENT;
 
-            if(dataSteering[i].second == 0) {
-                if((dataSteering[i].second + ERROR_MARGINE)  >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - ERROR_MARGINE)  <= outputContent[timestampCheckOutputIndex].second) {
-                    totalCorrect++;
-                }
+            if(dataSteering[i].second == 0 && ((dataSteering[i].second + ERROR_MARGINE)  >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - ERROR_MARGINE)  <= outputContent[timestampCheckOutputIndex].second)) {
+                totalCorrect++;
+
             }else if((dataSteering[i].second + errorMarg) >= outputContent[timestampCheckOutputIndex].second && (dataSteering[i].second - errorMarg) <= outputContent[timestampCheckOutputIndex].second) {
                 totalCorrect++;
+            }else {
+                outIndex.push_back(timestampCheckOutputIndex);
+                dataIndex.push_back(i);
+                dataErrors.emplace_back(dataSteering[i].first, dataSteering[i].second);
+                outErrors.emplace_back(outputContent[timestampCheckOutputIndex].first, outputContent[timestampCheckOutputIndex].second);
             }
             while(((outputContent[timestampCheckOutputIndex].first) <= dataSteering[i].first) && ((outputContent[timestampCheckOutputIndex + 1].first) >=dataSteering[i].first))
                 timestampCheckOutputIndex++;
             total = i + 1;
         }
+
+
+        cout << data_handler::write_csv_file(errorPath, dataIndex, outIndex, dataErrors, outErrors) << endl;
 
     }catch (exception& e) {
         cout << e.what() << endl;
