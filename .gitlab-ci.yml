@@ -26,8 +26,9 @@ services:
 
 stages:
   - build       # stage is executed for each push (irrespective of branch), not release
+  - test
   - deploy      # stage is executed -
-                  # if new release,
+  - plot        # if new release,
                   # if previous process (build) succeeded,
                   # release is versioned correctly in the form vX.X.X
 
@@ -46,7 +47,7 @@ build:
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
   - echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
   - apt-get update
-  - apt-get install -y docker-ce docker-ce-cli containerd.io
+  - apt-get install -y docker-ce docker-ce-cli containerd.io gnuplot
 
   script:
   #  - cd src
@@ -56,7 +57,7 @@ build:
 coverage:
   tags:
     - docker-build
-  stage: build
+  stage: test
   needs: ["build"]
   before_script:
     - export DEBIAN_FRONTEND=noninteractive
@@ -67,10 +68,8 @@ coverage:
     
   script:
     - cd src
-    - g++ -fprofile-arcs -ftest-coverage -o helloworld helloworld.cpp PrimeChecker.cpp PrimeChecker.hpp  --coverage
-    - ./helloworld
-    - g++ -fprofile-arcs -ftest-coverage -o PrimeCheckerTest TestPrimeChecker.cpp PrimeChecker.cpp  --coverage
-    - ./PrimeCheckerTest
+    - g++ -fprofile-arcs -ftest-coverage -o test_algorithm test_algorithm.cpp data_handler/data_handler.cpp test/performance_tests.cpp  --coverage
+    - ./test_algorithm
     - gcov *.cpp 
     - lcov --capture --directory . --output-file coverage.info
     - lcov --remove coverage.info '/usr/*' --output-file coverage.info
@@ -106,3 +105,32 @@ release:
     - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx create --name platformbuilder --use
     - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx inspect --bootstrap
     - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --platform "linux/amd64,linux/arm/v7" -t "$CI_REGISTRY_IMAGE":"$CI_COMMIT_TAG" --push --provenance=false .
+
+plot:
+  image: ubuntu:latest
+  tags:
+    - docker-build
+  needs:
+    - job: build 
+  allow_failure: true
+  stage: plot
+  before_script:
+    - apt-get update 
+    - apt install -qq -y gnuplot git
+  script:
+    - ls
+    - git checkout $CI_COMMIT_BRANCH && git pull
+    - |-
+        for i in {1..5} 
+        do 
+          git show HEAD~1:src/algorithm_output/Output${i}_SteeringAngle.csv > old_output${i}.csv
+          chmod +xrw old_output${i}.csv
+        done	
+    - gnuplot gnuscript.txt
+  artifacts:
+    paths:
+      - graph1.png
+      - graph2.png
+      - graph3.png
+      - graph4.png
+      - graph5.png

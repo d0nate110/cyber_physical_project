@@ -1,4 +1,3 @@
-sent.seconds;sent.microseconds;received.seconds;received.microseconds;sampleTimeStamp.seconds;sampleTimeStamp.microseconds;groundSteering;
 1584543153;123020;868;609817;1584543153;123020;-0;
 1584543153;223548;868;710347;1584543153;223548;-0;
 1584543153;324071;868;810869;1584543153;324071;-0;

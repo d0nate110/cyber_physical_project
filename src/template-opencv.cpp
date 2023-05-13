@@ -47,7 +47,10 @@
 #include "cone_detector/cone_detector.hpp"
 #include "algorithm/algorithm.hpp"
 #include "utility"
+<<<<<<< HEAD
 
+=======
+>>>>>>> e9a36ed28259a0472b5d83afad793642c73d8af1
 
 int32_t main(int32_t argc, char **argv) {
   
@@ -82,6 +85,17 @@ int32_t main(int32_t argc, char **argv) {
        if (sharedMemory && sharedMemory->valid()) {
            std::clog << argv[0] << ": Attached to shared memory '" << sharedMemory->name() << " (" << sharedMemory->size() << " bytes)." << std::endl;
 
+<<<<<<< HEAD
+=======
+            opendlv::proxy::GroundSteeringRequest gsr;
+            std::mutex gsrMutex;
+            auto onGroundSteeringRequest = [&gsr, &gsrMutex](cluon::data::Envelope &&env){
+                // The envelope data structure provide further details, such as sampleTimePoint as shown in this test case:
+                // https://github.com/chrberger/libcluon/blob/master/libcluon/testsuites/TestEnvelopeConverter.cpp#L31-L40
+                std::lock_guard<std::mutex> lck(gsrMutex);
+                gsr = cluon::extractMessage<opendlv::proxy::GroundSteeringRequest>(std::move(env));
+            };
+>>>>>>> e9a36ed28259a0472b5d83afad793642c73d8af1
 
            // Interface to a running OpenDaVINCI session where network messages are exchanged.
            // The instance od4 allows you to send and receive messages.
