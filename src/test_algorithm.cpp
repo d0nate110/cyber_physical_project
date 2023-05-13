@@ -15,7 +15,7 @@ TEST_CASE("Test Algorithm Accuracy - File 1") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     double accuracy = performance_tests::algorithm_accuracy(dataValue, outputContent);
-    std::cout << accuracy << std::endl;
+    std::cout << "REC1 accuracy: "<< accuracy << std::endl;
     REQUIRE(accuracy >= 40);
 }
 
@@ -27,7 +27,7 @@ TEST_CASE("Test Algorithm Accuracy - File 2") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     double accuracy = performance_tests::algorithm_accuracy(dataValue, outputContent);
-    std::cout << accuracy << std::endl;
+    std::cout  << "REC2 accuracy: "<< accuracy << std::endl;
     REQUIRE(accuracy >= 40);
 }
 
@@ -35,11 +35,11 @@ TEST_CASE("Test Algorithm Accuracy - File 3") {
     string filePath = "./data/Data3_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
 
-    string newPath = "./algorithm_output/Output3_SteeringAngle.csv";
-    vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
+    //string newPath = "./algorithm_output/Output3_SteeringAngle.csv";
+    vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(filePath);
 
     double accuracy = performance_tests::algorithm_accuracy(dataValue, outputContent);
-    std::cout << accuracy << std::endl;
+    std::cout  << "REC3 accuracy: " << accuracy << std::endl;
     REQUIRE(accuracy >= 40);
 }
 
@@ -48,11 +48,11 @@ TEST_CASE("Test Algorithm Accuracy - File 4") {
     string filePath = "./data/Data4_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
 
-    string newPath = "./algorithm_output/Output4_SteeringAngle.csv";
-    vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
+    //string newPath = "./algorithm_output/Output4_SteeringAngle.csv";
+    vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(filePath);
 
     double accuracy = performance_tests::algorithm_accuracy(dataValue, outputContent);
-    std::cout << accuracy << std::endl;
+    std::cout  << "REC4 accuracy: " << accuracy << std::endl;
     REQUIRE(accuracy >= 40);
 }
 
@@ -64,7 +64,7 @@ TEST_CASE("Test Algorithm Accuracy - File 5") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     double accuracy = performance_tests::algorithm_accuracy(dataValue, outputContent);
-    std::cout << accuracy << std::endl;
+    std::cout  << "REC5 accuracy: " << accuracy << std::endl;
     REQUIRE(accuracy >= 40);
 }
 
@@ -135,7 +135,7 @@ TEST_CASE("Test Algorithm Frame per Second - File 1") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     double accuracy = performance_tests::algorithm_performance_frame(dataValue, outputContent);
-    std::cout << accuracy << std::endl;
+    std::cout  << "REC1 frame: "<< accuracy << std::endl;
     REQUIRE(accuracy >= 85);
 }
 
@@ -147,7 +147,7 @@ TEST_CASE("Test Algorithm Frame per Second - File 2") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     double accuracy = performance_tests::algorithm_performance_frame(dataValue, outputContent);
-    std::cout << accuracy << std::endl;
+    std::cout << "REC2 frame: "<< accuracy << std::endl;
     REQUIRE(accuracy >= 85);
 }
 
@@ -159,7 +159,7 @@ TEST_CASE("Test Algorithm Frame per Second - File 3") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     double accuracy = performance_tests::algorithm_performance_frame(dataValue, outputContent);
-    std::cout << accuracy << std::endl;
+    std::cout << "REC3 frame: " << accuracy << std::endl;
     REQUIRE(accuracy >= 85);
 }
 
@@ -172,7 +172,7 @@ TEST_CASE("Test Algorithm Frame per Second - File 4") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     double accuracy = performance_tests::algorithm_performance_frame(dataValue, outputContent);
-    std::cout << accuracy << std::endl;
+    std::cout << "REC4 frame: " << accuracy << std::endl;
     REQUIRE(accuracy >= 85);
 }
 
@@ -184,6 +184,6 @@ TEST_CASE("Test Algorithm Frame per Second - File 5") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     double accuracy = performance_tests::algorithm_performance_frame(dataValue, outputContent);
-    std::cout << accuracy << std::endl;
+    std::cout << "REC5 frame: " << accuracy << std::endl;
     REQUIRE(accuracy >= 85);
 }
