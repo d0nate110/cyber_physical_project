@@ -108,12 +108,14 @@ int32_t main(int32_t argc, char **argv) {
 
                     coneData = detectCones(img);
             
-                    float coneAngle = coneData[0];
-                    float coneDistance = coneData[1];
+                    double coneAngle = coneData[0];
+                    double coneDistance = coneData[1];
 
-                    float steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
-                    unsigned long long int frameTimeStamp = static_cast<unsigned long long int>(cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second));
-                    std::cout << "group_11;" << cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second) << ";" << steeringAngle << std::endl;
+                    double steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
+                    //unsigned long long int frameTimeStamp = static_cast<unsigned long long int>(cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second));
+                    //std::cout << "group_11;" << cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second) << ";" << steeringAngle << std::endl;
+
+                    std::cout << "second: " << steeringAngle << std::endl;
 
                 }
                 // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
@@ -123,6 +125,7 @@ int32_t main(int32_t argc, char **argv) {
                 // If you want to access the latest received ground steering, don't forget to lock the mutex:
                 {
                     std::lock_guard<std::mutex> lck(gsrMutex);
+                    std::cout << "main: groundSteering = " << gsr.groundSteering() << std::endl;
                 }
 
                 // Display image on your screen.
