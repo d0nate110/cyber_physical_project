@@ -1,52 +1,29 @@
 #include <opencv2/opencv.hpp>
 #include "algorithm.hpp"
+#include <cmath>
 
-#define MAX_STEERING_WHEEL_ANGLE 0.3
-#define MIN_STEERING_WHEEL_ANGLE -0.3
+double calculateSteeringWheelAngle(double coneAngle, double coneDistance, double angularVelocityZ)
+{
+   double steeringAngle{0.0};
 
-#define MAX_CONE_ANGLE 90
-#define MIN_CONE_ANGLE -90
 
-#define MAX_OPENCV_DISTANCE 268.365	
-#define MIN_OPENCV_DISTANCE 0
+   steeringAngle = angularVelocityZ * 0.002;
 
-#define HIGH_PRIORITY 0.75
-#define MIDDLE_PRIORITY 0.5
-#define LOW_PRIORITY 0.25
+   if(angularVelocityZ >= 20 || angularVelocityZ <= -20) {
+       steeringAngle = angularVelocityZ * 0.003;
 
-//Average of turn before another one as the difference
-#define AVERAGE_DIFFERENCE 0.00283774
 
-double calculateSteeringWheelAngle(double coneAngle, double coneDistance) {
+   }
 
-    /*float angleWeight = MIDDLE_PRIORITY;
-    float distanceWeight = MIDDLE_PRIORITY;
-    
-    float normalizedDistance = coneDistance / MAX_OPENCV_DISTANCE;
-    float normalizedAngle = coneAngle / MAX_CONE_ANGLE;
+   if (std::abs(steeringAngle) <= 0.03)
+   {
+       steeringAngle = 0;
+   }
 
-    //FORMULA1
-    //float steeringAngle = (normalizedDistance * distanceWeight + normalizedAngle * angleWeight) * MAX_STEERING_WHEEL_ANGLE;
 
-    //FORMULA2
-    float steeringAngle = (normalizedDistance * 0.1 +  normalizedAngle * 0.1 + 0.173450638 * 0.8) * MAX_STEERING_WHEEL_ANGLE;
-
-    //FORMULA3
-    float steeringAngle = 0;
-    if(coneAngle < 0){
-        steeringAngle = (normalizedDistance * 0.1 +  normalizedAngle * 0.1 + -0.052035191 * 0.8) * MAX_STEERING_WHEEL_ANGLE;
-    }
-    else {
-        steeringAngle = (normalizedDistance * 0.1 +  normalizedAngle * 0.1 + 0.052035191 * 0.8) * MAX_STEERING_WHEEL_ANGLE;
-    }
-    */
-    
-
-    float angleWeight = MIDDLE_PRIORITY;
-    float distanceWeight = MIDDLE_PRIORITY;
-
-    float normalizedDistance = coneDistance / MAX_OPENCV_DISTANCE;
-    float normalizedAngle = coneAngle / MAX_CONE_ANGLE;
-
-    return steeringAngle;
+   return steeringAngle;
 }
+
+
+
+
