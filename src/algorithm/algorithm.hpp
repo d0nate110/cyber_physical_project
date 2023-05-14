@@ -3,6 +3,6 @@
 
 #include <opencv2/opencv.hpp>
 
-double calculateSteeringWheelAngle(double coneDistance, double coneAngle, double angularVelocityZ); 
+double calculateSteeringWheelAngle(double coneDistance, double angularVelocityZ); 
 
 #endif
