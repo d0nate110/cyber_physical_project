@@ -133,16 +133,12 @@ int32_t main(int32_t argc, char **argv) {
                    angularVZ = avr.angularVelocityZ();
 
 
-                   double coneAngle = coneData[0];
-                   double coneDistance = coneData[1];
-
-
-                   double steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance, angularVZ);
-                   std::cout << "second: " << steeringAngle << std::endl;
+                   double steeringAngle = calculateSteeringWheelAngle(angularVZ);
+                   //std::cout << "second: " << steeringAngle << std::endl;
 
 
                    //unsigned long long int frameTimeStamp = static_cast<unsigned long long int>(cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second));
-                   //std::cout << "group_11;" << cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second) << ";" << steeringAngle << std::endl;
+                   std::cout << "group_11;" << cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second) << ";" << steeringAngle << std::endl;
 
 
                }
@@ -162,7 +158,7 @@ int32_t main(int32_t argc, char **argv) {
                    //std::cout << "y:  " << avr.angularVelocityY() << std::endl;
                    //std::cout << "z:  " << avr.angularVelocityZ() << std::endl;
 
-                   std::cout << "main: groundSteering = " << gsr.groundSteering() << std::endl;
+                   //std::cout << "main: groundSteering = " << gsr.groundSteering() << std::endl;
 
 
                }

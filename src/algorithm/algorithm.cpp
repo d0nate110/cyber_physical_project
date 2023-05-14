@@ -2,7 +2,7 @@
 #include "algorithm.hpp"
 #include <cmath>
 
-double calculateSteeringWheelAngle(double coneDistance, double angularVelocityZ)
+double calculateSteeringWheelAngle(double angularVelocityZ)
 {
    // declare steeringAngle double and initialize it 0.0.
    double steeringAngle{0.0};
