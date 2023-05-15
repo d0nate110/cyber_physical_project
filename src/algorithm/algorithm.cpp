@@ -2,56 +2,56 @@
 #include "algorithm.hpp"
 #include <cmath>
 
-#define MAX_STEERING_WHEEL_ANGLE 0.3
-#define MIN_STEERING_WHEEL_ANGLE -0.3
+constexpr double MAX_STEERING_WHEEL_ANGLE{0.28};
+constexpr double MIN_STEERING_WHEEL_ANGLE{-0.28};
 
-#define MAX_CONE_ANGLE 90
-#define MIN_CONE_ANGLE -90
+constexpr double MAX_CONE_ANGLE{90};
+constexpr double MIN_CONE_ANGLE{-90};
 
-#define MAX_OPENCV_DISTANCE 268.365	
-#define MIN_OPENCV_DISTANCE 0
+constexpr double MAX_OPENCV_DISTANCE{268.365};  
+constexpr double MIN_OPENCV_DISTANCE{0};
 
-#define HIGH_PRIORITY 0.75
-#define MIDDLE_PRIORITY 0.5
-#define LOW_PRIORITY 0.25
+constexpr double HIGH_PRIORITY{0.75};
+constexpr double MIDDLE_PRIORITY{0.5};
+constexpr double LOW_PRIORITY{0.25};
 
-//Average of turn before another one as the difference
-#define AVERAGE_DIFFERENCE 0.00283774
-
-double calculateSteeringWheelAngle(double coneAngle, double coneDistance) {
-
-    float steeringAngle = 0.0;
-    float angleWeight = LOW_PRIORITY;
-    float distanceWeight = HIGH_PRIORITY;
+// Average of turn before another one as the difference 0.22 | 0.05 --> 0
+constexpr double AVERAGE_DIFFERENCE{0.00283774};
+constexpr double AVERAGE_BIG_TURNING_VALUE{0.22};
+ 
+double calculateSteeringWheelAngle(double coneAngle, double coneDistance)
+{
+    double steeringAngle{0.0};
+    double angleWeight{LOW_PRIORITY};
+    double distanceWeight{HIGH_PRIORITY};
     
-    float normalizedDistance = 1 - (coneDistance / MAX_OPENCV_DISTANCE);
-    float normalizedAngle = 0;
+    const double normalizedDistance{1 - (coneDistance / MAX_OPENCV_DISTANCE)};
+    double normalizedAngle{0};
 
-    if(coneAngle > 90.0) {
-        coneAngle = 90.0;
-    }
-    else if(coneAngle < -90.0) {
-        coneAngle = -90.0;
-    }
+    double clampedConeAngle{std::clamp(coneAngle, MIN_CONE_ANGLE, MAX_CONE_ANGLE)};
 
-    if (coneAngle < 0)
+    if (clampedConeAngle < 0)
     {
-        normalizedAngle = 1 - (-coneAngle / MAX_CONE_ANGLE);
+        normalizedAngle = 1 - (-clampedConeAngle / MAX_CONE_ANGLE);
         steeringAngle = (normalizedDistance * distanceWeight + normalizedAngle * angleWeight) * MIN_STEERING_WHEEL_ANGLE;
     }
-
-    else{
-        normalizedAngle = 1 - (coneAngle / MAX_CONE_ANGLE);
-        if (normalizedAngle > 1)
-        {
-            normalizedAngle = 1;
-        }
+    else
+    {
+        normalizedAngle = 1 - (clampedConeAngle / MAX_CONE_ANGLE);
+        normalizedAngle = std::min(normalizedAngle, 1.0);
         steeringAngle = (normalizedDistance * distanceWeight + normalizedAngle * angleWeight) * MAX_STEERING_WHEEL_ANGLE;
     }
 
-    if (steeringAngle > -0.03 && steeringAngle < 0.03)
+    if (std::abs(steeringAngle) < 0.05)
     {
         steeringAngle = 0;
+    }
+    else if (steeringAngle > 1.5){
+        steeringAngle = AVERAGE_BIG_TURNING_VALUE;
+    }
+
+    else if (steeringAngle < -1.5){
+        steeringAngle = -AVERAGE_BIG_TURNING_VALUE;
     }
 
     return steeringAngle;
