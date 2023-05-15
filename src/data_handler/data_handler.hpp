@@ -17,5 +17,6 @@ public:
     static std::string* read_csv_file(char* path);
     static bool write_csv_file(const std::string&, std::string[]);
     static bool write_csv_file(const std::string&,const std::vector<std::pair<unsigned long long int, double>>&);
+    static bool write_csv_file(const std::string&, const std::vector<int>&, const std::vector<int>&, const std::vector<std::pair<unsigned long long int, double>>&, const std::vector<std::pair<unsigned long long int, double>>&);
 };
 #endif
