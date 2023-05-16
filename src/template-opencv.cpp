@@ -49,10 +49,10 @@
 #include "utility"
 
 int32_t main(int32_t argc, char **argv) {
-  
+
    std::vector<double> coneData;
    coneData.resize(2);
-  
+
    int32_t retCode{1};
    // Parse the command line parameters as we require the user to specify some mandatory information on startup.
    auto commandlineArguments = cluon::getCommandlineArguments(argc, argv);
@@ -112,7 +112,6 @@ int32_t main(int32_t argc, char **argv) {
            while (od4.isRunning()) {
                // OpenCV data structure to hold an image.
                cv::Mat img;
-               double angularVZ = 0.0;
 
 
                // Wait for a notification of a new frame.
@@ -127,13 +126,17 @@ int32_t main(int32_t argc, char **argv) {
                    cv::Mat wrapped(HEIGHT, WIDTH, CV_8UC4, sharedMemory->data());
                    img = wrapped.clone();
 
+
+
                    coneData = detectCones(img);
 
+                   float coneAngle = coneData[0];
+                   float coneDistance = coneData[1];
 
-                   angularVZ = avr.angularVelocityZ();
+                   float steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
 
+                   //std::cout << steeringAngle << std::endl;
 
-                   double steeringAngle = calculateSteeringWheelAngle(angularVZ);
                    //std::cout << "second: " << steeringAngle << std::endl;
 
 

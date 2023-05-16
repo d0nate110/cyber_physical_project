@@ -1,26 +1,23 @@
 #include <opencv2/opencv.hpp>
 #include "algorithm.hpp"
-#include <cmath>
 
-double calculateSteeringWheelAngle(double angularVelocityZ)
-{
-   // declare steeringAngle double and initialize it 0.0.
-   double steeringAngle{0.0};
-   // multiply angularVelocity value by 0.003, and assign it to steeringAngle variable.
-   steeringAngle = angularVelocityZ * 0.003;
+#define MAX_STEERING_WHEEL_ANGLE 0.3
+#define MIN_STEERING_WHEEL_ANGLE -0.3
 
-   // if the steeringAngle variable bigger than or equal to 0.2, then set the variable to 0.240888. Because the max number in a track is 0.290888. 
-   if (steeringAngle >= 0.2) {
-    steeringAngle = 0.210888;
-   }  else if (steeringAngle <= -0.2) { // On the contrary, if the steeringAngle variable is less than -0.2, then set the variable to -0.290888.
-    steeringAngle = -0.210888;
+#define MAX_CONE_ANGLE 90
+#define MIN_CONE_ANGLE -90
 
-   }
+#define MAX_OPENCV_DISTANCE 268.365
+#define MIN_OPENCV_DISTANCE 0
 
+#define AVERAGE_DIFFERENCE 0.00283774
 
-   return steeringAngle;
+double calculateSteeringWheelAngle(double coneAngle, double coneDistance) {
+
+    float normalizedDistance = coneDistance / MAX_OPENCV_DISTANCE;
+    float normalizedAngle = coneAngle / MAX_CONE_ANGLE;
+
+    float steeringAngle = (normalizedDistance / 2 + normalizedAngle / 2) * MAX_STEERING_WHEEL_ANGLE;
+
+    return steeringAngle;
 }
-
-
-
-
