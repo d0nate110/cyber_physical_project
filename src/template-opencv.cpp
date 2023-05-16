@@ -130,10 +130,10 @@ int32_t main(int32_t argc, char **argv) {
 
                    coneData = detectCones(img);
 
-                   float coneAngle = coneData[0];
-                   float coneDistance = coneData[1];
+                   double coneAngle = coneData[0];
+                   double coneDistance = coneData[1];
 
-                   float steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
+                   double steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
 
                    //std::cout << steeringAngle << std::endl;
 
