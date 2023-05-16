@@ -139,9 +139,7 @@ bool data_handler::write_csv_file(const string& path, const vector<pair<unsigned
                  << dataOut[i].second
                  << "\n";
         }
-        if(fout.is_open()) {
-            cout << "It is open" << endl;
-        }
+
         if (fout.fail()) {
             throw runtime_error("Could not create file");
         }
@@ -172,9 +170,6 @@ bool data_handler::write_csv_file(const string& path, const vector<int>& indexDa
                  << "\n";
         }
 
-        if(fout.is_open()) {
-            cout << "It is open" << endl;
-        }
         if (fout.fail()) {
             throw runtime_error("Could not create file");
         }
