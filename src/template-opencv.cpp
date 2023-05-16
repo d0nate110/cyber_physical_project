@@ -112,6 +112,7 @@ int32_t main(int32_t argc, char **argv) {
            while (od4.isRunning()) {
                // OpenCV data structure to hold an image.
                cv::Mat img;
+               double angularVZ = 0.0;
 
 
                // Wait for a notification of a new frame.
@@ -130,10 +131,14 @@ int32_t main(int32_t argc, char **argv) {
 
                    coneData = detectCones(img);
 
+                   angularVZ = avr.angularVelocityZ();
+
+
                    double coneAngle = coneData[0];
                    double coneDistance = coneData[1];
 
-                   double steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance);
+
+                   double steeringAngle = calculateSteeringWheelAngle(coneAngle, coneDistance, angularVZ);
 
                    //std::cout << steeringAngle << std::endl;
 
