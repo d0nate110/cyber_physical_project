@@ -18,7 +18,6 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 // Include the single-file, header-only middleware libcluon to create high-performance microservices
 #include "cluon-complete.hpp"
 #include <ctime>
@@ -29,24 +28,6 @@
 // Include the GUI and image processing header files from OpenCV
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-
-
-#define BLUE_HUE_MIN 102
-#define BLUE_SATURATION_MIN 65
-#define BLUE_VALUE_MIN 40
-#define BLUE_HUE_MAX 135
-#define BLUE_SATURATION_MAX 255
-#define BLUE_VALUE_MAX 134
-
-
-#define YELLOW_HUE_MIN 9
-#define YELLOW_SATURATION_MIN 0
-#define YELLOW_VALUE_MIN 147
-#define YELLOW_HUE_MAX 76
-#define YELLOW_SATURATION_MAX 255
-#define YELLOW_VALUE_MAX 255
-
-
 #include "cone_detector/cone_detector.hpp"
 #include "algorithm/algorithm.hpp"
 #include "utility"
@@ -84,11 +65,9 @@ int32_t main(int32_t argc, char **argv) {
        if (sharedMemory && sharedMemory->valid()) {
            std::clog << argv[0] << ": Attached to shared memory '" << sharedMemory->name() << " (" << sharedMemory->size() << " bytes)." << std::endl;
 
-
            // Interface to a running OpenDaVINCI session where network messages are exchanged.
            // The instance od4 allows you to send and receive messages.
            cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]))};
-
 
            opendlv::proxy::GroundSteeringRequest gsr;
            opendlv::proxy::AngularVelocityReading avr;
@@ -106,10 +85,8 @@ int32_t main(int32_t argc, char **argv) {
                avr = cluon::extractMessage<opendlv::proxy::AngularVelocityReading>(std::move(env));
            };
 
-
            od4.dataTrigger(opendlv::proxy::GroundSteeringRequest::ID(), onGroundSteeringRequest);
            od4.dataTrigger(opendlv::proxy::AngularVelocityReading::ID(), onAngularVelocityReading);
-
 
            // Endless loop; end the program by pressing Ctrl-C.
            while (od4.isRunning()) {
@@ -117,10 +94,8 @@ int32_t main(int32_t argc, char **argv) {
                cv::Mat img;
                double angularVZ = 0.0;
 
-
                // Wait for a notification of a new frame.
                sharedMemory->wait();
-
 
                // Lock the shared memory. Modified on the 4th and 15th of May
                sharedMemory->lock();
@@ -132,40 +107,22 @@ int32_t main(int32_t argc, char **argv) {
 
                    coneData = detectCones(img);
 
-
                    angularVZ = avr.angularVelocityZ();
 
-
                    double steeringAngle = calculateSteeringWheelAngle(angularVZ);
-                   //std::cout << "second: " << steeringAngle << std::endl;
-
 
                    //unsigned long long int frameTimeStamp = static_cast<unsigned long long int>(cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second));
                    std::cout << "group_11;" << cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second) << ";" << steeringAngle << std::endl;
-
-
                }
                // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
 
-
                sharedMemory->unlock();
-
 
                // If you want to access the latest received ground steering, don't forget to lock the mutex:
                {
                    std::lock_guard<std::mutex> lck2(avrMutex);
                    std::lock_guard<std::mutex> lck(gsrMutex);
-  
-
-                   //std::cout << "x:  " << avr.angularVelocityX() << std::endl;
-                   //std::cout << "y:  " << avr.angularVelocityY() << std::endl;
-                   //std::cout << "z:  " << avr.angularVelocityZ() << std::endl;
-
-                   //std::cout << "main: groundSteering = " << gsr.groundSteering() << std::endl;
-
-
                }
-
 
                // Display image on your screen.
               
