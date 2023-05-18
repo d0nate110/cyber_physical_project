@@ -34,22 +34,15 @@ double performance_tests::algorithm_accuracy(const string& errorPath, const vect
             }else if(((dataSteering[i].second + errorMarg) < 0) && ((dataSteering[i].second + errorMarg) <= outputContent[timestampCheckOutputIndex].second) && ((dataSteering[i].second - errorMarg) >= outputContent[timestampCheckOutputIndex].second)) {
                 totalCorrect++;
             }else {
-                cout << "data: " << dataSteering[i].second << " zero: " << (dataSteering[i].second + ERROR_MARGINE  >= outputContent[timestampCheckOutputIndex].second) << " " << ((dataSteering[i].second - ERROR_MARGINE) <= outputContent[timestampCheckOutputIndex].second) << " " << (dataSteering[i].second + ERROR_MARGINE) << " " << dataSteering[i].second - ERROR_MARGINE;
-                cout << " upper: " << dataSteering[i].second + errorMarg << " lower: " << dataSteering[i].second - errorMarg << " out: " << outputContent[timestampCheckOutputIndex].second;
-                cout << " bools: " << ((dataSteering[i].second + errorMarg) > 0) << " !! " << ((dataSteering[i].second + errorMarg) >= outputContent[timestampCheckOutputIndex].second) << " :: " << ((dataSteering[i].second - errorMarg) <= outputContent[timestampCheckOutputIndex].second);
-                cout << " :: "  << ((dataSteering[i].second + errorMarg) > 0) << " !! "  << ((dataSteering[i].second + errorMarg) <= outputContent[timestampCheckOutputIndex].second) << " :: " << ((dataSteering[i].second - errorMarg) >= outputContent[timestampCheckOutputIndex].second);
                 outIndex.push_back(timestampCheckOutputIndex);
                 dataIndex.push_back(i);
                 dataErrors.emplace_back(dataSteering[i].first, dataSteering[i].second);
                 outErrors.emplace_back(outputContent[timestampCheckOutputIndex].first, outputContent[timestampCheckOutputIndex].second);
             }
-
-            cout << " while: " << ((outputContent[timestampCheckOutputIndex].first) < dataSteering[i].first) << " :: " << ((outputContent[timestampCheckOutputIndex + 1].first) >= dataSteering[i].first);
-            cout << " val: " << (outputContent[timestampCheckOutputIndex].first) << " :: " << dataSteering[i].first << " :: " << (outputContent[timestampCheckOutputIndex + 1].first) << endl;
         }
 
 
-        cout << data_handler::write_csv_file(errorPath, dataIndex, outIndex, dataErrors, outErrors) << endl;
+       data_handler::write_csv_file(errorPath, dataIndex, outIndex, dataErrors, outErrors);
 
     }catch (exception& e) {
         cout << e.what() << endl;

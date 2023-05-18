@@ -118,6 +118,8 @@ plot:
     - apt-get update 
     - apt install -qq -y gnuplot git
   script:
+    - cd src
+    - cd scripts
     - ls
     - git checkout $CI_COMMIT_BRANCH && git pull
     - |-

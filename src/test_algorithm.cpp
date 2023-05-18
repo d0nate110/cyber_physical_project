@@ -7,7 +7,7 @@ using namespace std;
 
 //THESE TESTS SHOW THE ACCURACY OF THE ALGO
 TEST_CASE("Test Algorithm Accuracy - File 1") {
-    string errorPath = "./algorithm_error_diff/Out1Err.csv";
+    string errorPath = "./test/algorithm_error_diff/Out1Err.csv";
 
     string filePath = "./data/Data1_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
@@ -22,7 +22,7 @@ TEST_CASE("Test Algorithm Accuracy - File 1") {
 }
 
 TEST_CASE("Test Algorithm Accuracy - File 2") {
-    string errorPath = "./algorithm_error_diff/Out2Err.csv";
+    string errorPath = "./test/algorithm_error_diff/Out2Err.csv";
 
     string filePath = "./data/Data2_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
@@ -37,7 +37,7 @@ TEST_CASE("Test Algorithm Accuracy - File 2") {
 }
 
 TEST_CASE("Test Algorithm Accuracy - File 3") {
-    string errorPath = "./algorithm_error_diff/Out3Err.csv";
+    string errorPath = "./test/algorithm_error_diff/Out3Err.csv";
 
     string filePath = "./data/Data3_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
@@ -53,7 +53,7 @@ TEST_CASE("Test Algorithm Accuracy - File 3") {
 
 
 TEST_CASE("Test Algorithm Accuracy - File 4") {
-    string errorPath = "./algorithm_error_diff/Out4Err.csv";
+    string errorPath = "./test/algorithm_error_diff/Out4Err.csv";
 
     string filePath = "./data/Data4_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);
@@ -68,7 +68,7 @@ TEST_CASE("Test Algorithm Accuracy - File 4") {
 }
 
 TEST_CASE("Test Algorithm Accuracy - File 5") {
-    string errorPath = "./algorithm_error_diff/Out5Err.csv";
+    string errorPath = "./test/algorithm_error_diff/Out5Err.csv";
 
     string filePath = "./data/Data5_SteeringAngle.csv";
     vector<pair<unsigned long long int, double>> dataValue = data_handler::read_csv_file(filePath);

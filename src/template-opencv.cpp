@@ -1,6 +1,9 @@
 /*
 * Copyright (C) 2020  Christian Berger
 *
+* Modified by Oscar Reina Gustafsson on 4th of May
+* Modified by Anton Golubenko on 15th of May
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
@@ -119,7 +122,7 @@ int32_t main(int32_t argc, char **argv) {
                sharedMemory->wait();
 
 
-               // Lock the shared memory.
+               // Lock the shared memory. Modified on the 4th and 15th of May
                sharedMemory->lock();
                {
                    std::pair<unsigned long long int, double> tempOut;

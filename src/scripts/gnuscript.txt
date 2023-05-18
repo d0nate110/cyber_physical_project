@@ -4,9 +4,9 @@ set datafile separator ";"
 do for [i=1:5] {
 	png_file = sprintf("graph%d.png",i)
 	set output png_file
-	output_file = sprintf("src/algorithm_output/Output%d_SteeringAngle.csv",i)
+	output_file = sprintf("../algorithm_output/Output%d_SteeringAngle.csv",i)
 	prev_commit = sprintf("old_output%d.csv",i)
-	vid_file = sprintf("src/data/Data%d_SteeringAngle.csv",i)
+	vid_file = sprintf("../data/Data%d_SteeringAngle.csv",i)
 	vid_gsr_title = sprintf("Video #%d's GSR",i)
 	set xlabel "sampleTimeStamp (ms)"
 	set ylabel "groundSteeringReq"
