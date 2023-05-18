@@ -1,4 +1,5 @@
 # Copyright (C) 2020  Christian Berger
+# Modified by Oscar Reina Gustafsson and Burak Askan on 4th May 2023
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -74,6 +75,7 @@ add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/opendlv-standard-message-set.hpp
 include_directories(SYSTEM ${CMAKE_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 # Add directory to compile
+# Added new directories to compile on the 4th of May changes
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector
         ${CMAKE_CURRENT_SOURCE_DIR}/src/test
         ${CMAKE_CURRENT_SOURCE_DIR}/src/data_handler
@@ -99,7 +101,8 @@ include_directories(SYSTEM ${OpenCV_INCLUDE_DIRS})
 set(LIBRARIES ${LIBRARIES} ${OpenCV_LIBS})
 
 ################################################################################
-# Create executable. / Adding the rest of the .cpp files
+# Create executable
+# Create new executables to compile on the 4th of May changes
 add_executable(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector/cone_detector.cpp
