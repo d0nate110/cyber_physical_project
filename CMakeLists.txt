@@ -1,4 +1,5 @@
 # Copyright (C) 2020  Christian Berger
+# Modified by Oscar Reina Gustafsson and Burak Askan on 4th of May
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,7 +31,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" ${CMAKE_MODULE_PATH})
 
 ################################################################################
 # This project requires C++14 or newer.
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 # Build a static binary.
@@ -73,10 +74,14 @@ add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/opendlv-standard-message-set.hpp
 # Add current build directory as include directory as it contains generated files.
 include_directories(SYSTEM ${CMAKE_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
-# Add directory to compile
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector)
+# Add directory to compile. Modified on the 4th of May: added directories that need to be compiled
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/test
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/data_handler
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/data
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithm_output
+        )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/algorithm)
-
 ################################################################################
 # Gather all object code first to avoid double compilation.
 set(LIBRARIES Threads::Threads)
@@ -95,8 +100,14 @@ include_directories(SYSTEM ${OpenCV_INCLUDE_DIRS})
 set(LIBRARIES ${LIBRARIES} ${OpenCV_LIBS})
 
 ################################################################################
-# Create executable. / Adding the rest of the .cpp files
-add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector/cone_detector.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithm/algorithm.cpp)
+# Create executable. / Modified on the 4th of May: adding the rest of the .cpp files that need to be executed
+add_executable(${PROJECT_NAME}
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/cone_detector/cone_detector.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/data_handler/data_handler.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/test/performance_tests.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithm/algorithm.cpp)
+
 target_link_libraries(${PROJECT_NAME} ${LIBRARIES})
 
 # Add dependency to OpenDLV Standard Message Set.
