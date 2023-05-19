@@ -99,7 +99,7 @@ release:
   before_script:
     - CI_COMMIT_TAG=$CI_COMMIT_TAG ./regex-check.sh
   script:
-  ##  - cd src
+  #  - cd src
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx create --name platformbuilder --use
