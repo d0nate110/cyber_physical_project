@@ -1,0 +1,18 @@
+set terminal pngcairo dashed size 1920,1080
+set datafile separator ";"
+
+do for [i=1:5] {
+	png_file = sprintf("graph%d.png",i)
+	set output png_file
+	output_file = sprintf("../algorithm_output/Output%d_SteeringAngle.csv",i)
+	prev_commit = sprintf("old_output%d.csv",i)
+	vid_file = sprintf("../data/Data%d_SteeringAngle.csv",i)
+	vid_gsr_title = sprintf("Video #%d's GSR",i)
+	set xlabel "sampleTimeStamp (ms)"
+	set ylabel "groundSteeringReq"
+	set key outside
+	plot \
+	output_file using 2:3 title "Current Commit's GSR" with lines lw 1.5, \
+	vid_file using ($5*1000000+$6):7 title vid_gsr_title with lines lw 2.5, \
+	prev_commit using 2:3 title "Prev Commit's GSR" with lines dt 2 lw 1.25
+}

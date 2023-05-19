@@ -1,4 +1,3 @@
-sent.seconds;sent.microseconds;received.seconds;received.microseconds;sampleTimeStamp.seconds;sampleTimeStamp.microseconds;distance;
 1584543153;114194;868;604465;1584543153;114097;1.14;
 1584543153;217352;868;709473;1584543153;217283;0.84;
 1584543153;318022;868;808190;1584543153;317950;1.42;
