@@ -131,8 +131,8 @@ plot:
     - gnuplot gnuscript.txt
   artifacts:
     paths:
-      - graph1.png
-      - graph2.png
-      - graph3.png
-      - graph4.png
-      - graph5.png
+      - src/scripts/graph1.png
+      - src/scripts/graph2.png
+      - src/scripts/graph3.png
+      - src/scripts/graph4.png
+      - src/scripts/graph5.png
