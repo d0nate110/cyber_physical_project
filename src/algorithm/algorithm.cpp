@@ -16,8 +16,6 @@ double calculateSteeringWheelAngle(double angularVelocityZ)
     steeringAngle = -0.21;
 
    }
-
-
    return steeringAngle;
 }
 
