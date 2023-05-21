@@ -7,6 +7,14 @@
 
 using namespace std;
 
+/**
+ * Method which estimates the accuracy of the algorithm based on given steering angle data and our own outputted steering angle data
+ * Frames where angles do not match are printed into a csv file
+ * @param errorPath string path for collecting inaccurate frame data
+ * @param dataSteering array of pairs containing frametimestamp and steering angle from given data
+ * @param outputContent array of pairs containing frametimestamp and steering angle from outputted data from our algorithm
+ * @return percentage of total accuracy.
+ */
 double performance_tests::algorithm_accuracy(const string& errorPath, const vector<pair<unsigned long long int, double>>& dataSteering, const std::vector<std::pair<unsigned long long int, double>>& outputContent) {
     double percentageAccuracy;
     double totalCorrect = 0;
@@ -54,6 +62,12 @@ double performance_tests::algorithm_accuracy(const string& errorPath, const vect
     return percentageAccuracy;
 }
 
+/**
+ * Collects the total time of both given csv files
+ * @param dataSteering array of pairs containing frametimestamp and steering angle from given data
+ * @param outputContent array of pairs containing frametimestamp and steering angle from outputted data from our algorithm
+ * @return pair containing ( given data time, algorithm data time)
+ */
 pair<int, int> performance_tests::algorithm_performance_time(const vector<pair<unsigned long long int, double>>& dataSteering, const std::vector<std::pair<unsigned long long int, double>>& outputContent){
     pair<int, int> performances;
 
@@ -63,8 +77,8 @@ pair<int, int> performance_tests::algorithm_performance_time(const vector<pair<u
     int dataSecondsFirst = dataSteering[0].first/1000000;
     int dataSecondsLast = dataSteering[dataSteering.size() - 1].first/1000000;
 
-    int dataTime =  outputSecondsLast - outputSecondsFirst;
-    int outputTime =  dataSecondsLast - dataSecondsFirst;
+    int outputTime =  outputSecondsLast - outputSecondsFirst;
+    int dataTime =  dataSecondsLast - dataSecondsFirst;
 
 
     performances = make_pair(dataTime, outputTime);
@@ -72,6 +86,12 @@ pair<int, int> performance_tests::algorithm_performance_time(const vector<pair<u
     return performances;
 }
 
+/**
+ * Checks how many seconds within the algorithm contain 10 frames
+ * @param dataSteering array of pairs containing frametimestamp and steering angle from given data
+ * @param outputContent array of pairs containing frametimestamp and steering angle from outputted data from our algorithm
+ * @return percentage of seconds that contain 10 frames
+ */
 double performance_tests::algorithm_performance_frame(const vector<pair<unsigned long long int, double>>& dataSteering, const std::vector<std::pair<unsigned long long int, double>>& outputContent){
     int framesCounter = 0;
     double secondsWithFrames = 0;
