@@ -3,6 +3,7 @@
 *
 * Modified by Oscar Reina Gustafsson on 4th of May
 * Modified by Anton Golubenko on 15th of May
+* Modified by Dragos Florinel Isar on 21st of May
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -68,34 +69,39 @@ int32_t main(int32_t argc, char **argv) {
             display_provided = true;
         }
 
-       // Attach to the shared memory.
-       std::unique_ptr<cluon::SharedMemory> sharedMemory{new cluon::SharedMemory{NAME}};
-       if (sharedMemory && sharedMemory->valid()) {
+     // Create an OD4Session object with the specified command line argument for the CID
+    cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]))};
 
-           std::clog << argv[0] << ": Attached to shared memory '" << sharedMemory->name() << " (" << sharedMemory->size() << " bytes)." << std::endl;
+    // Create a unique pointer to a SharedMemory object with the specified NAME
+    std::unique_ptr<cluon::SharedMemory> sharedMemory{new cluon::SharedMemory{NAME}};
+    
+    // Check if the shared memory object is valid and print information about it if valid
+    if (sharedMemory && sharedMemory->valid()) {
+    std::clog << argv[0] << ": Attached to shared memory '" << sharedMemory->name() << " (" << sharedMemory->size() << " bytes)." << std::endl;
 
-           // Interface to a running OpenDaVINCI session where network messages are exchanged.
-           // The instance od4 allows you to send and receive messages.
-           cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]))};
+    // Create GroundSteeringRequest and AngularVelocityReading objects
+    opendlv::proxy::GroundSteeringRequest gsr;
+    opendlv::proxy::AngularVelocityReading avr;
 
-           opendlv::proxy::GroundSteeringRequest gsr;
-           opendlv::proxy::AngularVelocityReading avr;
-           std::mutex gsrMutex, avrMutex;
-           auto onGroundSteeringRequest = [&gsr, &gsrMutex](cluon::data::Envelope &&env){
-               // The envelope data structure provide further details, such as sampleTimePoint as shown in this test case:
-               // https://github.com/chrberger/libcluon/blob/master/libcluon/testsuites/TestEnvelopeConverter.cpp#L31-L40
-               std::lock_guard<std::mutex> lck(gsrMutex);
-               gsr = cluon::extractMessage<opendlv::proxy::GroundSteeringRequest>(std::move(env));
-           };
-           auto onAngularVelocityReading = [&avr, &avrMutex](cluon::data::Envelope &&env){
-               // The envelope data structure provide further details, such as sampleTimePoint as shown in this test case:
-               // https://github.com/chrberger/libcluon/blob/master/libcluon/testsuites/TestEnvelopeConverter.cpp#L31-L40
-               std::lock_guard<std::mutex> lck(avrMutex);
-               avr = cluon::extractMessage<opendlv::proxy::AngularVelocityReading>(std::move(env));
-           };
+    // Create mutexes for thread safety
+    std::mutex gsrMutex;
+    std::mutex avrMutex;
 
-           od4.dataTrigger(opendlv::proxy::GroundSteeringRequest::ID(), onGroundSteeringRequest);
-           od4.dataTrigger(opendlv::proxy::AngularVelocityReading::ID(), onAngularVelocityReading);
+    // Define lambda functions for handling data received from OD4Session
+    auto onGroundSteeringRequest = [&gsr, &gsrMutex](cluon::data::Envelope &&env) {
+        std::lock_guard<std::mutex> lck(gsrMutex);
+        gsr = cluon::extractMessage<opendlv::proxy::GroundSteeringRequest>(std::move(env));
+    };
+    auto onAngularVelocityReading = [&avr, &avrMutex](cluon::data::Envelope &&env) {
+        std::lock_guard<std::mutex> lck2(avrMutex);
+        avr = cluon::extractMessage<opendlv::proxy::AngularVelocityReading>(std::move(env));
+    };
+
+    // Register the lambda functions as data triggers for the corresponding message types
+    od4.dataTrigger(opendlv::proxy::GroundSteeringRequest::ID(), onGroundSteeringRequest);
+    od4.dataTrigger(opendlv::proxy::AngularVelocityReading::ID(), onAngularVelocityReading);
+
+    // Rest of the code
 
            // Endless loop; end the program by pressing Ctrl-C.
            while (od4.isRunning()) {
@@ -127,15 +133,8 @@ int32_t main(int32_t argc, char **argv) {
                    //unsigned long long int frameTimeStamp = static_cast<unsigned long long int>(cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second));
                    std::cout << "group_11;" << cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second) << ";" << steeringAngle << std::endl;
                }
-               // TODO: Here, you can add some code to check the sampleTimePoint when the current frame was captured.
 
                sharedMemory->unlock();
-
-               // If you want to access the latest received ground steering, don't forget to lock the mutex:
-               {
-                   std::lock_guard<std::mutex> lck2(avrMutex);
-                   std::lock_guard<std::mutex> lck(gsrMutex);
-               }
 
                // Display image on your screen.
               
