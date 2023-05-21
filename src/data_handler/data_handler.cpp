@@ -111,9 +111,9 @@ string* data_handler::read_csv_file(char* path) {
 }
 /**
  * Overwrites/writes a file with the given string. Supposed to be for allpurposes
- * @param path
- * @param data
- * @return
+ * @param path the path at which the file shall be located
+ * @param data a large string containing everything to be printed
+ * @return true if success, false if unsuccessful
  */
 bool data_handler::write_csv_file(const string& path, string data[]) {
 
