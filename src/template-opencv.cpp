@@ -23,6 +23,7 @@
 #include <ctime>
 // Include the OpenDLV Standard Message Set that contains messages that are usually exchanged for automotive or robotic applications
 #include "opendlv-standard-message-set.hpp"
+#include <cstdlib>
 
 
 // Include the GUI and image processing header files from OpenCV
@@ -36,6 +37,8 @@ int32_t main(int32_t argc, char **argv) {
   
    std::vector<double> coneData;
    coneData.resize(2);
+
+    bool display_provided = false;
   
    int32_t retCode{1};
    // Parse the command line parameters as we require the user to specify some mandatory information on startup.
@@ -53,16 +56,22 @@ int32_t main(int32_t argc, char **argv) {
        std::cerr << "Example: " << argv[0] << " --cid=253 --name=img --width=640 --height=480 --verbose" << std::endl;
    }
    else {
-       // Extract the values from the command line parameters
-       const std::string NAME{commandlineArguments["name"]};
-       const uint32_t WIDTH{static_cast<uint32_t>(std::stoi(commandlineArguments["width"]))};
-       const uint32_t HEIGHT{static_cast<uint32_t>(std::stoi(commandlineArguments["height"]))};
-       const bool VERBOSE{commandlineArguments.count("verbose") != 0};
+        // Extract the values from the command line parameters
+        const std::string NAME{commandlineArguments["name"]};
+        const uint32_t WIDTH{static_cast<uint32_t>(std::stoi(commandlineArguments["width"]))};
+        const uint32_t HEIGHT{static_cast<uint32_t>(std::stoi(commandlineArguments["height"]))};
+        const bool VERBOSE{commandlineArguments.count("verbose") != 0};
 
+        // Checks whether the DISPLAY argument is provided or not by accessing the environment variables
+        const char* display_env = std::getenv("DISPLAY");
+        if (display_env != nullptr){
+            display_provided = true;
+        }
 
        // Attach to the shared memory.
        std::unique_ptr<cluon::SharedMemory> sharedMemory{new cluon::SharedMemory{NAME}};
        if (sharedMemory && sharedMemory->valid()) {
+
            std::clog << argv[0] << ": Attached to shared memory '" << sharedMemory->name() << " (" << sharedMemory->size() << " bytes)." << std::endl;
 
            // Interface to a running OpenDaVINCI session where network messages are exchanged.
@@ -104,11 +113,15 @@ int32_t main(int32_t argc, char **argv) {
                    // Copy the pixels from the shared memory into our own data structure.
                    cv::Mat wrapped(HEIGHT, WIDTH, CV_8UC4, sharedMemory->data());
                    img = wrapped.clone();
+                   
+                   //Signature is changed in order to check for VERBOSE tag as well as presence of DISPLAY source
+                   //Retrieving relevant cone angle and cone distance information from the img/frame
+                   coneData = detectCones(img, VERBOSE, display_provided);
 
-                   coneData = detectCones(img);
+                   //Retrieve z-axis measure for angular velocity
+                    angularVZ = avr.angularVelocityZ();
 
-                   angularVZ = avr.angularVelocityZ();
-
+                    //Calculate steering wheel angle according to the angular velocity
                    double steeringAngle = calculateSteeringWheelAngle(angularVZ);
 
                    //unsigned long long int frameTimeStamp = static_cast<unsigned long long int>(cluon::time::toMicroseconds(sharedMemory->getTimeStamp().second));
