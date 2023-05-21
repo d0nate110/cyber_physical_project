@@ -153,7 +153,12 @@ Our algorithm software depend on two other microservices.
 ![deployment_diagram](./src/assets/deployment_diagram.png)
 
 ### Structure
+The description for the components are as follows: 
 
+ - cone_detector: frame processing with HSV filtering and object detection with the goal of detecting cones **(DEPRICATED)**
+ - data_handler: performes input and output for csv files
+ - test: contains various types of methods used for testing
+ - algorithm: contains the logic which calculates the steering wheel angle
 ![component_diagram](./src/assets/component_diagram.png)
 
 ## Tools
