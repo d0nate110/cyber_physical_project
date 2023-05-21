@@ -9,6 +9,11 @@
 
 
 using namespace std;
+/**
+ * Reads the frametimestamp and steering angle from a csv file
+ * @param path the path belonging to the file which will be read
+ * @return a list of pairs containing frametimestamp and steering angle
+ */
 vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const string& path) {
     vector<pair< unsigned long long int, double>> time_angleList;
     vector<vector<string>> content;
@@ -71,6 +76,11 @@ vector<pair<unsigned long long int, double>> data_handler::read_csv_file(const s
     return time_angleList;
 }
 
+/**
+ * Method which reads a csv file that is any form. Supposed to be for allpurposes
+ * @param path the path belonging to the file which will be read
+ * @return a string containing everything from the csv file
+ */
 string* data_handler::read_csv_file(char* path) {
     string* outputContent = new string[MAX_CSV_SIZE];
     string line, word;
@@ -99,7 +109,12 @@ string* data_handler::read_csv_file(char* path) {
     outputContent[dataIndex] = " ";
     return outputContent;
 }
-
+/**
+ * Overwrites/writes a file with the given string. Supposed to be for allpurposes
+ * @param path
+ * @param data
+ * @return
+ */
 bool data_handler::write_csv_file(const string& path, string data[]) {
 
     try {
@@ -124,6 +139,12 @@ bool data_handler::write_csv_file(const string& path, string data[]) {
     return true;
 }
 
+/**
+ * Overwrites/writes a file with the framtimestamps and steering angles
+ * @param path the path at which the file shall be located
+ * @param dataOut the list of pairs containing frametimestamps and stering angle which shall be printed
+ * @return true if success, false if unsuccessful
+ */
 bool data_handler::write_csv_file(const string& path, const vector<pair<unsigned long long int, double>>& dataOut) {
 
     try {
@@ -152,6 +173,15 @@ bool data_handler::write_csv_file(const string& path, const vector<pair<unsigned
     return true;
 }
 
+/**
+ * Overwrites/writes a file with information about certain frames that were previously found as inaccurate
+ * @param path the path at which the file shall be located
+ * @param indexData the list of frame numbers from given data where comparision failed
+ * @param indexOut the list of frame numbers from outputted where comparision failed
+ * @param dataOut list of pairs containing frametimestamp and steeringwheelangle that was given
+ * @param algoOut list of pairs containing frametimestamp and steeringwheelangle that was outputted from our algorithm
+ * @return true if success, false if unsuccessful
+ */
 bool data_handler::write_csv_file(const string& path, const vector<int>& indexData, const vector<int>& indexOut, const vector<pair<unsigned long long int, double>>& dataOut, const vector<pair<unsigned long long int, double>>& algoOut) {
 
     try {
