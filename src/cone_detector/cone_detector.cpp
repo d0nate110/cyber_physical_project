@@ -16,6 +16,7 @@
 #define YELLOW_VALUE_MAX 255
 
 double detectConeDistance(cv::Point conePoint, cv::Point carPoint) {
+    //Calculate euclidian distance between two points using the OpenCV library
     double distance = cv::norm(carPoint - conePoint);
     return distance;
 }
@@ -26,12 +27,15 @@ double detectConeAngle(cv::Mat& roiImg, cv::Point conePoint, cv::Point carPoint,
 
     double dx = conePoint.x - carPoint.x;
     double dy = conePoint.y - carPoint.y;
+     //Calculating the angle from the cone to the car and parsing it from radians to degrees
     double coneAngle = atan2(dy, dx) * 180.0 / CV_PI;
 
     double dx2 = midScreenPoint.x - carPoint.x;
     double dy2 = midScreenPoint.y - carPoint.y;
+    //Calculating the angle from the car to the middle point of the screen and parsing it from radians to degrees
     double horizontalAngle = atan2(dy2, dx2) * 180.0 / CV_PI;
 
+    //Calculating the difference to obtain the angle formed from the car to the detected cone
     angle = coneAngle - horizontalAngle;
 
     return angle;
@@ -39,10 +43,11 @@ double detectConeAngle(cv::Mat& roiImg, cv::Point conePoint, cv::Point carPoint,
 
 std::vector<double> detectCones(cv::Mat& img, bool verbose_provided, bool display_provided) {
     
+    //Declaring data structure in order to store the cone information
     std::vector<double> coneData;
-
     coneData.resize(2);
     
+    //Declaring and using the region of interest
     cv::Rect roi(60, 250, 485, 140);
 
     cv::Mat roiImg = img(roi).clone();
@@ -62,11 +67,13 @@ std::vector<double> detectCones(cv::Mat& img, bool verbose_provided, bool displa
     cv::inRange(hsvImg, yellowMin, yellowMax, yellowMask);
     cv::inRange(hsvImg, blueMin, blueMax, blueMask);
 
+    //Declaring the blue and yellow masks according to the HSV values specified
     cv::Mat coneMask = blueMask | yellowMask;
 
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
     
+    //Retrieving all of the contours according to the mask specified
     cv::findContours(coneMask, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
     
     cv::Point conePoint;
@@ -97,6 +104,7 @@ std::vector<double> detectCones(cv::Mat& img, bool verbose_provided, bool displa
         // Create a dot in the middle of rectangle
         //cv::circle(roiImg, conePoint, 2, cv::Scalar(0, 0, 255), -1);
 
+        //Checking for the biggest contour in the set of contours given
         double area = cv::contourArea(contours[i]);
         if (area > maxArea)
         {
@@ -105,17 +113,19 @@ std::vector<double> detectCones(cv::Mat& img, bool verbose_provided, bool displa
         }
     }
 
+    //Checking whether any countour according to the yellow or blue mask is detected or not
     if (!largestContour.empty()){
         cv::Moments m = cv::moments(largestContour);
         conePoint = cv::Point(m.m10/m.m00, m.m01/m.m00);
         cv::circle(roiImg, conePoint, 2, cv::Scalar(0, 255, 0), -1);
-
+        //Drawing a line from the car to the detected cone
         cv::line(roiImg, carPoint, conePoint, cv::Scalar(255, 255, 0), 2);
     }
-
+    //Drawing a line from the car to the middle of the screen
     cv::line(roiImg, carPoint, midScreenPoint, cv::Scalar(0, 0, 255), 2);
-
+    //Marking the point of the car
     cv::circle(roiImg, carPoint,  2, cv::Scalar(0, 255, 0), -1);
+    //Marking the middle of the screen
     cv::circle(roiImg, midScreenPoint,  2, cv::Scalar(0, 255, 0), -1);
 
     double coneAngle = detectConeAngle(roiImg, conePoint, carPoint, midScreenPoint);
@@ -125,6 +135,7 @@ std::vector<double> detectCones(cv::Mat& img, bool verbose_provided, bool displa
     coneData[0] = coneAngle;
     coneData[1] = coneDistance;
 
+    //Checking whether the verbose argument is provided in order to show the image or not
     if (verbose_provided && display_provided)
     {
         cv::imshow("Cone detection", roiImg);
