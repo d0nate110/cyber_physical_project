@@ -6,8 +6,9 @@ Do you have a small scale vehicle that you wish had a simple obstacle avoidence 
 
 These are exactly the problems this project solves! The goal of this project is to create a data-driven algorithm that will take in data from multiple sources and sensors to output a steering value to avoid obstacles. The project is made to run in a docker which can be used by devices such as a raspberry pi. 
 
-
+## Badges
 ![pipeline](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/pipeline.svg)
+![coverage](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/coverage.svg?job=coverage)
 
 ## Pre-Requirements
 
@@ -143,24 +144,6 @@ Code reviews will be an important part of the workflow as well. Each merge reque
   - Same aforementioned approval process needs to be conducted with a fellow **maintainer**.
 - If **approved**: Pushed to the **main** branch, and a new tag, in the form of a release is created. It must follow correct versioning more than the current state, in the form vX.X.X.  
 
-## Software Design
-
-### Dependencies
-Our algorithm software depend on two other microservices.
- - The h264-decoder’s main purpose is to create image frames which can be processed by our image analysis implementation, ensuring the accurate extraction of relevant information for cone detection.
- - opendlv-vehicle-view is another component, as shown in the deployment diagram which can create image frames in an h264 format that can be decoded to be further processed by an algorithm to extract its relevant information.
-
-![deployment_diagram](./src/assets/deployment_diagram.png)
-
-### Structure
-The description for the components are as follows: 
-
- - cone_detector: frame processing with HSV filtering and object detection with the goal of detecting cones **(DEPRICATED)**
- - data_handler: performes input and output for csv files
- - test: contains various types of methods used for testing
- - algorithm: contains the logic which calculates the steering wheel angle
-![component_diagram](./src/assets/component_diagram.png)
-
 ## Tools
 
 ### **Code Analysis**
@@ -218,24 +201,13 @@ Few common keywords:
 
 *docs: added the commit & merge request conventions section to readme*
 
-## CI/CD Pipeline
+## CI/CD Pipelines
 
-The project contains four pipeline stages:
+The project contains two pipeline stages; one is the "build", that **builds and checks the test status of the code**, and is executed upon every commit in every branch (incl. the default branch). Secondly, the "deploy" job is run when a **tag** is made (eg. a **release**), **with build** and contains the following conditions:
 
-**Build** 
-- Builds the project. 
-- A new docker image tag is newly created under the group's container registry (can be found in Packages and Registries > Container Registry). The name of the tag should be a correctly formatted version ID of the form **vX.X.X**.
-
-**Test**  all tests are excecuted five times with the five different sample data.
-- The algorithm is tested to make sure it passes the requirements set by the customers. The following are tested: Accuracy of Algorithm, Total Time Taken, and Frames per Second. 
-- Requirement for the accuracy tests to pass is 45% or higher. 
-- Requirement for time takes tests requires the algorithm output total time to be same as the total time from given sample data.
-- Requirement for frames per second tests require each second to contain 10 frames for 85% of all seconds. 
-
-**Plot** based on passed commit and current commit, five graphs are made. 
-
-**Release** on commits to main, a release tag is given and release is uploaded to docker-hub. 
-
+- **Build** must pass as a pre-requisite.
+- The name of the tag should be a correctly formatted version ID of the form **vX.X.X**.
+- A new docker image tag is newly created under the group's container registry (can be found in Packages and Registries > Container Registry).   
 
 The stage routines can be found in the repository's root folder, in the file <br>`.gitlab-ci.yaml`.
 
@@ -252,3 +224,37 @@ This project makes use of the MIT license. No contributions can be done to this 
 
 ## Project status
 Project is on-going. 
+
+## Different Implementations
+Throughout the project, we discussed different ideas that could lead into algorithm implementation, however not all ideas were used for the implementation for our final algorithm. 
+
+### [First idea](https://git.chalmers.se/courses/dit638/students/2023-group-11/-/commit/d6367f5eed7bdf79d15afa516ecd654dc94f3f77)
+Our first idea was to create two instances running the same recording, where in one instance only yellow cones are detected, and in another - blue. 
+
+This idea was conceived based on the goal that we needed to determine the direction of movement of the car. We assumed that, by determining the direction of movement of the car in the beginning of the video, our algorithm would be able to distinguish whether to turn left on steep turns around the track, or right, depending on the position of the cones. 
+
+The determination of the direction of movement works by using HSV values in order to determine only blue or only yellow cones. Additionally, an invisible threshold was implemented in the middle of a frame in order to establish the middlepoint and calculate the coordinates of pixels of specific cones. 
+
+If in one instance, where blue cones are detected, the blue cones are on the left side of the screen, from the middlepoint, and on another instance, where only yellow cones are detected, the cones are on the right side of the screen from the middlepoint, then the direction of movement would be "clockwise". This is determined by boolean variables "blueOnLeft" and "yellowOnRight", which are set to true by default. Both of them have to be true or false in order to represent a "clockwise" or "counter-clockwise" directions respectively. 
+
+This implementation was not included as part of our algorithm, due to inability of it to judge the direction correctly in some cases. For example, if the car starts on the steep turn, instead of just a straight line, then the cones would be crossing the middlepoint threshold of the frame. If blue cones are supposed to be on the left side of the track, and yellow cones - on the right, then if the car starts on a steep turn, it would detect that the blue cones are on the right side as well, making a false judgement. 
+
+### [Second idea](https://git.chalmers.se/courses/dit638/students/2023-group-11/-/commit/e9a36ed28259a0472b5d83afad793642c73d8af1)
+The second idea that we used for the algorithm consists of determining angles and distance based only on image recognition. 
+
+The angles are calculated based on lines being drawn from middlepoint of the frame to the detected cones, and then the angle is determined from the middlepoint. Moreover, the determination of distance to cones was implemented, where the distance to cones would be measured in pixels. 
+
+Consequently, in order to calculate steering angles, a specific formula was implemented as can be seen in the [algorithm.cpp](https://git.chalmers.se/courses/dit638/students/2023-group-11/-/commit/e9a36ed28259a0472b5d83afad793642c73d8af1) class. The formula takes in "normalizedDistance" and "normalizedAngle" as values that are quotients of dividing the distance and cone values by their respective maximum values. This is to get both of the values on the same scale that would simplify the calculation. Both "normalizedDistance" and "normalizedAngle" variables are multiplied by their respective weight variables. Weight variables are there to specify the priority of each normalized variable in the algorithm formula. The result of multiplication and addition of these variables then gets multiplied by maximum or minimum steering angles from "groundSteeringRequest". 
+
+This implementation is our back-up implementation for the project. 
+
+### [Third idea](https://git.chalmers.se/courses/dit638/students/2023-group-11/-/commit/dc4698bafa2cf4c7a00701e623c54d8d8eca744f)
+
+The third idea includes using angular velocity reading. We have used "angularVelocityReading" values of x, y and z in order to look for a pattern that would match steering angles from "groundSteeringRequest". 
+
+We have found that values of z-axis follow the steering angles very closely. According to our understanding, the values of z-axis represent rotational acceleration of the car, hence if the steering angles are steep, therefore the z value would be on the higher end of the axis, which also true for negative values of steering wheel angles and z-axis. 
+
+Since there was a pattern that z-axis values and steering wheel angles from "groundSteeringRequest" were following, we decided to multiply the value of z by some constant, that would closely resemble the values of steering wheel angles, and that constant is 0.003.
+
+After coming up with that formula, testing the accuracy of the algorithm with [performance tests](https://git.chalmers.se/courses/dit638/students/2023-group-11/-/merge_requests/55) and [plotting](https://git.chalmers.se/courses/dit638/students/2023-group-11/-/jobs/293205/artifacts/browse/src/scripts/) our steering wheel angles against steering wheel angles from "groundSteeringRequest", we selected this implementation as our main and final implementation for the project. 
+
