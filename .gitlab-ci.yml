@@ -104,7 +104,7 @@ release:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx create --name platformbuilder --use
     - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx inspect --bootstrap
-    - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --platform "linux/amd64,linux/arm/v7" -t "$CI_REGISTRY_IMAGE":"$CI_COMMIT_TAG" --push --provenance=false .
+    - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --platform "linux/amd64,linux/arm64,linux/arm/v7" -t "$CI_REGISTRY_IMAGE":"$CI_COMMIT_TAG" --push --provenance=false .
 
 plot:
   image: ubuntu:latest
@@ -131,8 +131,8 @@ plot:
     - gnuplot gnuscript.txt
   artifacts:
     paths:
-      - graph1.png
-      - graph2.png
-      - graph3.png
-      - graph4.png
-      - graph5.png
+      - src/scripts/graph1.png
+      - src/scripts/graph2.png
+      - src/scripts/graph3.png
+      - src/scripts/graph4.png
+      - src/scripts/graph5.png
