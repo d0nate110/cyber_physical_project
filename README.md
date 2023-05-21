@@ -3,7 +3,6 @@ Do you have a small scale vehicle that you wish had a simple obstacle avoidence 
 
 These are exactly the problems this project solves! The goal of this project is to create a data-driven algorithm that will take in data from multiple sources and sensors to output a steering value to avoid obstacles. The project is made to run in a docker which can be used by devices such as a raspberry pi. 
 
-## Badges
 ![pipeline](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/pipeline.svg)
 
 ## Pre-Requirements
@@ -137,6 +136,26 @@ docker run --rm -ti --ipc=host -e DISPLAY=$DISPLAY -v /tmp:/tmp registry.git.cha
 
 Our group will follow a modified version of the git flow. This means that we will **create new branches** from the main branch, on which we will work. However, we will also have a branch called **develop**. The main branch will have only production code, and every modification (merge request from develop branch) on it will be a new release. The **develop** branch will have **pre-production code** and when features are finished they will be merged from the aforementioned individual feature branches into this branch, and progress ahead later to main once it has been thoroughly verified. 
 
+
+## Software Design
+
+### Dependencies
+Our algorithm software depend on two other microservices.
+ - The h264-decoder’s main purpose is to create image frames which can be processed by our image analysis implementation, ensuring the accurate extraction of relevant information for cone detection.
+ - opendlv-vehicle-view is another component, as shown in the deployment diagram which can create image frames in an h264 format that can be decoded to be further processed by an algorithm to extract its relevant information.
+
+![deployment_diagram](./src/assets/deployment_diagram.png)
+
+### Structure
+The description for the components are as follows: 
+
+ - cone_detector: frame processing with HSV filtering and object detection with the goal of detecting cones **(DEPRICATED)**
+ - data_handler: performes input and output for csv files
+ - test: contains various types of methods used for testing
+ - algorithm: contains the logic which calculates the steering wheel angle
+![component_diagram](./src/assets/component_diagram.png)
+
+
 ### Bug Fixing
 
 Bugs and unexpected behaviors are handled by the team via making a new bug fix issue, if the main feature issue is closed. The same workflow is applied by starting with making a new branch and ending with merging into develop/main.
@@ -218,13 +237,23 @@ Few common keywords:
 
 *docs: added the commit & merge request conventions section to readme*
 
-## CI/CD Pipelines
+## CI/CD Pipeline
 
-The project contains two pipeline stages; one is the "build", that **builds and checks the test status of the code**, and is executed upon every commit in every branch (incl. the default branch). Secondly, the "deploy" job is run when a **tag** is made (eg. a **release**), **with build** and contains the following conditions:
+The project contains four pipeline stages:
 
-- **Build** must pass as a pre-requisite.
-- The name of the tag should be a correctly formatted version ID of the form **vX.X.X**.
-- A new docker image tag is newly created under the group's container registry (can be found in Packages and Registries > Container Registry).   
+**Build** 
+- Builds the project. 
+- A new docker image tag is newly created under the group's container registry (can be found in Packages and Registries > Container Registry). The name of the tag should be a correctly formatted version ID of the form **vX.X.X**.
+
+**Test**  all tests are excecuted five times with the five different sample data.
+- The algorithm is tested to make sure it passes the requirements set by the customers. The following are tested: Accuracy of Algorithm, Total Time Taken, and Frames per Second. 
+- Requirement for the accuracy tests to pass is 45% or higher. 
+- Requirement for time takes tests requires the algorithm output total time to be same as the total time from given sample data.
+- Requirement for frames per second tests require each second to contain 10 frames for 85% of all seconds. 
+
+**Plot** based on passed commit and current commit, five graphs are made. 
+
+**Release** on commits to main, a release tag is given and release is uploaded to docker-hub. 
 
 The stage routines can be found in the repository's root folder, in the file <br>`.gitlab-ci.yaml`.
 
