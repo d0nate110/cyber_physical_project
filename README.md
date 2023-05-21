@@ -150,11 +150,11 @@ Our algorithm software depend on two other microservices.
  - The h264-decoder’s main purpose is to create image frames which can be processed by our image analysis implementation, ensuring the accurate extraction of relevant information for cone detection.
  - opendlv-vehicle-view is another component, as shown in the deployment diagram which can create image frames in an h264 format that can be decoded to be further processed by an algorithm to extract its relevant information.
 
-[deployment_diagram](./src/assets/deployment_diagram.png)
+![deployment_diagram](./src/assets/deployment_diagram.png)
 
 ### Structure
 
-[component_diagram](./src/assets/component_diagram.png)
+![component_diagram](./src/assets/component_diagram.png)
 
 ## Tools
 
