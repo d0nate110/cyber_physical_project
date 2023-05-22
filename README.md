@@ -184,41 +184,12 @@ Code reviews will be an important part of the workflow as well. Each merge reque
 
 ### **Code Analysis**
 
-These are the tools that we intend to use in order analyze and improve te quality of the C++ code developed. 
-
-Each tool has its own **strengths** and **weaknesses**
- and can be used to improve different aspects of code quality. Using a combination of these tools can help ensure that **C++ code is of high quality, maintainable, and secure**.
-
-<details>
-  <summary>Clang-tidy</summary>
-[Clang-tidy](https://clang.llvm.org/extra/clang-tidy/) is a static analysis tool built on top of the Clang compiler for C++ code that can detect fixes for bugs, coding violations, and performance issues. Clang-tidy can generate reports with detailed information on issues, including their severity, location, and suggestions for remediation. It supports manny coding standards, including Google C++ Style Guide and LLVM Coding Standards, and can also be customized with user-defined checks
-</details>
-
-<details>
-  <summary>Cppcheck</summary>
-[Cppcheck](https://cppcheck.sourceforge.io/) is a static analysis tool for C++ code that can detect fixes for bugs, coding violations, and security issues. It analyzes the code for various types of errors: buffer overflows, null pointer dereferences, and memory leaks. Moreover, it can generate reports with detailed information on the issues found.
-</details>
-
-<details>
-  <summary>OCLint</summary>
-[OCLint](https://oclint.org/) is a static code analysis tool that can detect bugs, coding violations, and design issues in C++, C, and Objective-C codebases. It works by analyzing the code's abstract syntax tree and generating reports on the issues found. OCLint supports a range of coding standards, can be customized.
-</details>
-
-<details>
-  <summary>Pmccabe</summary>
-[PMCCabe](https://manpages.ubuntu.com/manpages/focal/man1/pmccabe.1.html) is a software complexity analysis tool that is used to measure the complexity of C++ code. It analyzes the code's control flow graph and generates reports providing information on various complexity metrics, such as: cyclomatic complexity, essential complexity, and design complexity. The reports can be used to identify code that is difficult to maintain, understand, or test, and to make decisions about code refactoring and optimization.
-</details>
+lCov was used in order to measure the code coverage of our tests. 
 
 <details>
   <summary>lCov</summary>
 [lCov](https://wiki.documentfoundation.org/Development/Lcov) is a code coverage analysis tool for C++ code that can be used to measure the effectiveness of test suites when exercising the codebase. It works by generating reports that provide information on the percentage of code executed by the tests.
 </details>
-
-<details>
-  <summary>doctest</summary>
-[doctest](https://github.com/doctest/doctest) is a high-performance testing framework for C++ that is built on Catch testing framework. However, doctest has a significantly lower compile runtime while executing test cases. We will use doctest framework in order to implement and enhance test-driven development testing before creating new features. 
-</details>
-
 
 ## Commit  & Pull Request Conventions
 
