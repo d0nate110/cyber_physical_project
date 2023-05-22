@@ -1,9 +1,8 @@
-# Group-11: Obstacle Avoidance Steering Algorithm :racing_car:
+# Group-11: Obstacle Avoidance Steering Algorithm :racing_car: ![pipeline](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/pipeline.svg)
+
 Do you have a small scale vehicle that you wish had a simple obstacle avoidence system? Do you have bunch of sensors lying around and space on your raspberry pi? 
 
 These are exactly the problems this project solves! The goal of this project is to create a data-driven algorithm that will take in data from multiple sources and sensors to output a steering value to avoid obstacles. The project is made to run in a docker which can be used by devices such as a raspberry pi. 
-
-![pipeline](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/pipeline.svg)
 
 ## Pre-Requirements
 
@@ -96,7 +95,7 @@ docker pull registry.git.chalmers.se/courses/dit638/students/2023-group-11:v1.0.
 ```
 To clone this repository, paste the following in the terminal, and navigate to the following folder:
 ```
-git clone git@git.chalmers.se:courses/dit638/students/2023-group-11.git
+git clone -b main git@git.chalmers.se:courses/dit638/students/2023-group-11.git
 
 cd 2023-group-11/src
 ```
@@ -119,8 +118,10 @@ Then, open a compatible web browser (eg. **Chrome**) and enter the URL "**localh
 **Terminal window #3:** Once a video has started, finally, run this command in a separate third terminal.
 
 ```
-docker run --rm -ti --ipc=host -e DISPLAY=$DISPLAY -v /tmp:/tmp registry.git.chalmers.se/courses/dit638/students/2023-group-11:v1.0.2 --cid=253 --name=img --width=640 --height=480
+docker run --rm -ti --ipc=host -e DISPLAY=$DISPLAY -v /tmp:/tmp registry.git.chalmers.se/courses/dit638/students/2023-group-11:v1.0.2 --cid=253 --name=img --width=640 --height=480 --verbose
 ```
+
+The `--verbose` tag opens a debug window, to show a second image feed. When the flag is omitted, no debug pop-up window is shown.
 <hr>
 
 ## Workflow
