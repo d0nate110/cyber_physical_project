@@ -4,6 +4,10 @@ Do you have a small scale vehicle that you wish had a simple obstacle avoidence 
 
 These are exactly the problems this project solves! The goal of this project is to create a data-driven algorithm that will take in data from multiple sources and sensors to output a steering value to avoid obstacles. The project is made to run in a docker which can be used by devices such as a raspberry pi. 
 
+<img src="./src/assets/screenshot-video.png" alt="video-screenshot"/>
+
+<hr>
+
 ## Pre-Requirements
 
 The following instructions require a **Linux** distribution installed on your machine. Ubuntu 22.04 is recommended.
