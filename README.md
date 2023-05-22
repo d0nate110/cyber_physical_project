@@ -269,7 +269,7 @@ Below is the list of developers who are actively working on this project.
 This project makes use of the GNU license. No contributions can be done to this project by non-maintainers.
 
 ## Project status
-Project is on-going. 
+Project is complete. Additional contributions can be accepted.
 
 ## Different Implementations
 Throughout the project, we discussed different ideas that could lead into algorithm implementation, however not all ideas were used for the implementation for our final algorithm. 
