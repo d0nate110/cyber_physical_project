@@ -128,7 +128,7 @@ Then, open a compatible web browser (eg. **Chrome**) and enter the URL "**localh
 **Terminal window #3:** Once a video has started, finally, run this command in a separate third terminal.
 
 ```
-docker run --rm -ti --ipc=host -e DISPLAY=$DISPLAY -v /tmp:/tmp registry.git.chalmers.se/courses/dit638/students/2023-group-11:v1.0.0 --cid=253 --name=img --width=640 --height=480
+docker run --rm -ti --ipc=host -e DISPLAY=$DISPLAY -v /tmp:/tmp registry.git.chalmers.se/courses/dit638/students/2023-group-11:v1.0.2 --cid=253 --name=img --width=640 --height=480
 ```
 <hr>
 
