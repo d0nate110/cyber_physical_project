@@ -9,15 +9,6 @@ These are exactly the problems this project solves! The goal of this project is 
 
 The following instructions require a **Linux** distribution installed on your machine. Ubuntu 22.04 is recommended.
 
-To make use of the system following sensors are required on the model vehichle:
-
-*The list is not yet complete. Please check again later!*
-- Sensor 1
-- Sensor 2
-- Sensor 3
-
-TODO: Add information on how sensors can pass data to our application.
-
 ## Installation
 
 ### Make sure that your system is up to date. Run the following in a terminal:
