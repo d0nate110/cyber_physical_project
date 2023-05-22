@@ -1,4 +1,4 @@
-# Group-11: Obstacle Avoidance Steering Algorithm :racing_car: ![pipeline](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/pipeline.svg)
+# Group-11: Obstacle Avoidance Steering Algorithm :racing_car: &nbsp;&nbsp; ![pipeline](https://git.chalmers.se/courses/dit638/students/2023-group-11/badges/main/pipeline.svg)
 
 Do you have a small scale vehicle that you wish had a simple obstacle avoidence system? Do you have bunch of sensors lying around and space on your raspberry pi? 
 
