@@ -266,7 +266,7 @@ Below is the list of developers who are actively working on this project.
 - Oscar Reina Gustafsson: @scarr
 
 ## License
-This project makes use of the MIT license. No contributions can be done to this project by non-maintainers.
+This project makes use of the GNU license. No contributions can be done to this project by non-maintainers.
 
 ## Project status
 Project is on-going. 
