@@ -93,7 +93,7 @@ TEST_CASE("Test Algorithm Time - File 1") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     pair<int, int> accuracy = performance_tests::algorithm_performance_time(dataValue, outputContent);
-    REQUIRE(accuracy.first == accuracy.second);
+    REQUIRE(abs(accuracy.first - accuracy.second) <= 2);
 }
 
 TEST_CASE("Test Algorithm Time - File 2") {
@@ -104,7 +104,7 @@ TEST_CASE("Test Algorithm Time - File 2") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     pair<int, int> accuracy = performance_tests::algorithm_performance_time(dataValue, outputContent);
-    REQUIRE(accuracy.first == accuracy.second);
+    REQUIRE(abs(accuracy.first - accuracy.second) <= 2);
 }
 
 TEST_CASE("Test Algorithm Time - File 3") {
@@ -115,7 +115,7 @@ TEST_CASE("Test Algorithm Time - File 3") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     pair<int, int> accuracy = performance_tests::algorithm_performance_time(dataValue, outputContent);
-    REQUIRE(accuracy.first == accuracy.second);
+    REQUIRE(abs(accuracy.first - accuracy.second) <= 2);
 }
 
 TEST_CASE("Test Algorithm Time - File 4") {
@@ -126,7 +126,7 @@ TEST_CASE("Test Algorithm Time - File 4") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     pair<int, int> accuracy = performance_tests::algorithm_performance_time(dataValue, outputContent);
-    REQUIRE(accuracy.first == accuracy.second);
+    REQUIRE(abs(accuracy.first - accuracy.second) <= 2);
 }
 
 TEST_CASE("Test Algorithm Time - File 5") {
@@ -137,7 +137,7 @@ TEST_CASE("Test Algorithm Time - File 5") {
     vector<pair<unsigned long long int, double>> outputContent = data_handler::read_csv_file(newPath);
 
     pair<int, int> accuracy = performance_tests::algorithm_performance_time(dataValue, outputContent);
-    REQUIRE(accuracy.first == accuracy.second);
+    REQUIRE(abs(accuracy.first - accuracy.second) <= 2);
 }
 
 

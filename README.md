@@ -218,7 +218,8 @@ The project contains four pipeline stages:
 - Requirement for time takes tests requires the algorithm output total time to be same as the total time from given sample data.
 - Requirement for frames per second tests require each second to contain 10 frames for 85% of all seconds. 
 
-**Plot** based on passed commit and current commit, five graphs are made. 
+**Plot** based on passed commit and current commit, five graphs are made. <br> Credit: 
+![OpenDLV-Video-H264-Replay](https://github.com/chalmers-revere/opendlv-video-h264-replay#building-and-usage) from *Chalmers Revere* was used during the CI job to run the videos fully automated, with the `.gitlab-ci.yml` recording values in .csv format, to automate the construction of 5 plots using `gnuplot`.
 
 **Release** on commits to main, a release tag is given and release is uploaded to docker-hub. 
 

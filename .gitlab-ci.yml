@@ -22,7 +22,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
 
 services:
-  - docker:19.03.3-dind
+  - docker:stable-dind
 
 stages:
   - build       # stage is executed for each push (irrespective of branch), not release
@@ -48,10 +48,9 @@ build:
   - echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
   - apt-get update
   - apt-get install -y docker-ce docker-ce-cli containerd.io gnuplot
-
   script:
   #  - cd src
-    - docker build -f Dockerfile .
+    - docker build -t my-opencv-example:latest -f Dockerfile .
 
 # this part uses lcov to generate coverage report of executed unit tests. 
 coverage:
@@ -108,6 +107,8 @@ release:
 
 plot:
   image: ubuntu:latest
+  services:
+    - docker:stable-dind
   tags:
     - docker-build
   needs:
@@ -116,18 +117,41 @@ plot:
   stage: plot
   before_script:
     - apt-get update 
-    - apt install -qq -y gnuplot git
+    - apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    - echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+    - apt-get update
+    - apt-get install -y docker-ce docker-ce-cli containerd.io gnuplot
   script:
-    - cd src
-    - cd scripts
-    - ls
+    - docker build -t curr-commit:latest -f Dockerfile .
     - git checkout $CI_COMMIT_BRANCH && git pull
+    - git reset --hard HEAD~1
+    - docker build -t prev-commit:latest -f Dockerfile .
+    - git pull
+    # Building the Git Repo, and running it in Docker-compose later ... (Option 1)
+    #############################################################################
+    - git clone https://github.com/chalmers-revere/opendlv-video-h264-replay.git
+    - cd opendlv-video-h264-replay
+    - docker build -t opendlv-h264-replay:latest -f Dockerfile .
+    - cd ..
+    #############################################################################
+    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
+    - cd src
+    - cd assets
+    - docker-compose --version  
+    # Iterating through the video collection and applying the previous commit's algo, and new commit's algo and running it
+    ######################################################################################################################
     - |-
-        for i in {1..5} 
-        do 
-          git show HEAD~1:src/algorithm_output/Output${i}_SteeringAngle.csv > old_output${i}.csv
-          chmod +xrw old_output${i}.csv
-        done	
+      for i in {1..5}
+      do
+        echo "Analyzing video ${i} ..." 
+        VERSION_OF_ALGO="curr-commit:latest" VID_NUMBER=${i} docker-compose -f docker-compose.yaml up --no-log-prefix --abort-on-container-exit > >(tee | grep -P "group_11" > ../algorithm_output/Output${i}_SteeringAngle.csv)
+        VERSION_OF_ALGO="prev-commit:latest" VID_NUMBER=${i} docker-compose -f docker-compose.yaml up --no-log-prefix --abort-on-container-exit > >(tee | grep -P "group_11" > ../algorithm_output/old_output${i}.csv)
+        chmod +xrw ../algorithm_output/old_output${i}.csv    
+      done
+    ######################################################################################################################
+    - cd ../scripts
     - gnuplot gnuscript.txt
   artifacts:
     paths:
